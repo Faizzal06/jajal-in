@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TemuLokal - Penghargaan &amp; Prestasi</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "inverse-primary": "#98da27",
+                "on-error-container": "#93000a",
+                "tertiary-fixed-dim": "#e7b6f3",
+                "on-primary": "#ffffff",
+                "on-background": "#191d12",
+                "error": "#ba1a1a",
+                "primary": "#446900",
+                "surface-container": "#ecf0dd",
+                "outline": "#727a64",
+                "secondary-container": "#d6e0f3",
+                "on-tertiary-fixed-variant": "#5e376b",
+                "surface-dim": "#d8dcca",
+                "surface": "#f7fbe8",
+                "outline-variant": "#c2cab0",
+                "inverse-surface": "#2e3226",
+                "background": "#f7fbe8",
+                "secondary-fixed-dim": "#bdc7d9",
+                "surface-container-highest": "#e0e4d2",
+                "on-secondary-fixed-variant": "#3d4756",
+                "error-container": "#ffdad6",
+                "on-surface-variant": "#424936",
+                "on-secondary-fixed": "#121c2a",
+                "on-primary-fixed": "#121f00",
+                "surface-variant": "#e0e4d2",
+                "on-surface": "#191d12",
+                "primary-fixed-dim": "#98da27",
+                "on-primary-fixed-variant": "#334f00",
+                "surface-container-high": "#e6ead8",
+                "surface-container-lowest": "#ffffff",
+                "tertiary-fixed": "#fad7ff",
+                "surface-container-low": "#f2f6e3",
+                "on-tertiary-container": "#734b80",
+                "on-secondary-container": "#596373",
+                "on-error": "#ffffff",
+                "on-tertiary-fixed": "#2f093d",
+                "tertiary": "#784f85",
+                "secondary-fixed": "#d9e3f6",
+                "secondary": "#555f6f",
+                "primary-container": "#a3e635",
+                "on-primary-container": "#416400",
+                "surface-bright": "#f7fbe8",
+                "primary-fixed": "#b2f746",
+                "on-tertiary": "#ffffff",
+                "inverse-on-surface": "#eff3e0",
+                "surface-tint": "#446900",
+                "on-secondary": "#ffffff",
+                "tertiary-container": "#f3c1ff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "4px",
+                "xl": "8px",
+                "full": "22px"
+            },
+            "spacing": {
+                "xl": "48px",
+                "lg": "24px",
+                "gutter": "20px",
+                "base": "4px",
+                "xs": "4px",
+                "md": "16px",
+                "margin-mobile": "20px",
+                "margin-desktop": "64px",
+                "sm": "8px"
+            },
+            "fontFamily": {
+                "headline-xl": ["Space Grotesk"],
+                "headline-md": ["Space Grotesk"],
+                "headline-lg-mobile": ["Space Grotesk"],
+                "label-sm": ["Inter"],
+                "headline-lg": ["Space Grotesk"],
+                "label-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "body-md": ["Inter"]
+            },
+            "fontSize": {
+                "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "0em", "fontWeight": "600"}],
+                "headline-lg-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #F3F4F6;
+            color: #191d12;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #A3E635;
+            border-radius: 10px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky z-50 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flex justify-between items-center px-margin-mobile py-sm w-full">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant p-2 active:scale-95 transition-transform">menu</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-inverse-primary">TemuLokal</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a young Indonesian traveler with a friendly smile, wearing high-tech outdoors gear. The background is a soft-focus lush tropical forest, shot in bright daylight. Professional photography style with high contrast and vivid colors that match the modern travel aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvBIWneSvKGozte82Y45JFkpOO4CyysjLAevnfDVmQMWD_nbIuB32vV6xgTcwyqN-dHuZz203qQ2q3KvJPpYJhFQNgW7_e-iZgui5l33kIurZRNP6ZTLov5ccJlfex1GkYeRjsRD6DHkjK270qba3mM0Hj7DhP-sur6VNDch30Py83z2GNaUbQHI7XsVZO8u8LGemkQ3if1OQgr0zP9LDObaMMWKLL94ugc8qht5880zZwkmiN_KVL"/>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-margin-mobile pt-lg pb-32 space-y-xl">
+<!-- Hero Section: Rank & Points -->
+<section class="relative overflow-hidden bg-on-secondary-fixed text-on-primary-fixed rounded-full p-lg flex flex-col items-center text-center shadow-lg">
+
+<div class="relative z-10 flex flex-col items-center">
+<span class="bg-primary-container text-on-primary-container font-label-md text-label-md px-4 py-1 rounded-full mb-md uppercase tracking-wider">Level 14</span>
+<h2 class="font-headline-xl text-headline-xl text-white mb-xs">Local Legend</h2>
+<div class="flex items-center gap-2 text-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-headline-md text-headline-md">2,450 XP</span>
+</div>
+</div>
+</section>
+<!-- Progress Bar Section -->
+<section class="bg-white rounded-full p-lg border border-outline-variant">
+<div class="flex justify-between items-end mb-sm">
+<div>
+<p class="font-label-md text-label-md text-secondary uppercase opacity-70">Pangkat Berikutnya</p>
+<p class="font-headline-md text-headline-md text-on-surface">Elite Explorer</p>
+</div>
+<p class="font-label-md text-label-md font-bold text-primary">75% Selesai</p>
+</div>
+<div class="h-4 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[75%] rounded-full shadow-[0_0_15px_rgba(163,230,53,0.5)]"></div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-sm">Dapatkan 550 XP lagi untuk naik level!</p>
+</section>
+<!-- Lencana (Badges) Bento Grid -->
+<section>
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">Lencana Koleksi</h3>
+<button class="text-primary font-label-md text-label-md hover:underline">Lihat Semua</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<!-- Badge: Wanderlust -->
+<div class="bg-white border border-outline-variant p-md rounded-full flex flex-col items-center text-center group hover:border-primary-container transition-all">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-sm shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-primary-container text-4xl" style="font-variation-settings: 'FILL' 1;">explore</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Wanderlust</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Level 3</span>
+</div>
+<!-- Badge: Visual Storyteller -->
+<div class="bg-white border border-outline-variant p-md rounded-full flex flex-col items-center text-center group hover:border-primary-container transition-all">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-sm shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-primary-container text-4xl" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Visual Storyteller</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Terbuka</span>
+</div>
+<!-- Badge: Local Hero -->
+<div class="bg-white border border-outline-variant p-md rounded-full flex flex-col items-center text-center opacity-40 grayscale">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center mb-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl">verified_user</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Local Hero</span>
+<span class="font-label-sm text-label-sm">Terkunci</span>
+</div>
+<!-- Badge: Hidden Gem Hunter -->
+<div class="bg-white border border-outline-variant p-md rounded-full flex flex-col items-center text-center opacity-40 grayscale">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center mb-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl">diamond</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Hidden Gem Hunter</span>
+<span class="font-label-sm text-label-sm">Terkunci</span>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+<!-- Milestones List -->
+<section class="space-y-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">Target Mendatang</h3>
+<div class="space-y-sm">
+<div class="bg-white p-md rounded-full border border-outline-variant flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container rounded-full flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary">storefront</span>
+</div>
+<div class="flex-grow">
+<p class="font-label-md text-label-md text-on-surface">Kunjungi 5 Pasar Tradisional</p>
+<div class="w-full bg-surface-container h-1.5 rounded-full mt-2">
+<div class="bg-primary w-3/5 h-full rounded-full"></div>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3/5</span>
+</div>
+<div class="bg-white p-md rounded-full border border-outline-variant flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container rounded-full flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary">rate_review</span>
+</div>
+<div class="flex-grow">
+<p class="font-label-md text-label-md text-on-surface">Kirim 10 Ulasan Baru</p>
+<div class="w-full bg-surface-container h-1.5 rounded-full mt-2">
+<div class="bg-primary w-4/5 h-full rounded-full"></div>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">8/10</span>
+</div>
+</div>
+</section>
+<!-- Weekly Leaderboard -->
+<section class="space-y-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md text-on-surface">Papan Peringkat</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Mingguan</span>
+</div>
+<div class="bg-white rounded-full border border-outline-variant overflow-hidden">
+<div class="p-md space-y-md">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface-variant w-4">1</span>
+<div class="w-8 h-8 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young explorer in Jakarta, vibrant city background, cinematic lighting, modern travel style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2gDu9fZ2UecXFzPzlhIafMKho_QzfK1WRRO0ybNVsNy_QuRAsFjRGTQTaQP8yJIDnsmXKHvNzW7zrl8NAdT8Gq-pzaxXo6JACjbJcH3DWHn8EUtd2A3v4r3LbZ-BpT1AcyMf11_ZQ-AMV6hVdnF-2g0z6isuyUNmJhpoN8TnKwB_c9ylUDkUyA57L0w_mfGuRf8lmmMbJbpBI5kWRhGRZqdwD0SfihCthVDD2Xb-8G4JsRqNUna1e"/>
+</div>
+<span class="font-label-md text-label-md flex-grow">Andi Pratama</span>
+<span class="font-label-sm text-label-sm font-bold text-primary">4,120 XP</span>
+</div>
+<div class="flex items-center gap-3 bg-primary-container/20 -mx-md px-md py-2 border-y border-primary-container/30">
+<span class="font-bold text-primary w-4">4</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a young Indonesian traveler with a friendly smile, wearing high-tech outdoors gear, vivid colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiAO-pgU5XlMV8k4oCUHxqPAAjj97sORbXSXVuh5qfPOQ3W_hKDkRhfRoyeh68LFjxMHjGGa8mCI7ssAKa3POVuXLdkuwiclANyeTC7lAGsccouCOwgOxi6heU5WL07PlhlhE3KJIDr-BcDztMwlTtBmzBBgWMWpGK3BSSKDKOCoBiAEAHXGyFMaFgDWtfUz9Ng0t1t8H492cy3QQpZIoJD1SqbXrAxX7CWZqghEMH3Vpk5J5MhqM1"/>
+</div>
+<span class="font-label-md text-label-md flex-grow font-bold">Kamu (Siti)</span>
+<span class="font-label-sm text-label-sm font-bold text-primary">2,450 XP</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface-variant w-4">5</span>
+<div class="w-8 h-8 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a travel photographer in a cultural village, bright high-contrast outdoor lighting, high-tech camera gear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx50c31d2er9c_IqzFpKr0Q21WHqtkA3Bg3Mw6LWKETqKKqIb9wnQnktgMR-c778b-bChdeasdaxJjvIIAWtpUryN3Cqkt7lhOeyK22vZnibo0Is5kL3WQhdbwK2OrdTeNZ1dqK-xn9ZqFpr2xRAGzmv0Kfqnsf1H_UKIry6IWruvLO_mo2Rix2GCAVJ49DQ8bWwZY_7xkjhGbnCznvmIbUFbxKEOu9pzP0h8bwsstXPdO3g6Xs7-8"/>
+</div>
+<span class="font-label-md text-label-md flex-grow">Budi Santoso</span>
+<span class="font-label-sm text-label-sm font-bold text-primary">2,210 XP</span>
+</div>
+</div>
+<button class="w-full py-sm bg-surface-container-highest font-label-md text-label-md text-on-surface hover:bg-surface-variant transition-colors">
+                        Lihat Papan Peringkat Lengkap
+                    </button>
+</div>
+</section>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center px-4 py-2 bg-surface dark:bg-surface-dim z-50 rounded-t-full shadow-[0px_10px_30px_rgba(31,41,55,0.05)]">
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim p-2 active:scale-90 transition-all duration-200 cursor-pointer">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim p-2 active:scale-90 transition-all duration-200 cursor-pointer">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-sm text-label-sm">Map</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim p-2 active:scale-90 transition-all duration-200 cursor-pointer">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-label-sm text-label-sm">Post</span>
+</div>
+<!-- Active Tab: Awards -->
+<div class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-full px-4 py-1 active:scale-90 transition-all duration-200 cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span class="font-label-sm text-label-sm">Awards</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim p-2 active:scale-90 transition-all duration-200 cursor-pointer">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</div>
+</nav>
+<script>
+        // Micro-interactions for badges
+        document.querySelectorAll('.group').forEach(badge => {
+            badge.addEventListener('mouseenter', () => {
+                badge.querySelector('.material-symbols-outlined').style.fontVariationSettings = "'FILL' 1, 'wght' 600";
+            });
+            badge.addEventListener('mouseleave', () => {
+                badge.querySelector('.material-symbols-outlined').style.fontVariationSettings = "'FILL' 0, 'wght' 400";
+            });
+        });
+
+        // Floating particle effect in hero section (simulated via JS)
+        const heroSection = document.querySelector('section.bg-on-secondary-fixed');
+        heroSection.addEventListener('mousemove', (e) => {
+            const rect = heroSection.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            heroSection.style.background = `radial-gradient(circle at ${x}px ${y}px, #2a3a4a 0%, #1F2937 50%)`;
+        });
+        heroSection.addEventListener('mouseleave', () => {
+            heroSection.style.background = '#1F2937';
+        });
+    </script>
+</body></html>

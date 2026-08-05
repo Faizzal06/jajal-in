@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TemuLokal - Hidden Gem Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Space+Grotesk:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 200px);
+            gap: 16px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#416400",
+                        "inverse-primary": "#98da27",
+                        "primary": "#446900",
+                        "on-secondary-fixed-variant": "#3d4756",
+                        "surface-container": "#ecf0dd",
+                        "surface-container-highest": "#e0e4d2",
+                        "secondary-container": "#d6e0f3",
+                        "on-tertiary-fixed-variant": "#5e376b",
+                        "tertiary-fixed": "#fad7ff",
+                        "surface-tint": "#446900",
+                        "on-primary-fixed": "#121f00",
+                        "on-background": "#191d12",
+                        "outline": "#727a64",
+                        "surface-variant": "#e0e4d2",
+                        "secondary-fixed": "#d9e3f6",
+                        "background": "#f7fbe8",
+                        "surface-container-low": "#f2f6e3",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#424936",
+                        "secondary-fixed-dim": "#bdc7d9",
+                        "primary-container": "#a3e635",
+                        "error-container": "#ffdad6",
+                        "secondary": "#555f6f",
+                        "surface-container-high": "#e6ead8",
+                        "inverse-surface": "#2e3226",
+                        "outline-variant": "#c2cab0",
+                        "surface-dim": "#d8dcca",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#334f00",
+                        "primary-fixed": "#b2f746",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#f3c1ff",
+                        "on-surface": "#191d12",
+                        "on-tertiary-container": "#734b80",
+                        "on-tertiary-fixed": "#2f093d",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#98da27",
+                        "tertiary-fixed-dim": "#e7b6f3",
+                        "surface-bright": "#f7fbe8",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#121c2a",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#784f85",
+                        "surface": "#f7fbe8",
+                        "inverse-on-surface": "#eff3e0",
+                        "on-secondary-container": "#596373",
+                        "brand-slate": "#1F2937",
+                        "brand-canvas": "#F3F4F6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "4px",
+                        "xl": "8px",
+                        "full": "9999px",
+                        "brand": "22px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "20px",
+                        "margin-desktop": "64px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "base": "4px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Space Grotesk"],
+                        "headline-xl": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "0em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-canvas text-brand-slate font-body-md selection:bg-primary-container">
+<!-- Top AppBar (JSON Driven Style) -->
+<header class="bg-background dark:bg-background border-b border-outline-variant dark:border-outline w-full top-0 sticky z-50 transition-colors duration-150">
+<div class="flex items-center justify-between px-margin-mobile h-16 w-full max-w-[1280px] mx-auto">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:bg-surface-container-high transition-colors p-2 rounded-full active:scale-95 duration-150">arrow_back</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">TemuLokal</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-high p-2 rounded-full transition-colors">share</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-high p-2 rounded-full transition-colors">bookmark</button>
+<div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close-up portrait of a young traveler with a friendly expression, wearing a stylish outdoor jacket. The lighting is warm and natural, suggesting a sunset glow. The background is a soft-focus forest, emphasizing a digital-native, sophisticated explorer aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCW8lHgK39DO8xUEpJM42QKU3OYsaU9JE13e4EbG48DZQbLl6a-nHWDtlmpYpTc_PaTnL5Ws0FJyxYTo-6vzpz8EeMNvPAR22DdOLUJstLaeyZwjPoO6vf4PJ-ZgUTd9XA3iphgMFiMjBVfIJqUJyqQLsUQGHeaQ2DDVhEU6c4eSdNpCiKAXw3ymGVkONqRxbCyYNvXdiewKV2HxRG7wiazcIwKW280ULPhgaay_an1q8BFxwKsquL"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-lg space-y-xl pb-32">
+<!-- Hero Section: Immersive Photography -->
+<section class="relative h-[60vh] md:h-[70vh] rounded-brand overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A breathtaking panoramic view of a secluded limestone cavern with an emerald underground lake. Sun rays pierce through a narrow opening above, illuminating the crystalline water. The color palette is dominated by deep teals, slate grays, and a sharp accent of lime green moss. The atmosphere is mystical, high-velocity, and energetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBCkfF7jbK8m3QgJbYx8tICQ-azGPXWWgH6fdO5ocw_IvVpvsYffXtf1h6QH6zkJHwtspmKJXNT_gbBeIhRskO4cOIYU2O3cs1jxfeihJY4qpjk-HgwI_9SDcmq93k0vSZ6N_GZjMsv-tesXcpuRZ2-JHHst7jwp1aM2eI5tzmc9OcbLupEJqnhQJcCUfDCBrAuVS6zZiaDtQOnftRbYMmP67HR_6Z91mK8KvPZ3Qjj7yts0-00wbyY')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-brand-slate/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-lg w-full flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div class="space-y-sm">
+<div class="flex gap-2">
+<span class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-4 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                            Hidden Gem
+                        </span>
+<span class="bg-brand-slate text-white font-label-sm text-label-sm px-4 py-1 rounded-full uppercase tracking-wider">
+                            Yogyakarta
+                        </span>
+</div>
+<h2 class="font-headline-xl text-white text-[40px] md:text-headline-xl leading-tight">Gua Jomblang: The Light of Heaven</h2>
+<div class="flex items-center gap-4 text-white/90">
+<span class="flex items-center gap-1 font-label-md text-label-md">
+<span class="material-symbols-outlined text-primary-container">location_on</span>
+                            Seminu, Gunung Kidul
+                        </span>
+<span class="flex items-center gap-1 font-label-md text-label-md">
+<span class="material-symbols-outlined text-primary-container">schedule</span>
+                            Best at 11:30 AM
+                        </span>
+</div>
+</div>
+<button class="bg-[#A3E635] text-brand-slate font-bold px-8 py-4 rounded-brand hover:shadow-xl transition-all active:scale-95 flex items-center gap-2 group-hover:translate-y-[-4px]">
+                    BOOK THE ADVENTURE
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Left Column: Story & Details -->
+<div class="lg:col-span-8 space-y-xl">
+<!-- Immersive Audio Story Section -->
+<section class="bg-white border border-outline-variant p-lg rounded-brand space-y-md relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 opacity-10">
+<span class="material-symbols-outlined text-[120px] text-primary" style="font-variation-settings: 'FILL' 1;">graphic_eq</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md text-brand-slate">The Living Echo</h3>
+<p class="text-on-surface-variant">Listen to the local legend of the cavern's guardian.</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm text-on-surface-variant">4:20</span>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="w-14 h-14 bg-brand-slate text-white rounded-full flex items-center justify-center hover:bg-primary transition-all active:scale-90" id="audioToggle">
+<span class="material-symbols-outlined text-3xl" id="playIcon">play_arrow</span>
+</button>
+<div class="flex-1 space-y-1">
+<div class="h-2 bg-brand-canvas rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[35%] rounded-full relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-brand-slate rounded-full border-2 border-white shadow-md"></div>
+</div>
+</div>
+<div class="flex justify-between text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">
+<span>Narrated by Pak Wayan</span>
+<span>1:35</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<div class="w-1 h-4 bg-primary-container animate-pulse"></div>
+<div class="w-1 h-8 bg-primary-container animate-pulse delay-75"></div>
+<div class="w-1 h-6 bg-primary-container animate-pulse delay-150"></div>
+<div class="w-1 h-3 bg-primary-container animate-pulse delay-200"></div>
+</div>
+</div>
+</section>
+<!-- Description Bento Grid -->
+<section class="space-y-lg">
+<h3 class="font-headline-md text-headline-md">Experience Highlights</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="bg-white border border-outline-variant p-lg rounded-brand flex flex-col justify-between h-64 hover:border-primary-container transition-colors">
+<span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings: 'FILL' 1;">landscape</span>
+<div>
+<h4 class="font-bold text-lg mb-2">Vertical Descent</h4>
+<p class="text-on-surface-variant">Experience a thrilling 60-meter rappel into the ancient vertical cave system.</p>
+</div>
+</div>
+<div class="bg-primary text-white p-lg rounded-brand flex flex-col justify-between h-64">
+<span class="material-symbols-outlined text-4xl text-primary-container">light_mode</span>
+<div>
+<h4 class="font-bold text-lg mb-2">The Grubug Light</h4>
+<p class="text-white/80">Witness the 'Light of Heaven' between 11:00 AM and 12:30 PM as sunbeams flood the cave floor.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Map Section -->
+<section class="bg-white border border-outline-variant rounded-brand overflow-hidden">
+<div class="p-lg flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md">Location</h3>
+<a class="text-primary font-bold text-label-md flex items-center gap-1 hover:underline" href="#">
+                            OPEN IN MAPS <span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+</div>
+<div class="h-64 bg-surface-container-highest relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A stylized minimalist map of the Yogyakarta region, focusing on the Gunung Kidul district. The map uses a clean, modern aesthetic with a soft green and slate palette. A vibrant lime green marker pinpointing Gua Jomblang is prominent, surrounded by soft topographic contours." data-location="Yogyakarta" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDtnQjlg7ejDN4K-AhMmHMcGDpADNs1tV8aPXrWW57lia0FGFuAtjBuNG7pCsIaECaVpfnyVQDNWw0jZNiqE74YC2BdIeO8_Dde_gMMwhApoKaEW0JYizGxG9Qe8EqMqcl4uLsqHPSx1O3Zno_quCpxEbQV9pW8ZkEA5JEJCUl4LGR1qVRQg3nuGi_tOqKXOblEVE77mi7WFpIy_5L6rLHUOF7sz_KPNns1ZJ-iYERtrN0o_NEn-BxE')"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-white px-4 py-2 rounded-full shadow-lg border border-outline-variant flex items-center gap-2">
+<span class="w-3 h-3 bg-primary rounded-full animate-ping"></span>
+<span class="font-bold">Gua Jomblang Cavern</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Planner & Community -->
+<aside class="lg:col-span-4 space-y-lg">
+<div class="bg-white border-2 border-brand-slate p-lg rounded-brand sticky top-20 shadow-xl">
+<h3 class="font-headline-md text-headline-md mb-md">Plan Your Visit</h3>
+<div class="space-y-md">
+<div class="space-y-2">
+<label class="text-label-sm font-label-sm text-on-surface-variant uppercase">Travel Date</label>
+<div class="relative">
+<input class="w-full border-outline-variant border-2 rounded-xl px-4 py-3 bg-brand-canvas focus:border-brand-slate outline-none cursor-pointer" readonly="" type="text" value="Oct 24, 2023"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant">calendar_today</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-label-sm font-label-sm text-on-surface-variant uppercase">Time Slot</label>
+<div class="flex gap-2">
+<button class="flex-1 py-3 border-2 border-primary-container bg-primary-container text-on-primary-container rounded-xl font-bold">11:00 AM</button>
+<button class="flex-1 py-3 border-2 border-outline-variant rounded-xl font-bold hover:bg-brand-canvas transition-colors">1:30 PM</button>
+</div>
+</div>
+<div class="pt-lg border-t border-outline-variant">
+<div class="flex justify-between items-center mb-md">
+<span class="font-label-md text-on-surface-variant">Entry Fee (Per Person)</span>
+<span class="font-bold text-lg">IDR 500,000</span>
+</div>
+<button class="w-full bg-brand-slate text-white font-bold py-4 rounded-brand hover:bg-primary transition-all active:scale-95 shadow-lg">
+                                SECURE BOOKING
+                            </button>
+<p class="text-center text-[10px] text-on-surface-variant mt-4 font-medium uppercase tracking-widest">
+                                🔒 Secure payment by TemuLokal
+                            </p>
+</div>
+</div>
+</div>
+<!-- Community Insights -->
+<div class="bg-surface-container-low p-lg rounded-brand space-y-md">
+<h4 class="font-bold text-lg">Traveler Reviews</h4>
+<div class="space-y-md">
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center font-bold text-secondary">AM</div>
+<div>
+<p class="text-sm font-bold">Anisa M.</p>
+<p class="text-sm text-on-surface-variant italic">"The rappelling was scary at first but totally worth it for that light!"</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center font-bold text-tertiary">JD</div>
+<div>
+<p class="text-sm font-bold">John Doe</p>
+<p class="text-sm text-on-surface-variant italic">"Bring waterproof shoes. The bottom of the cave is very muddy."</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Bottom Navigation Bar (JSON Driven Style) -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface dark:bg-inverse-surface shadow-lg px-margin-mobile py-sm flex justify-around items-center">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-on-secondary-fixed-variant transition-all p-2 rounded-full active:scale-90 duration-200">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest transition-all p-2 rounded-full active:scale-90 duration-200">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-sm text-label-sm">Map</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest transition-all p-2 rounded-full active:scale-90 duration-200">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-label-sm text-label-sm">Post</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest transition-all p-2 rounded-full active:scale-90 duration-200">
+<span class="material-symbols-outlined">military_tech</span>
+<span class="font-label-sm text-label-sm">Awards</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-full px-4 py-1 active:scale-90 duration-200">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</div>
+</nav>
+<script>
+        // Micro-interactions for the audio player
+        const audioToggle = document.getElementById('audioToggle');
+        const playIcon = document.getElementById('playIcon');
+        let isPlaying = false;
+
+        audioToggle.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            playIcon.textContent = isPlaying ? 'pause' : 'play_arrow';
+            audioToggle.classList.toggle('bg-primary');
+            audioToggle.classList.toggle('bg-brand-slate');
+        });
+
+        // Simple scroll reveal for the CTA button on mobile
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            // Additional interactions can be added here
+        });
+    </script>
+</body></html>

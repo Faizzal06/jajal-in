@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tambah Kontribusi - TemuLokal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Inter:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#416400",
+                        "inverse-primary": "#98da27",
+                        "primary": "#446900",
+                        "on-secondary-fixed-variant": "#3d4756",
+                        "surface-container": "#ecf0dd",
+                        "surface-container-highest": "#e0e4d2",
+                        "secondary-container": "#d6e0f3",
+                        "on-tertiary-fixed-variant": "#5e376b",
+                        "tertiary-fixed": "#fad7ff",
+                        "surface-tint": "#446900",
+                        "on-primary-fixed": "#121f00",
+                        "on-background": "#191d12",
+                        "outline": "#727a64",
+                        "surface-variant": "#e0e4d2",
+                        "secondary-fixed": "#d9e3f6",
+                        "background": "#f7fbe8",
+                        "surface-container-low": "#f2f6e3",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#424936",
+                        "secondary-fixed-dim": "#bdc7d9",
+                        "primary-container": "#a3e635",
+                        "error-container": "#ffdad6",
+                        "secondary": "#555f6f",
+                        "surface-container-high": "#e6ead8",
+                        "inverse-surface": "#2e3226",
+                        "outline-variant": "#c2cab0",
+                        "surface-dim": "#d8dcca",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#334f00",
+                        "primary-fixed": "#b2f746",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#f3c1ff",
+                        "on-surface": "#191d12",
+                        "on-tertiary-container": "#734b80",
+                        "on-tertiary-fixed": "#2f093d",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#98da27",
+                        "tertiary-fixed-dim": "#e7b6f3",
+                        "surface-bright": "#f7fbe8",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#121c2a",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#784f85",
+                        "surface": "#f7fbe8",
+                        "inverse-on-surface": "#eff3e0",
+                        "on-secondary-container": "#596373"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "4px",
+                        "xl": "8px",
+                        "full": "9999px",
+                        "card": "22px",
+                        "input": "12px",
+                        "button": "22px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "20px",
+                        "margin-desktop": "64px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "base": "4px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Space Grotesk"],
+                        "headline-xl": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "0em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #f7fbe8;
+            color: #191d12;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f7fbe8;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #a3e635;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- Top AppBar -->
+<header class="w-full top-0 sticky z-50 bg-background border-b border-outline-variant flex items-center justify-between px-margin-mobile h-16">
+<div class="flex items-center gap-sm">
+<button class="p-2 hover:bg-surface-container-high transition-colors active:scale-95 duration-150 rounded-full">
+<span class="material-symbols-outlined text-primary">close</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Tambah Kontribusi</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="A professional high-contrast portrait of a young traveler with a bright, energetic smile, styled with a modern aesthetic. The lighting is soft but distinct, emphasizing high-velocity motion in the background through light trails. The color palette is clean and minimal, featuring whites, slates, and pops of lime green to match the Vivid Explorer theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBvUfqixUwzTVcaF7rX7xgupX_xQX0UIu4cs-SMsp1xrQiw1qknlK8isGuAZOQoUiMdC8-Vd4yDwO6eZMOPuRKyRdkvqUfiAb5cyewfbu0IUdxGWq-7QWKINdqdViJuE0-jxKXnThcBuKGDRZ-dToek3cMnJfxZo3vUJEKUXe_9ErRPtQU6g4HKeI13DcFfIzkPjhIxv7Hst5YrOEeMLpgY195HL08fB66jtovRHK2AEjDO_YPWPzI"/>
+</div>
+</header>
+<!-- Progress Indicator -->
+<div class="w-full h-1.5 bg-surface-container-highest">
+<div class="h-full bg-primary-container" style="width: 40%"></div>
+</div>
+<main class="max-w-3xl mx-auto px-margin-mobile py-xl space-y-xl">
+<!-- Header Text -->
+<section class="space-y-sm">
+<p class="font-label-md text-label-md text-primary tracking-widest uppercase">Langkah 2 dari 5</p>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-inverse-surface">Ceritakan pengalamanmu</h2>
+<p class="text-on-surface-variant max-w-xl">Bantu sesama penjelajah menemukan permata tersembunyi dengan detail yang akurat dan foto yang memukau.</p>
+</section>
+<!-- Bento Form Layout -->
+<form class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Main Content Area -->
+<div class="md:col-span-8 space-y-lg">
+<!-- Location Name -->
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-inverse-surface px-1">Nama Tempat</label>
+<input class="w-full bg-[#F3F4F6] border border-[#1F2937] rounded-input px-md py-md focus:ring-2 focus:ring-primary-container focus:border-[#1F2937] outline-none transition-all placeholder:text-outline" placeholder="Contoh: Kopi Rimba, Ubud" type="text"/>
+</div>
+<!-- Category Chips -->
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-inverse-surface px-1">Kategori</label>
+<div class="flex flex-wrap gap-sm">
+<button class="px-md py-sm bg-[#1F2937] text-white rounded-full font-label-sm text-label-sm transition-all active:scale-95" type="button">Kuliner</button>
+<button class="px-md py-sm bg-[#E5E7EB] text-[#1F2937] rounded-full font-label-sm text-label-sm hover:bg-surface-container-high transition-all active:scale-95" type="button">Wisata Alam</button>
+<button class="px-md py-sm bg-[#E5E7EB] text-[#1F2937] rounded-full font-label-sm text-label-sm hover:bg-surface-container-high transition-all active:scale-95" type="button">Budaya</button>
+<button class="px-md py-sm bg-[#E5E7EB] text-[#1F2937] rounded-full font-label-sm text-label-sm hover:bg-surface-container-high transition-all active:scale-95" type="button">Akomodasi</button>
+<button class="px-md py-sm bg-[#E5E7EB] text-[#1F2937] rounded-full font-label-sm text-label-sm hover:bg-surface-container-high transition-all active:scale-95" type="button">Event</button>
+</div>
+</div>
+<!-- Review Content -->
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-inverse-surface px-1">Cerita Penjelajah</label>
+<textarea class="w-full bg-[#F3F4F6] border border-[#1F2937] rounded-input px-md py-md focus:ring-2 focus:ring-primary-container focus:border-[#1F2937] outline-none transition-all resize-none placeholder:text-outline" placeholder="Apa yang membuat tempat ini spesial?" rows="6"></textarea>
+</div>
+</div>
+<!-- Sidebar / Visual Content -->
+<div class="md:col-span-4 space-y-lg">
+<!-- Media Upload -->
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-inverse-surface px-1">Foto &amp; Video</label>
+<div class="relative group aspect-square rounded-card border-2 border-dashed border-[#1F2937] bg-[#F3F4F6] flex flex-col items-center justify-center cursor-pointer hover:bg-surface-container-low transition-colors overflow-hidden">
+<span class="material-symbols-outlined text-primary text-4xl mb-2">add_a_photo</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant text-center px-lg">Unggah media (Maks 10)</p>
+</div>
+</div>
+<!-- Mini Map Preview -->
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-inverse-surface px-1">Lokasi Presisi</label>
+<div class="w-full h-40 rounded-card overflow-hidden relative border border-[#1F2937]">
+<img class="w-full h-full object-cover grayscale brightness-110" data-alt="A clean, minimalist vector-style map of a tropical landscape with subtle elevation lines and a bright lime green pin drop. The style is modern and digital-native, using a palette of light grays and vibrant lime. The aesthetic is focused on high-precision navigation and professional clarity, perfect for a high-velocity travel app." data-location="Ubud, Bali" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGeoH-BVedBG-gllQlasjiTNmCaoy8pgvmMuYSY-9ESKQD_t7EChqIy-iNXP5MDsRqISuIRB8XZ6QgU5XkQrs6DNmQVX4RlxZKy36FrlUyi_HIkb22VqnO2EwgHW2U3-gIQLQ17yydmk8kYdCx9bZmwbz8ua8Obg5XfCZoKYHqShQ6eVhYwdM0LOtrXCBBWWi3_6CCjEo8lpxECuMQSWJRYWMks3x_lNc_OrQ43M-a-oxvWAIgUR7P"/>
+<div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+<div class="absolute bottom-2 right-2 bg-white rounded-full px-3 py-1 shadow-md flex items-center gap-1 border border-outline-variant">
+<span class="material-symbols-outlined text-sm text-primary">gps_fixed</span>
+<span class="text-[10px] font-bold">UBUD, ID</span>
+</div>
+</div>
+</div>
+</div>
+</form>
+<!-- Dynamic Contribution Reward Hint -->
+<div class="bg-surface-container rounded-card p-lg flex items-center gap-lg border border-primary/10">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container">military_tech</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-inverse-surface">Potensi +50 Kontribusi</p>
+<p class="text-sm text-on-surface-variant">Lengkapi semua field untuk mendapatkan badge "Penjelajah Detil".</p>
+</div>
+</div>
+<!-- Sticky Bottom Actions (Mobile) / Regular Desktop -->
+<div class="flex items-center justify-between pt-xl border-t border-outline-variant">
+<button class="px-xl py-3 border border-[#1F2937] text-[#1F2937] rounded-button font-bold hover:bg-surface-container-high transition-all active:scale-95 duration-150" type="button">
+                Kembali
+            </button>
+<button class="px-xl py-3 bg-[#A3E635] text-[#1F2937] rounded-button font-bold flex items-center gap-sm shadow-[0_4px_20px_rgba(163,230,53,0.3)] hover:shadow-[0_6px_25px_rgba(163,230,53,0.5)] transition-all active:scale-95 duration-150" type="submit">
+                Lanjut
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</main>
+<!-- Footer Space for Mobile Navbar Padding -->
+<div class="h-24 md:hidden"></div>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (this.type !== 'submit') e.preventDefault();
+                // Simple ripple effect or feedback can be added here
+            });
+        });
+
+        // Toggle category chips
+        const chips = document.querySelectorAll('.flex.flex-wrap.gap-sm button');
+        chips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                chips.forEach(c => {
+                    c.classList.remove('bg-[#1F2937]', 'text-white');
+                    c.classList.add('bg-[#E5E7EB]', 'text-[#1F2937]');
+                });
+                this.classList.remove('bg-[#E5E7EB]', 'text-[#1F2937]');
+                this.classList.add('bg-[#1F2937]', 'text-white');
+            });
+        });
+    </script>
+</body></html>

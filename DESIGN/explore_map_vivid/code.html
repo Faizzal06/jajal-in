@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#416400",
+                    "inverse-primary": "#98da27",
+                    "primary": "#446900",
+                    "on-secondary-fixed-variant": "#3d4756",
+                    "surface-container": "#ecf0dd",
+                    "surface-container-highest": "#e0e4d2",
+                    "secondary-container": "#d6e0f3",
+                    "on-tertiary-fixed-variant": "#5e376b",
+                    "tertiary-fixed": "#fad7ff",
+                    "surface-tint": "#446900",
+                    "on-primary-fixed": "#121f00",
+                    "on-background": "#191d12",
+                    "outline": "#727a64",
+                    "surface-variant": "#e0e4d2",
+                    "secondary-fixed": "#d9e3f6",
+                    "background": "#f7fbe8",
+                    "surface-container-low": "#f2f6e3",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#424936",
+                    "secondary-fixed-dim": "#bdc7d9",
+                    "primary-container": "#a3e635",
+                    "error-container": "#ffdad6",
+                    "secondary": "#555f6f",
+                    "surface-container-high": "#e6ead8",
+                    "inverse-surface": "#2e3226",
+                    "outline-variant": "#c2cab0",
+                    "surface-dim": "#d8dcca",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#334f00",
+                    "primary-fixed": "#b2f746",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#f3c1ff",
+                    "on-surface": "#191d12",
+                    "on-tertiary-container": "#734b80",
+                    "on-tertiary-fixed": "#2f093d",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#98da27",
+                    "tertiary-fixed-dim": "#e7b6f3",
+                    "surface-bright": "#f7fbe8",
+                    "on-tertiary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed": "#121c2a",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary": "#784f85",
+                    "surface": "#f7fbe8",
+                    "inverse-on-surface": "#eff3e0",
+                    "on-secondary-container": "#596373"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "22px"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "gutter": "20px",
+                    "margin-desktop": "64px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "base": "4px",
+                    "xl": "48px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Space Grotesk"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Space Grotesk"],
+                    "headline-xl": ["Space Grotesk"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "0em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #F3F4F6; color: #1F2937; -webkit-font-smoothing: antialiased; }
+        .map-container { height: calc(100vh - 64px - 80px); }
+        .custom-pin-shadow { filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1)); }
+        .glass-panel { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(229, 231, 235, 0.5); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="font-body-md text-body-md">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-background dark:bg-background border-b border-outline-variant dark:border-outline flex items-center justify-between px-margin-mobile h-16 w-full z-50">
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:bg-surface-container-high transition-colors p-2 rounded-full active:scale-95 duration-150" data-icon="menu">menu</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">TemuLokal</h1>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden active:scale-95 duration-150 cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A professional close-up studio portrait of a young traveler wearing a sleek tech-wear jacket. The background is a clean, minimalist light gray. The lighting is crisp and modern, highlighting the subject's face and high-quality textures. The overall aesthetic is digital-native and sophisticated, following the Vivid Explorer theme with subtle lime green accents in the clothing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDf5Sr7y5manQD5zw_kMbX4arrAhjirS1SdFhXoQhNwGnClClqp5tnZvLbSDS7GtsXzRiFNzm6fzrkSzNLLTn0rXl1RdEG-xqZ9GnGAsqU9myDmejHAiyYXliIIx-ASIauZw_2h2NSushXrToxOBGcno4qL7bE9zzfC3aOEDf89nfBwNLp7ZszsNx0ARo1v_fG77tnMEp-7a9bQwUhFPdB4ifW_wPIR1I4BsjXRLun2szSDeFmLDt7A"/>
+</div>
+</div>
+</header>
+<main class="relative w-full overflow-hidden">
+<!-- Interactive Map Canvas -->
+<div class="w-full map-container relative bg-[#E5E7EB]">
+<div class="w-full h-full bg-cover bg-center opacity-80" data-alt="A high-angle architectural map view of a modern metropolitan city center with clean, simplified streets and geometric buildings. The map features a soft pastel color palette with light gray roads and white structures. The lighting suggests a bright, sunny morning with soft shadows. The visual style is minimal and high-contrast, designed as an interface background for a travel application." data-location="Jakarta" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuABVorDq26NMpEKvte0mjoMLRTvi_Vtdhk1FsK1zuzMhJkLsJSBP9-bEpfU-LhTGjzccKxxCXj8Co8_NavQ94phajQHqSvXHJywW79n56qyN6tyU01w5jx-i7usO1YcAdNWg2EJzy8hHNFETB-oCIHd-MMDU0sQYvzEVfjRykiJ-KpAZtVsqgz4pZyJFPtOFXD9Zhik0VjqVVR_q-8n5w0xixHqoHzeakEoz5aXZnnOUjYAmK57X5wE')"></div>
+<!-- Map Overlay Controls -->
+<div class="absolute inset-x-0 top-0 p-lg z-10 space-y-md">
+<!-- Search Bar -->
+<div class="max-w-xl mx-auto">
+<div class="glass-panel flex items-center px-md py-3 rounded-full shadow-lg">
+<span class="material-symbols-outlined text-on-surface-variant mr-3" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full font-body-md text-[#1F2937]" placeholder="Search local gems..." type="text"/>
+<span class="material-symbols-outlined text-on-surface-variant ml-3 cursor-pointer" data-icon="tune">tune</span>
+</div>
+</div>
+<!-- Category Chips -->
+<div class="flex gap-sm overflow-x-auto no-scrollbar pb-2 px-margin-mobile -mx-margin-mobile">
+<button class="flex items-center gap-2 px-6 py-2 bg-[#1F2937] text-[#FFFFFF] rounded-full font-label-md whitespace-nowrap active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="explore">explore</span>
+                        All Gems
+                    </button>
+<button class="flex items-center gap-2 px-6 py-2 bg-[#E5E7EB] text-[#1F2937] rounded-full font-label-md whitespace-nowrap hover:bg-surface-container-highest transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[18px]" data-icon="restaurant">restaurant</span>
+                        Local Eats
+                    </button>
+<button class="flex items-center gap-2 px-6 py-2 bg-[#E5E7EB] text-[#1F2937] rounded-full font-label-md whitespace-nowrap hover:bg-surface-container-highest transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[18px]" data-icon="camera">camera</span>
+                        Photo Spots
+                    </button>
+<button class="flex items-center gap-2 px-6 py-2 bg-[#E5E7EB] text-[#1F2937] rounded-full font-label-md whitespace-nowrap hover:bg-surface-container-highest transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[18px]" data-icon="history_edu">history_edu</span>
+                        Culture
+                    </button>
+<button class="flex items-center gap-2 px-6 py-2 bg-[#E5E7EB] text-[#1F2937] rounded-full font-label-md whitespace-nowrap hover:bg-surface-container-highest transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[18px]" data-icon="park">park</span>
+                        Nature
+                    </button>
+</div>
+</div>
+<!-- Custom Pins (Representational) -->
+<!-- Pin 1: Cafe -->
+<div class="absolute top-[40%] left-[30%] group cursor-pointer">
+<div class="relative flex flex-col items-center">
+<div class="bg-primary-container text-on-primary-container p-3 rounded-full custom-pin-shadow border-2 border-white transform transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined" data-icon="coffee" style="font-variation-settings: 'FILL' 1;">coffee</span>
+</div>
+<div class="mt-2 glass-panel px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+<span class="text-label-sm font-bold">Kopi Senja</span>
+</div>
+</div>
+</div>
+<!-- Pin 2: Viewpoint -->
+<div class="absolute top-[60%] left-[65%] group cursor-pointer">
+<div class="relative flex flex-col items-center">
+<div class="bg-primary-container text-on-primary-container p-3 rounded-full custom-pin-shadow border-2 border-white transform transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined" data-icon="landscape" style="font-variation-settings: 'FILL' 1;">landscape</span>
+</div>
+<div class="mt-2 glass-panel px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+<span class="text-label-sm font-bold">City Overlook</span>
+</div>
+</div>
+</div>
+<!-- Pin 3: Event -->
+<div class="absolute top-[25%] left-[55%] group cursor-pointer">
+<div class="relative flex flex-col items-center">
+<div class="bg-primary-container text-on-primary-container p-3 rounded-full custom-pin-shadow border-2 border-white transform transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined" data-icon="festival" style="font-variation-settings: 'FILL' 1;">festival</span>
+</div>
+<div class="mt-2 glass-panel px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+<span class="text-label-sm font-bold">Jazz Night</span>
+</div>
+</div>
+</div>
+<!-- Detail Sheet (Mobile Peek) -->
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md">
+<div class="bg-white rounded-full p-4 flex items-center gap-4 shadow-2xl border border-outline-variant">
+<div class="w-16 h-16 rounded-[18px] overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A delicious close-up of a artisanal avocado toast served on a handmade ceramic plate. The setting is a bright, sunlit modern cafe with minimalist furniture and vibrant greenery. The image is captured with high-speed photography, emphasizing the freshness of the ingredients and a clean, energetic light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaLEH--pFzXSx_y_0xgQA3Nq9tRtp5PUKSwDKo9iK3x9ADwEV4bwP7a-1P9bOlzMGAMv3ZtGUGkjfzbDFzc1yCEuLDJ7NTygWJOFPTHHdxXFZ98-icC4LopUw5JzJWjUT-y4FPNzxHWUYb3PZ6i2sF0V1THw54pzPsVWl6hwFp_gBrUzyDDqfvDguYFA9TSHrKq0EBRFro8Ve7EZ-bHEHQybb3GzHqiTtDQ6h_TGfitEDPaSiQ9fQ7"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-headline-md text-[18px] leading-tight">Sun-Kissed Bistro</h3>
+<p class="text-on-surface-variant text-label-sm">4.8 ★ · 0.2 km away</p>
+</div>
+<button class="bg-[#1F2937] text-white w-10 h-10 rounded-full flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Floating Action Button (FAB) -->
+<button class="fixed right-6 bottom-24 bg-primary-container text-on-primary-container w-14 h-14 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform z-40">
+<span class="material-symbols-outlined" data-icon="add" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full flex justify-around items-center py-sm bg-surface dark:bg-inverse-surface px-margin-mobile shadow-lg z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-on-secondary-fixed-variant transition-all rounded-full p-2" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-full px-6 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="map" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-label-sm text-label-sm">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-on-secondary-fixed-variant transition-all rounded-full p-2" href="#">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span class="font-label-sm text-label-sm">Post</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-on-secondary-fixed-variant transition-all rounded-full p-2" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="font-label-sm text-label-sm">Awards</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-fixed-variant hover:bg-surface-container-highest dark:hover:bg-on-secondary-fixed-variant transition-all rounded-full p-2" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions for map pins
+        document.querySelectorAll('.group').forEach(pin => {
+            pin.addEventListener('click', () => {
+                // Simple ripple effect or selection logic
+                pin.style.transform = 'scale(1.2)';
+                setTimeout(() => pin.style.transform = 'scale(1)', 200);
+            });
+        });
+
+        // Category chip selection
+        const chips = document.querySelectorAll('.font-label-md');
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                chips.forEach(c => {
+                    c.classList.remove('bg-[#1F2937]', 'text-[#FFFFFF]');
+                    c.classList.add('bg-[#E5E7EB]', 'text-[#1F2937]');
+                });
+                chip.classList.add('bg-[#1F2937]', 'text-[#FFFFFF]');
+                chip.classList.remove('bg-[#E5E7EB]', 'text-[#1F2937]');
+            });
+        });
+    </script>
+</body></html>

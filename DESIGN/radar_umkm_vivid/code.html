@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>TemuLokal - Radar UMKM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Space+Grotesk:wght@100..900&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom scrollbar for clean aesthetics */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f7fbe8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c2cab0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #727a64;
+        }
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        .animate-pulse-soft {
+            animation: pulse-soft 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#416400",
+                        "inverse-primary": "#98da27",
+                        "primary": "#446900",
+                        "on-secondary-fixed-variant": "#3d4756",
+                        "surface-container": "#ecf0dd",
+                        "surface-container-highest": "#e0e4d2",
+                        "secondary-container": "#d6e0f3",
+                        "on-tertiary-fixed-variant": "#5e376b",
+                        "tertiary-fixed": "#fad7ff",
+                        "surface-tint": "#446900",
+                        "on-primary-fixed": "#121f00",
+                        "on-background": "#191d12",
+                        "outline": "#727a64",
+                        "surface-variant": "#e0e4d2",
+                        "secondary-fixed": "#d9e3f6",
+                        "background": "#f7fbe8",
+                        "surface-container-low": "#f2f6e3",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#424936",
+                        "secondary-fixed-dim": "#bdc7d9",
+                        "primary-container": "#a3e635",
+                        "error-container": "#ffdad6",
+                        "secondary": "#555f6f",
+                        "surface-container-high": "#e6ead8",
+                        "inverse-surface": "#2e3226",
+                        "outline-variant": "#c2cab0",
+                        "surface-dim": "#d8dcca",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#334f00",
+                        "primary-fixed": "#b2f746",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#f3c1ff",
+                        "on-surface": "#191d12",
+                        "on-tertiary-container": "#734b80",
+                        "on-tertiary-fixed": "#2f093d",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#98da27",
+                        "tertiary-fixed-dim": "#e7b6f3",
+                        "surface-bright": "#f7fbe8",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#121c2a",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#784f85",
+                        "surface": "#f7fbe8",
+                        "inverse-on-surface": "#eff3e0",
+                        "on-secondary-container": "#596373",
+                        "slate-heavy": "#1F2937",
+                        "canvas-light": "#F3F4F6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "22px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "20px",
+                        "margin-desktop": "64px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "base": "4px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Space Grotesk"],
+                        "headline-xl": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "0em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased mb-20 md:mb-0">
+<!-- Top AppBar -->
+<header class="w-full top-0 sticky z-40 bg-background flex items-center justify-between px-margin-mobile h-16 border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-high transition-colors p-2 rounded-full active:scale-95 duration-150">menu</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">TemuLokal</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="hidden md:block font-label-md text-label-md text-on-surface-variant mr-2">Level 12 Explorer</span>
+<div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden active:scale-95 duration-150 cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a young traveler with a friendly expression. The lighting is bright and natural, reflecting a clean and modern digital-native aesthetic. The background is a soft, blurred landscape of a bustling Indonesian marketplace, using a palette of warm earth tones and vibrant lime accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDim5mPF7CnlFOU5l3BR6MrMsLB-etdOrRJvHbdSd-wY0pj746qy9zussQh4MUYjYZ5T_1kYTZpL5d7wI2Z0jIoOqidvN3zCao057FDo2y6QeK0Ndno1Nn5kg8nffu95qLWGUBR1ZJLdhJneL9nbizuVRau3HGGIiMhRk9B1zGQBb7R6mFKgpRulfu3RhGI8zHFsO56RN_nzeugG8fgQwbVwDb0FjfABnNDWjyMl18eDxpDhI78IrFn">
+</div>
+</div>
+</header>
+<main class="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-md">
+<!-- Hero Section -->
+<section class="relative h-[240px] md:h-[320px] rounded-full overflow-hidden mb-xl">
+
+<div class="absolute inset-0 bg-gradient-to-r from-slate-heavy/80 to-transparent flex flex-col justify-center px-lg">
+<span class="inline-block px-3 py-1 bg-primary-container text-on-primary-container font-label-sm text-label-sm rounded-full mb-md w-fit">Vivid Explorer Mode</span>
+<h2 class="font-headline-xl text-headline-xl text-white mb-sm">Radar UMKM</h2>
+<p class="text-white/80 font-body-lg text-body-lg max-w-lg">Temukan permata tersembunyi dan produk lokal terbaik di sekitarmu dengan presisi tinggi.</p>
+</div>
+</section>
+<!-- Filter & Search Chips -->
+<section class="flex flex-wrap gap-sm mb-lg items-center overflow-x-auto pb-2 no-scrollbar">
+<div class="relative min-w-[200px] flex-grow md:flex-grow-0">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-white border border-outline-variant rounded-full focus:border-slate-heavy focus:ring-0 transition-all text-label-md" placeholder="Cari UMKM..." type="text">
+</div>
+<button class="bg-slate-heavy text-white px-lg py-2 rounded-full font-label-md text-label-md active:scale-95 transition-all">Semua</button>
+<button class="bg-surface-container-highest text-slate-heavy px-lg py-2 rounded-full font-label-md text-label-md hover:bg-outline-variant transition-all">Kuliner</button>
+<button class="bg-surface-container-highest text-slate-heavy px-lg py-2 rounded-full font-label-md text-label-md hover:bg-outline-variant transition-all">Kerajinan</button>
+<button class="bg-surface-container-highest text-slate-heavy px-lg py-2 rounded-full font-label-md text-label-md hover:bg-outline-variant transition-all">Fashion</button>
+<button class="bg-surface-container-highest text-slate-heavy px-lg py-2 rounded-full font-label-md text-label-md hover:bg-outline-variant transition-all">Oleh-oleh</button>
+</section>
+<!-- Grid Layout for UMKM Cards -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Featured UMKM (Bento-style large card) -->
+<div class="lg:col-span-2 row-span-2 bg-canvas-light rounded-full p-lg flex flex-col md:flex-row gap-lg border border-outline-variant relative overflow-hidden group">
+<div class="absolute top-6 right-6 z-10">
+<span class="bg-primary-container text-slate-heavy font-bold text-label-sm px-4 py-1.5 rounded-full tracking-wider shadow-sm">REKOMENDASI</span>
+</div>
+<div class="w-full md:w-1/2 h-64 md:h-auto rounded-full overflow-hidden shrink-0">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-velocity, close-up shot of artisanally crafted Indonesian batik fabrics being organized on a clean, white minimalist shelf. The lighting is high-contrast, highlighting the intricate patterns and textures. The color palette includes deep slate, crisp whites, and vibrant lime green accents in the store's branding elements." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoWOBMeLptwahzeaP9Zzdd2P84Y8c5v3QfXsLOJNv-C4b5gJblAwb3CsXRDBqAvLxOmni7nWyP6YFGMeWpjcQhnmu9Ax4R5D0VrZZr-jLTK-kRlJILPc9b2CwsUNcjUPW7FKT8yFX2RQ4DJXLOK0mwo9n1gz7NUOHbq30lk6Mp8rF9awYoK5HlWp3V4cqNthJnEZ4hN_n3Y6fYcQiJUv1HAJelkka3pOWacuxTkjWo4oYr90xUyG3j">
+</div>
+<div class="flex flex-col justify-between py-2">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: &quot;FILL&quot; 1;">stars</span>
+<span class="text-slate-heavy font-bold text-label-md">Pilihan Editor</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-slate-heavy mb-2">Batik Tulis Sekar Jagad</h3>
+<p class="text-slate-heavy/70 mb-lg">Warisan budaya dengan sentuhan modern. Menghadirkan motif klasik yang dikerjakan manual oleh pengrajin lokal berbakat.</p>
+<div class="flex items-center gap-4 mb-lg">
+<div class="flex items-center gap-1 bg-primary-container/20 px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="text-slate-heavy font-bold text-label-md">4.9</span>
+</div>
+<span class="text-on-surface-variant text-label-sm">1.2km dari lokasimu</span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="bg-primary-container text-slate-heavy font-bold px-lg py-3 rounded-full flex-grow hover:opacity-90 active:scale-95 transition-all">Hubungi</button>
+<button class="border border-slate-heavy text-slate-heavy font-bold px-lg py-3 rounded-full hover:bg-slate-heavy hover:text-white active:scale-95 transition-all">Detail</button>
+</div>
+</div>
+</div>
+<!-- Standard Card 1 -->
+<div class="bg-canvas-light rounded-full p-lg border border-outline-variant flex flex-col group">
+<div class="w-full h-48 rounded-full overflow-hidden mb-md relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An energetic food photography shot of a steaming bowl of traditional Gudeg Jogja served in a modern minimalist ceramic bowl. The lighting is bright and clean. The scene is set on a light gray stone surface with lime green napkins and slate-colored utensils, creating a high-contrast and sophisticated feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTf3SghZ55K9mSfpzDQsmSwXvJJ1OON5xUnpM7Ttju39oR1792Vew_CyCgdR3r0EoavghFnkrKkiOCAwLq8z_8eAuY0jcWeXo0eEYASYv3VbDDttJv0Dv_6BcJK7TC-nIeVjtwB1Noevj3lOMMILWl5pKhHCXJwnXsbglpPZoK8k26BRoKO_ljB82DJpmw1fpYju0G9qkwMJRIf8cNN3Fj4q4SfeehCB7O7HsY_VuL0To3Yc4nvXtQ">
+<span class="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-slate-heavy text-label-sm font-bold px-3 py-1 rounded-full">Kuliner</span>
+</div>
+<div class="flex justify-between items-start mb-sm">
+<h4 class="font-headline-md text-[20px] text-slate-heavy">Gudeg Yu Djum Modern</h4>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-bold text-label-md">4.8</span>
+</div>
+</div>
+<p class="text-slate-heavy/70 text-label-md mb-lg line-clamp-2">Gudeg otentik Jogja dengan kemasan ramah lingkungan dan rasa yang tetap terjaga sejak 1950.</p>
+<div class="mt-auto">
+<button class="w-full bg-primary-container text-slate-heavy font-bold py-3 rounded-full hover:opacity-90 active:scale-95 transition-all">Hubungi</button>
+</div>
+</div>
+<!-- Standard Card 2 -->
+<div class="bg-canvas-light rounded-full p-lg border border-outline-variant flex flex-col group">
+<div class="w-full h-48 rounded-full overflow-hidden mb-md relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A stylish lifestyle shot of a minimalist workspace featuring handcrafted wooden stationery and organizers. The products are displayed on a white desk with a lime green desk lamp and slate-colored background. The atmosphere is professional, airy, and high-quality, emphasizing the craftsmanship of the local UMKM products." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxSEB-aRY-rUXx65bauRP3dSo-0wOmHMQT0BXTHD_qoR9KBE9O6-j6d6P2m98a16HxD_nQavUNex0gWjJSWMOc2MTZkOGS5XNfax3TcLzn_5yluyv9pSlcsVWFvKFrqkI0Ds_ZkSWwFjUee1cDdBC9NGqI13HTQqGBPW_luIA1fwNBszfK4r0jxYKfjzKJA9tsh2ty7qctxuQrRD6_5RGmXr51IxxnGrRqxn7-y726EH5US0KwTYJu">
+<span class="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-slate-heavy text-label-sm font-bold px-3 py-1 rounded-full">Kerajinan</span>
+</div>
+<div class="flex justify-between items-start mb-sm">
+<h4 class="font-headline-md text-[20px] text-slate-heavy">Kayu Lokal Studio</h4>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-bold text-label-md">4.7</span>
+</div>
+</div>
+<p class="text-slate-heavy/70 text-label-md mb-lg line-clamp-2">Produk home decor dari kayu jati berkelanjutan dengan desain minimalis scandinavian.</p>
+<div class="mt-auto">
+<button class="w-full bg-primary-container text-slate-heavy font-bold py-3 rounded-full hover:opacity-90 active:scale-95 transition-all">Hubungi</button>
+</div>
+</div>
+<!-- Special Recommendation Card -->
+<div class="lg:col-span-1 bg-primary-container rounded-full p-lg flex flex-col items-center text-center justify-center border border-primary relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
+<span class="material-symbols-outlined text-slate-heavy text-[48px] mb-md animate-pulse-soft">explore</span>
+<h3 class="font-headline-md text-headline-md text-slate-heavy mb-sm">Dekat Denganmu</h3>
+<p class="text-slate-heavy/80 text-label-md mb-lg">Ada 12 UMKM baru yang buka di radius 500 meter dari lokasimu saat ini.</p>
+<button class="bg-slate-heavy text-white font-bold px-lg py-3 rounded-full w-full active:scale-95 transition-all">Lihat di Peta</button>
+</div>
+<!-- Another Recommendation with Badge -->
+<div class="bg-canvas-light rounded-full p-lg border border-outline-variant flex flex-col group relative">
+<div class="absolute top-8 left-8 z-10">
+<span class="bg-primary-container text-slate-heavy font-bold text-[10px] px-3 py-1 rounded-full tracking-wider shadow-md border border-white">REKOMENDASI</span>
+</div>
+<div class="w-full h-48 rounded-full overflow-hidden mb-md">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A vibrant display of Indonesian traditional snacks and treats (Jajanan Pasar) presented in a high-end, contemporary gift box. The box has a minimalist white and lime green design with slate-colored typography. The shot is well-lit and professional, focusing on the fresh textures and colorful variety of the treats." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFpKq2ML1lAHMTpRz9W34hS4d9F58LFNOIv-pWB2YI2lgCqrwhxUPQeVlr9UHOrgcFceKYa6ExhGRzEvdHifBAXXjm8mi2Mm7EHQlV0TqtOIObO_tVtOxt0_uKOaQkRaK-OurgFNGyjEoK10_R0IPSRdzT13mGcm9OrLJ_SQGUVDy4LfZ5GrCSS_QXeHGWytFr0cAEs-5Uz0nRmBnb2f5qG7W2zj8uylyKJYz0j-R_25_i5U4whzgd">
+</div>
+<div class="flex justify-between items-start mb-sm">
+<h4 class="font-headline-md text-[20px] text-slate-heavy">Snack Lokal Premium</h4>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-bold text-label-md">4.9</span>
+</div>
+</div>
+<p class="text-slate-heavy/70 text-label-md mb-lg line-clamp-2">Hampers jajanan tradisional dengan kurasi terbaik untuk buah tangan istimewa.</p>
+<div class="mt-auto">
+<button class="w-full bg-primary-container text-slate-heavy font-bold py-3 rounded-full hover:opacity-90 active:scale-95 transition-all">Hubungi</button>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="mt-xl mb-xl bg-slate-heavy rounded-full p-xl text-center relative overflow-hidden">
+
+<div class="relative z-10">
+<h2 class="font-headline-lg text-headline-lg text-white mb-md">Punya Usaha Lokal?</h2>
+<p class="text-white/70 max-w-xl mx-auto mb-lg">Daftarkan UMKM Anda dan jangkau ribuan traveler yang mencari keunikan lokal di TemuLokal.</p>
+<button class="bg-primary-container text-slate-heavy font-extrabold px-xl py-4 rounded-full text-label-md active:scale-95 transition-all hover:shadow-[0_0_20px_rgba(163,230,53,0.4)]" style="transform: scale(1);">Daftarkan Sekarang</button>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full flex justify-around items-center py-sm bg-surface shadow-[0px_-2px_10px_rgba(0,0,0,0.05)] z-50 px-margin-mobile">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined active-nav-icon">explore</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all p-2 rounded-full active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-sm text-label-sm">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all p-2 rounded-full active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-label-sm text-label-sm">Post</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all p-2 rounded-full active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+<span class="font-label-sm text-label-sm">Awards</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all p-2 rounded-full active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<!-- Floating Action Button for Map -->
+<button class="fixed bottom-24 right-6 md:bottom-8 md:right-8 bg-slate-heavy text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl active:scale-90 transition-transform z-40 md:hidden">
+<span class="material-symbols-outlined">near_me</span>
+</button>
+<script>
+        // Simple scroll behavior for header
+        let lastScroll = 0;
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > lastScroll && currentScroll > 80) {
+                header.classList.add('-translate-y-full');
+            } else {
+                header.classList.remove('-translate-y-full');
+            }
+            header.classList.add('transition-transform', 'duration-300');
+            lastScroll = currentScroll;
+        });
+
+        // Add visual feedback to buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.95)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'scale(1)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+
+
+</body></html>
