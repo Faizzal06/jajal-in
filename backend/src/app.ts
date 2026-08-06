@@ -7,11 +7,24 @@ import merchantRouter from './routes/merchant';
 import profileRouter from './routes/profile';
 import awardsRouter from './routes/awards';
 import adminRouter from './routes/admin';
+import cronRouter from './routes/cron';
 import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(',').map((url) => url.trim())
+  : '*';
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
@@ -26,7 +39,9 @@ app.use('/api/merchant', merchantRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/awards', awardsRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/cron', cronRouter);
 
 app.use(errorHandler);
 
 export default app;
+
