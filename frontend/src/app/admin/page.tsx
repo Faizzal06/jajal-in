@@ -65,8 +65,8 @@ export default function AdminDashboardPage() {
         setError(null);
         const response = await adminApi.getDashboard();
         setData(response);
-      } catch (err: any) {
-        setError(err.message || 'Gagal memuat data dashboard');
+      } catch (err: unknown) {
+        setError((err as Error).message || 'Gagal memuat data dashboard');
       } finally {
         setLoading(false);
       }

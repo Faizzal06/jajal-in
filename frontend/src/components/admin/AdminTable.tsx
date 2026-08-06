@@ -67,12 +67,12 @@ export default function AdminTable<T extends { id?: string }>({
             ) : (
               data.map((item, idx) => (
                 <tr
-                  key={(item as any).id || idx}
+                  key={(item as Record<string, unknown>).id ? String((item as Record<string, unknown>).id) : idx}
                   className="border-b border-light-gray last:border-b-0 hover:bg-cool-gray/30 transition-colors"
                 >
                   {columns.map((col) => (
                     <td key={col.key} className={`px-4 py-3 ${col.className || ''}`}>
-                      {col.render ? col.render(item) : (item as any)[col.key]}
+                      {col.render ? col.render(item) : ((item as Record<string, unknown>)[col.key] as React.ReactNode)}
                     </td>
                   ))}
                 </tr>

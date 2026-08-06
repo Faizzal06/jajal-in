@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { adminApi, AdminUser, PaginatedResponse } from '@/lib/api-client';
+import { adminApi, AdminUser } from '@/lib/api-client';
 import AdminTable from '@/components/admin/AdminTable';
 import StatusBadge from '@/components/admin/StatusBadge';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';

@@ -1,19 +1,25 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { adminApi } from '@/lib/api-client';
+import { adminApi, AdminPlace } from '@/lib/api-client';
 import StatusBadge from '@/components/admin/StatusBadge';
 import Button from '@/components/ui/Button';
 import Icon from '@/components/ui/Icon';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+interface DetailedAdminPlace extends AdminPlace {
+  place_media?: { url: string; media_type: string; caption?: string }[];
+  reviews?: { id: string; rating: number; text: string; users?: { name: string } }[];
+  products?: { id: string; name: string; price: number }[];
+}
+
 export default function AdminPlaceDetailPage() {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
 
-  const [place, setPlace] = useState<any>(null);
+  const [place, setPlace] = useState<DetailedAdminPlace | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -166,7 +172,7 @@ export default function AdminPlaceDetailPage() {
             <div className="bg-white rounded-[22px] border border-light-gray p-6">
               <h2 className="font-headline text-lg font-semibold text-slate-heavy mb-4">Media</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {place.place_media.map((media: any, idx: number) => (
+                {place.place_media.map((media, idx: number) => (
                   <div key={idx} className="aspect-square rounded-xl overflow-hidden bg-cool-gray">
                     {media.media_type === 'image' ? (
                       <img src={media.url} alt={media.caption || ''} className="w-full h-full object-cover" />
@@ -183,7 +189,7 @@ export default function AdminPlaceDetailPage() {
             <div className="bg-white rounded-[22px] border border-light-gray p-6">
               <h2 className="font-headline text-lg font-semibold text-slate-heavy mb-4">Reviews ({place.reviews.length})</h2>
               <div className="space-y-4">
-                {place.reviews.map((review: any) => (
+                {place.reviews.map((review) => (
                   <div key={review.id} className="border-b border-light-gray last:border-0 pb-3 last:pb-0">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -232,7 +238,7 @@ export default function AdminPlaceDetailPage() {
             <div className="bg-white rounded-[22px] border border-light-gray p-6">
               <h2 className="font-headline text-base font-semibold text-slate-heavy mb-3">Produk ({place.products.length})</h2>
               <div className="space-y-2">
-                {place.products.map((product: any) => (
+                {place.products.map((product) => (
                   <div key={product.id} className="flex justify-between text-sm py-2 border-b border-light-gray last:border-0">
                     <span>{product.name}</span>
                     <span className="font-medium">Rp {product.price.toLocaleString('id-ID')}</span>
