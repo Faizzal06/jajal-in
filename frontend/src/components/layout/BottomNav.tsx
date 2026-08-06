@@ -21,7 +21,7 @@ export default function BottomNav() {
   const pathname = usePathname();
   const router = useRouter();
 
-  if (pathname.startsWith('/detail') || pathname.startsWith('/register-merchant')) {
+  if (pathname.startsWith('/detail') || pathname.startsWith('/register-merchant') || pathname.startsWith('/admin') || pathname.startsWith('/login') || pathname.startsWith('/auth')) {
     return null;
   }
 

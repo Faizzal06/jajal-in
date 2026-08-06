@@ -7,6 +7,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
   size?: Size;
   fullWidth?: boolean;
+  loading?: boolean;
   href?: string;
   target?: string;
   rel?: string;
@@ -31,10 +32,12 @@ export default function Button({
   variant = 'primary',
   size = 'md',
   fullWidth = false,
+  loading = false,
   href,
   className = '',
   children,
   target,
+  disabled,
   rel,
   ...props
 }: ButtonProps) {
@@ -56,7 +59,10 @@ export default function Button({
   }
 
   return (
-    <button className={classes} {...props}>
+    <button className={classes} disabled={disabled || loading} {...props}>
+      {loading && (
+        <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin shrink-0" />
+      )}
       {children}
     </button>
   );

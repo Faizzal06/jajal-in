@@ -183,3 +183,143 @@ export const merchantApi = {
   register: (data: RegisterMerchantPayload) =>
     api.post<{ id: string }>('/merchant/register', data),
 };
+
+export interface AdminDashboardResponse {
+  totalUsers: number;
+  places: {
+    pending: number;
+    approved: number;
+    rejected: number;
+  };
+  totalReviews: number;
+  totalMerchants: number;
+  pendingPayments: number;
+  recentActivity: AdminAuditEntry[];
+}
+
+export interface AdminPlace {
+  id: string;
+  type: string;
+  name: string;
+  slug: string;
+  description: string;
+  status: string;
+  is_sponsored: boolean;
+  rating: number;
+  review_count: number;
+  created_at: string;
+  regions?: { name: string; slug: string };
+  categories?: { name: string; icon: string };
+}
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  name: string;
+  avatar_url: string | null;
+  role: string;
+  total_xp: number;
+  banned_at: string | null;
+  ban_reason: string | null;
+  created_at: string;
+  regions?: { name: string; slug: string } | null;
+  levels?: { number: number; name: string } | null;
+  approved_places_count?: number;
+  reviews_count?: number;
+}
+
+export interface AdminMerchant extends AdminPlace {
+  users?: { name: string; email: string };
+}
+
+export interface AdminContribution {
+  id: string;
+  rating: number;
+  text: string;
+  is_tip: boolean;
+  created_at: string;
+  places?: { name: string; slug: string };
+  users?: { name: string; avatar_url: string | null };
+}
+
+export interface AdminAuditEntry {
+  id: string;
+  admin_id: string;
+  action: string;
+  target_type: string;
+  target_id: string;
+  details: Record<string, unknown> | null;
+  created_at: string;
+  users?: { name: string; avatar_url: string | null };
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+}
+
+async function requestPatch<T>(path: string, body: unknown): Promise<T> {
+  return request<T>(path, { method: 'PATCH', body: JSON.stringify(body) });
+}
+
+async function requestDelete<T>(path: string): Promise<T> {
+  return request<T>(path, { method: 'DELETE' });
+}
+
+export const adminApi = {
+  getDashboard: () => api.get<AdminDashboardResponse>('/admin/dashboard'),
+
+  getPlaces: (params?: { status?: string; search?: string; type?: string; page?: number }) => {
+    const sp = new URLSearchParams();
+    if (params?.status) sp.set('status', params.status);
+    if (params?.search) sp.set('search', params.search);
+    if (params?.type) sp.set('type', params.type);
+    if (params?.page) sp.set('page', params.page.toString());
+    const q = sp.toString();
+    return api.get<PaginatedResponse<AdminPlace>>(`/admin/places${q ? `?${q}` : ''}`);
+  },
+  getPlaceById: (id: string) => api.get<AdminPlace>(`/admin/places/${id}`),
+  updatePlaceStatus: (id: string, status: string) => requestPatch<AdminPlace>(`/admin/places/${id}/status`, { status }),
+  updatePlace: (id: string, data: Record<string, unknown>) => api.put<AdminPlace>(`/admin/places/${id}`, data),
+  deletePlace: (id: string) => requestDelete<{ message: string }>(`/admin/places/${id}`),
+
+  getUsers: (params?: { role?: string; search?: string; page?: number }) => {
+    const sp = new URLSearchParams();
+    if (params?.role) sp.set('role', params.role);
+    if (params?.search) sp.set('search', params.search);
+    if (params?.page) sp.set('page', params.page.toString());
+    const q = sp.toString();
+    return api.get<PaginatedResponse<AdminUser>>(`/admin/users${q ? `?${q}` : ''}`);
+  },
+  getUserById: (id: string) => api.get<AdminUser>(`/admin/users/${id}`),
+  updateUserRole: (id: string, role: string) => requestPatch<AdminUser>(`/admin/users/${id}/role`, { role }),
+  banUser: (id: string, reason: string) => api.post<AdminUser>(`/admin/users/${id}/ban`, { reason }),
+  unbanUser: (id: string) => api.post<AdminUser>(`/admin/users/${id}/unban`, {}),
+
+  getMerchants: (params?: { status?: string; search?: string; page?: number }) => {
+    const sp = new URLSearchParams();
+    if (params?.status) sp.set('status', params.status);
+    if (params?.search) sp.set('search', params.search);
+    if (params?.page) sp.set('page', params.page.toString());
+    const q = sp.toString();
+    return api.get<PaginatedResponse<AdminMerchant>>(`/admin/merchants${q ? `?${q}` : ''}`);
+  },
+  approveMerchant: (id: string) => api.post<AdminPlace>(`/admin/merchants/${id}/approve`, {}),
+  rejectMerchant: (id: string) => api.post<AdminPlace>(`/admin/merchants/${id}/reject`, {}),
+
+  getContributions: (params?: { search?: string; page?: number }) => {
+    const sp = new URLSearchParams();
+    if (params?.search) sp.set('search', params.search);
+    if (params?.page) sp.set('page', params.page.toString());
+    const q = sp.toString();
+    return api.get<PaginatedResponse<AdminContribution>>(`/admin/contributions${q ? `?${q}` : ''}`);
+  },
+  deleteContribution: (id: string) => requestDelete<{ message: string }>(`/admin/contributions/${id}`),
+
+  getAuditLog: (params?: { page?: number }) => {
+    const sp = new URLSearchParams();
+    if (params?.page) sp.set('page', params.page.toString());
+    const q = sp.toString();
+    return api.get<PaginatedResponse<AdminAuditEntry>>(`/admin/audit-log${q ? `?${q}` : ''}`);
+  },
+};
