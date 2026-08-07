@@ -7,6 +7,7 @@ import Icon from '@/components/ui/Icon';
 import Card from '@/components/ui/Card';
 import Desk from '@/components/ui/Desk';
 import MapStatic from '@/components/ui/MapStatic';
+import PlaceImage from '@/components/ui/PlaceImage';
 import { gems, reviews } from '@/lib/mock/gems';
 import { merchants } from '@/lib/mock/merchants';
 import { Gem, Merchant, Review } from '@/lib/types';
@@ -509,11 +510,14 @@ function MerchantDetail({ merchant }: { merchant: Merchant }) {
                 {merchant.products.map((product) => (
                   <Card key={product.id} className="flex flex-col">
                     <div className="h-40 bg-surface-dim rounded-2xl mb-3 flex items-center justify-center overflow-hidden">
-                      {product.imageUrl ? (
-                        <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
-                      ) : (
-                        <Icon name="inventory_2" size={48} className="text-outline-variant" />
-                      )}
+                      <PlaceImage
+                        src={product.imageUrl}
+                        alt={product.name}
+                        fallbackIcon="inventory_2"
+                        iconSize={48}
+                        iconClassName="text-outline-variant"
+                        containerClassName="w-full h-full bg-surface-dim flex items-center justify-center"
+                      />
                     </div>
                     <h4 className="font-bold text-base text-on-surface mb-1">{product.name}</h4>
                     <p className="text-xs text-on-surface-variant mb-3 flex-1">{product.description}</p>

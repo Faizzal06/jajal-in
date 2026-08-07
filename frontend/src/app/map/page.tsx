@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import Chip from '@/components/ui/Chip';
 import Icon from '@/components/ui/Icon';
 import Card from '@/components/ui/Card';
+import PlaceImage from '@/components/ui/PlaceImage';
 import TopAppBar from '@/components/layout/TopAppBar';
 import BottomNav from '@/components/layout/BottomNav';
 import { gems as mockGems } from '@/lib/mock/gems';
@@ -54,7 +55,7 @@ export default function MapPage() {
           reviewCount: p.review_count ?? 0,
           status: 'approved' as const,
           isSponsored: p.is_sponsored ?? false,
-          media: [],
+          media: p.place_media?.[0]?.url ? [{ id: '', url: p.place_media[0].url, mediaType: 'image' }] : [],
           tags: [],
         }));
         setMapGems(transformed);
@@ -168,8 +169,13 @@ export default function MapPage() {
               >
                 <Icon name="close" size={16} />
               </button>
-              <div className="w-16 h-16 rounded-xl bg-primary-container/30 flex items-center justify-center shrink-0">
-                <Icon name="place" size={32} className="text-primary" />
+              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0">
+                <PlaceImage
+                  src={selectedGem.media?.[0]?.url}
+                  alt={selectedGem.name}
+                  fallbackIcon="place"
+                  iconSize={32}
+                />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-headline-md text-on-surface font-bold text-base truncate">
