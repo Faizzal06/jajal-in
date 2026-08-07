@@ -53,7 +53,7 @@ export default function ExploreFeedPage() {
 
   if (loading) {
     return (
-      <PageShell title="TemuLokal">
+      <PageShell title="Jajal">
         <div className="flex items-center justify-center h-64">
           <div className="w-8 h-8 border-4 border-primary-container border-t-transparent rounded-full animate-spin" />
         </div>
@@ -63,7 +63,7 @@ export default function ExploreFeedPage() {
 
   if (error) {
     return (
-      <PageShell title="TemuLokal">
+      <PageShell title="Jajal-in">
         <div className="flex flex-col items-center justify-center h-96 gap-4 text-center">
           <Icon name="cloud_off" size={48} className="text-outline-variant" />
           <div>
@@ -80,7 +80,7 @@ export default function ExploreFeedPage() {
 
   if (places.length === 0) {
     return (
-      <PageShell title="TemuLokal">
+      <PageShell title="Jajal">
         <div className="flex flex-col items-center justify-center h-96 gap-4 text-center">
           <Icon name="explore_off" size={48} className="text-outline-variant" />
           <div>
@@ -112,9 +112,12 @@ export default function ExploreFeedPage() {
   const rest = feedItems.slice(1);
 
   return (
-    <PageShell title="TemuLokal">
+    <PageShell title="Jajal.in">
       {/* Hero Section */}
       <section className="relative rounded-full overflow-hidden h-60 md:h-80 mt-lg mb-xl bg-gradient-to-br from-primary-container/20 to-primary/10">
+        <div className="absolute inset-0 flex items-center justify-center opacity-40">
+          <Icon name="image" size={96} className="text-primary" />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         <div className="relative z-10 flex flex-col justify-end h-full p-lg md:p-xl">
           <Chip active className="w-fit mb-3 text-xs">
@@ -158,7 +161,7 @@ export default function ExploreFeedPage() {
           <Card padding={false} className="overflow-hidden">
             <div className="md:flex">
               <div className="md:w-1/2 h-48 md:h-auto bg-gradient-to-br from-primary-container/30 to-primary/5 flex items-center justify-center">
-                <Icon name="store" size={64} className="text-primary-container" />
+                <Icon name="image" size={80} className="text-primary opacity-40" />
               </div>
               <div className="p-lg md:w-1/2 flex flex-col justify-between">
                 <div>
@@ -206,59 +209,73 @@ export default function ExploreFeedPage() {
       )}
 
       {/* Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg mb-xl">
+      <section className="grid grid-cols-1 gap-lg mb-xl">
         {rest.map((m) => (
-          <Card key={m.id} className="flex flex-col">
-            <div className="h-32 bg-gradient-to-br from-surface-dim to-background rounded-xl mb-3 flex items-center justify-center">
-              <Icon name="storefront" size={40} className="text-outline-variant" />
-            </div>
-            <div className="flex items-center gap-2 mb-2">
-              {m.categoryName && (
-                <span className="bg-[#E5E7EB] text-slate-heavy text-xs font-medium px-2.5 py-0.5 rounded-full">
-                  {m.categoryName}
-                </span>
-              )}
-              {m.isSponsored && (
-                <span className="bg-primary-container text-on-primary-container text-xs font-bold px-2.5 py-0.5 rounded-full">
-                  SPONSORED
-                </span>
-              )}
-            </div>
-            <h4 className="font-headline-md text-on-surface font-bold text-lg mb-1">{m.name}</h4>
-            <p className="text-sm text-on-surface-variant mb-3 line-clamp-2 flex-1">
-              {m.description}
-            </p>
-            <div className="flex items-center gap-3 text-sm text-on-surface-variant mb-3">
-              <span className="flex items-center gap-1">
-                <Icon name="star" size={14} filled className="text-primary-container" />
-                {m.rating}
-              </span>
-              {m.distance && (
-                <span className="flex items-center gap-1">
-                  <Icon name="location_on" size={14} />
-                  {m.distance}km
-                </span>
-              )}
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="primary"
-                size="sm"
-                className="flex-1"
-                onClick={() => router.push(`/detail/${m.id}`)}
-              >
-                Detail
-              </Button>
-              {contactHref(m) && (
-                <Button variant="ghost" size="sm" href={contactHref(m)}>
-                  Hubungi
-                </Button>
-              )}
+          <Card key={m.id} padding={false} className="overflow-hidden">
+            <div className="md:flex">
+              {/* Sisi Kiri: Gambar */}
+              <div className="md:w-1/2 h-48 md:h-auto bg-gradient-to-br from-primary-container/30 to-primary/5 flex items-center justify-center">
+                <Icon name="image" size={80} className="text-primary opacity-40" />
+              </div>
+
+              {/* Sisi Kanan: Konten & Tombol */}
+              <div className="p-lg md:w-1/2 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    {m.categoryName && (
+                      <span className="bg-[#E5E7EB] text-slate-heavy text-xs font-medium px-3 py-1 rounded-full">
+                        {m.categoryName}
+                      </span>
+                    )}
+                    {m.isSponsored && (
+                      <span className="bg-primary-container text-on-primary-container text-xs font-bold px-3 py-1 rounded-full">
+                        SPONSORED
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="font-headline-md text-on-surface font-bold mb-1">
+                    {m.name}
+                  </h3>
+
+                  <p className="text-sm text-on-surface-variant mb-3 line-clamp-2">
+                    {m.description}
+                  </p>
+
+                  <div className="flex items-center gap-3 text-sm text-on-surface-variant mb-4">
+                    <span className="flex items-center gap-1">
+                      <Icon name="star" size={16} filled className="text-primary-container" />
+                      {m.rating}
+                    </span>
+                    {m.distance && (
+                      <span className="flex items-center gap-1">
+                        <Icon name="location_on" size={16} />
+                        {m.distance}km
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  {contactHref(m) && (
+                    <Button variant="secondary" size="sm" href={contactHref(m)}>
+                      Hubungi
+                    </Button>
+                  )}
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => router.push(`/detail/${m.id}`)}
+                  >
+                    Detail
+                  </Button>
+                </div>
+              </div>
             </div>
           </Card>
         ))}
 
-        {/* Dekat Denganmu Card */}
+        {/* Dekat Denganmu Card - Tetap dipertahankan style-nya sebagai banner */}
         <Card className="bg-primary-container/20 border-primary-container flex flex-col items-center justify-center text-center p-xl">
           <div className="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-4 animate-pulse">
             <Icon name="explore" size={32} className="text-on-primary-container" />

@@ -6,6 +6,7 @@ import PageShell from '@/components/layout/PageShell';
 import Icon from '@/components/ui/Icon';
 import ProgressBar from '@/components/ui/ProgressBar';
 import Card from '@/components/ui/Card';
+import Desk from '@/components/ui/Desk';
 import Button from '@/components/ui/Button';
 import { badges, milestones, leaderboardEntries } from '@/lib/mock/badges';
 import { users } from '@/lib/mock/users';
@@ -33,7 +34,7 @@ export default function AwardsPage() {
   const progress = Math.round((currentXp / nextXp) * 100);
 
   return (
-    <PageShell title="TemuLokal">
+    <PageShell title="Jajal.in">
       <section className="space-y-xl py-lg">
         {/* Guest Banner for Unauthenticated Users */}
         {!user && (
@@ -140,7 +141,7 @@ export default function AwardsPage() {
             <h3 className="font-headline-md text-on-surface font-bold text-lg">Papan Peringkat</h3>
             <span className="text-xs text-on-surface-variant bg-[#E5E7EB] px-3 py-1 rounded-full">Mingguan</span>
           </div>
-          <Card className="divide-y divide-outline-variant !p-0">
+          <Desk className="divide-y divide-outline-variant !p-0">
             {apiLeaderboard.length > 0
               ? apiLeaderboard.map((entry) => (
                   <div key={entry.id} className={`flex items-center gap-4 p-lg`}>
@@ -177,7 +178,7 @@ export default function AwardsPage() {
                     <span className="font-bold text-sm text-on-surface">{entry.totalXp.toLocaleString()} XP</span>
                   </div>
                 ))}
-          </Card>
+          </Desk>
           <div className="mt-4 text-center">
             <Button variant="ghost" size="sm">Lihat Papan Peringkat Lengkap</Button>
           </div>

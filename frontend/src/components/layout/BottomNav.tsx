@@ -38,7 +38,7 @@ export default function BottomNav() {
             <button
               key={tab.route}
               onClick={() => router.push(tab.route)}
-              className={`flex flex-col items-center justify-center gap-0.5 px-3 py-1 rounded-full transition-all duration-150 min-w-[64px] h-12 ${
+              className={`flex flex-col items-center justify-center gap-0.5 px-3 py-1 rounded-md transition-all duration-150 min-w-[64px] h-12 ${
                 isActive ? 'bg-primary-container' : 'hover:bg-surface-dim/50'
               }`}
             >

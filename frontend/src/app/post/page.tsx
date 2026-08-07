@@ -478,7 +478,7 @@ export default function PostPage() {
             <div>
               <h2 className="font-headline-md text-on-surface font-bold text-2xl mb-2">Kontribusi Terkirim!</h2>
               <p className="text-on-surface-variant">
-                Terima kasih! Tim TemuLokal akan meninjau kontribusimu dalam 1x24 jam.
+                Terima kasih! Tim Jajal.in akan meninjau kontribusimu dalam 1x24 jam.
               </p>
             </div>
             <div className="bg-white rounded-full border border-outline-variant p-lg max-w-sm mx-auto">

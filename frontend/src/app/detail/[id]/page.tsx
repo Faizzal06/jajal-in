@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import PageShell from '@/components/layout/PageShell';
 import Icon from '@/components/ui/Icon';
 import Card from '@/components/ui/Card';
+import Desk from '@/components/ui/Desk';
 import MapStatic from '@/components/ui/MapStatic';
 import { gems, reviews } from '@/lib/mock/gems';
 import { merchants } from '@/lib/mock/merchants';
@@ -45,7 +46,7 @@ export default function DetailPage() {
 
   if (loading) {
     return (
-      <PageShell variant="back" title="TemuLokal" hideNav>
+      <PageShell variant="back" title="Jajal.in" hideNav>
         <div className="flex items-center justify-center h-64">
           <div className="w-8 h-8 border-4 border-primary-container border-t-transparent rounded-full animate-spin" />
         </div>
@@ -125,7 +126,7 @@ export default function DetailPage() {
   const mockMerchant = merchants.find((m) => m.slug === params.id || m.id === params.id);
   if (!mockGem && !mockMerchant) {
     return (
-      <PageShell variant="back" title="TemuLokal" hideNav>
+      <PageShell variant="back" title="Jajal.in" hideNav>
         <div className="flex items-center justify-center h-64">
           <p className="text-on-surface-variant font-medium">Tempat tidak ditemukan</p>
         </div>
@@ -147,7 +148,7 @@ function GemDetail({ gem, gemReviews: propReviews }: { gem: Gem; gemReviews?: Re
   const gemReviews = propReviews ?? reviews.filter((r) => r.gemId === gem.id);
 
   return (
-    <PageShell variant="back" title="TemuLokal" hideNav>
+    <PageShell variant="back" title="Jajal.in" hideNav>
       <div className="max-w-7xl mx-auto space-y-xl pb-32">
         {/* Custom Header Actions */}
         <div className="flex items-center justify-between py-2 border-b border-outline-variant/40">
@@ -444,7 +445,7 @@ function MerchantDetail({ merchant }: { merchant: Merchant }) {
     'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1200&auto=format&fit=crop';
 
   return (
-    <PageShell variant="back" title="TemuLokal" hideNav>
+    <PageShell variant="back" title="Jajal.in" hideNav>
       <div className="max-w-7xl mx-auto space-y-xl pb-32">
         {/* Custom Header Actions */}
         <div className="flex items-center justify-between py-2 border-b border-outline-variant/40">
@@ -495,12 +496,12 @@ function MerchantDetail({ merchant }: { merchant: Merchant }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg">
           <div className="lg:col-span-8 space-y-lg">
-            <Card>
+            <Desk>
               <h3 className="font-headline-md text-xl font-bold text-on-surface mb-2">Tentang UMKM</h3>
               <p className="text-on-surface-variant leading-relaxed text-sm md:text-base">
                 {merchant.description}
               </p>
-            </Card>
+            </Desk>
 
             <div>
               <h3 className="font-headline-md text-xl font-bold text-on-surface mb-3">Katalog Produk</h3>
@@ -526,7 +527,7 @@ function MerchantDetail({ merchant }: { merchant: Merchant }) {
           </div>
 
           <aside className="lg:col-span-4 space-y-lg">
-            <Card className="sticky top-20 space-y-4">
+            <Desk className="sticky top-20 space-y-4">
               <h3 className="font-headline-md text-xl font-bold text-on-surface mb-2">Kontak & Pesanan</h3>
               <div className="space-y-3">
                 {merchant.contactWhatsApp && (
@@ -549,7 +550,7 @@ function MerchantDetail({ merchant }: { merchant: Merchant }) {
                 )}
                 <MapStatic lat={merchant.lat} lng={merchant.lng} label={merchant.name} height="h-40" />
               </div>
-            </Card>
+            </Desk>
           </aside>
         </div>
       </div>
