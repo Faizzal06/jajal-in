@@ -8,7 +8,6 @@ import Button from '@/components/ui/Button';
 import Icon from '@/components/ui/Icon';
 import Card from '@/components/ui/Card';
 import { exploreApi, ExploreFeedResponse } from '@/lib/api-client';
-import image from 'next/image';
 
 interface FeedItem {
   id: string;
@@ -116,11 +115,9 @@ export default function ExploreFeedPage() {
     <PageShell title="Jajal.in">
       {/* Hero Section */}
       <section className="relative rounded-full overflow-hidden h-60 md:h-80 mt-lg mb-xl bg-gradient-to-br from-primary-container/20 to-primary/10">
-        <img
-          src="/assets/hero.jpg"
-          alt="Hero"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <div className="absolute inset-0 flex items-center justify-center opacity-40">
+          <Icon name="image" size={96} className="text-primary" />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         <div className="relative z-10 flex flex-col justify-end h-full p-lg md:p-xl">
           <Chip active className="w-fit mb-3 text-xs">
@@ -164,7 +161,7 @@ export default function ExploreFeedPage() {
           <Card padding={false} className="overflow-hidden">
             <div className="md:flex">
               <div className="md:w-1/2 h-48 md:h-auto bg-gradient-to-br from-primary-container/30 to-primary/5 flex items-center justify-center">
-                <img src="/assets/batik-presindo.png" alt="Featured" className="w-full h-full object-cover" />
+                <Icon name="image" size={80} className="text-primary opacity-40" />
               </div>
               <div className="p-lg md:w-1/2 flex flex-col justify-between">
                 <div>
@@ -218,7 +215,7 @@ export default function ExploreFeedPage() {
             <div className="md:flex">
               {/* Sisi Kiri: Gambar */}
               <div className="md:w-1/2 h-48 md:h-auto bg-gradient-to-br from-primary-container/30 to-primary/5 flex items-center justify-center">
-                <img src="/assets/batik-presindo.png" alt={m.name} className="w-full h-full object-cover" />
+                <Icon name="image" size={80} className="text-primary opacity-40" />
               </div>
 
               {/* Sisi Kanan: Konten & Tombol */}

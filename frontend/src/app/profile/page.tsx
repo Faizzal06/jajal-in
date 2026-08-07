@@ -6,6 +6,7 @@ import PageShell from '@/components/layout/PageShell';
 import Icon from '@/components/ui/Icon';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
+import Desk from '@/components/ui/Desk';
 import ProgressBar from '@/components/ui/ProgressBar';
 import { users } from '@/lib/mock/users';
 import { badges, leaderboardEntries } from '@/lib/mock/badges';
@@ -63,7 +64,7 @@ export default function ProfilePage() {
 
   if (authLoading || profileLoading) {
     return (
-      <PageShell title="TemuLokal">
+      <PageShell title="Jajal.in">
         <div className="flex items-center justify-center h-64">
           <div className="w-8 h-8 border-4 border-primary-container border-t-transparent rounded-full animate-spin" />
         </div>
@@ -73,7 +74,7 @@ export default function ProfilePage() {
 
   return (
     <PageShell
-      title="TemuLokal"
+      title="Jajal.in"
       rightContent={
         <div className="relative">
           <div className="w-10 h-10 rounded-full border-2 border-primary-container bg-surface-dim flex items-center justify-center overflow-hidden">
@@ -92,7 +93,7 @@ export default function ProfilePage() {
       <section className="space-y-xl py-lg">
         {/* Guest Banner */}
         {!user && (
-          <Card className="bg-primary-container/20 border-primary-container flex flex-col sm:flex-row items-center justify-between gap-4">
+          <Desk className="bg-primary-container/20 border-primary-container flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center shrink-0">
                 <Icon name="account_circle" size={24} className="text-on-primary-container" />
@@ -112,11 +113,11 @@ export default function ProfilePage() {
             >
               Masuk / Daftar
             </Button>
-          </Card>
+          </Desk>
         )}
 
         {/* Profile Card */}
-        <Card className="flex flex-col md:flex-row md:items-center gap-lg">
+        <Desk className="flex flex-col md:flex-row md:items-center gap-lg">
           <div className="flex items-center gap-4 md:flex-col md:items-start">
             <div className="w-24 h-24 rounded-full border-4 border-primary-container bg-surface-dim flex items-center justify-center shrink-0 overflow-hidden">
               {avatarUrl ? (
@@ -158,7 +159,7 @@ export default function ProfilePage() {
               )}
             </div>
           </div>
-        </Card>
+        </Desk>
 
         {/* Stats Bento Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -216,7 +217,7 @@ export default function ProfilePage() {
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-headline-md text-on-surface font-bold text-lg">Leaderboard Mingguan</h3>
           </div>
-          <Card className="divide-y divide-outline-variant !p-0">
+          <Desk className="divide-y divide-outline-variant !p-0">
             {leaderboardEntries.slice(0, 3).map((entry) => (
               <div
                 key={entry.id}
@@ -235,7 +236,7 @@ export default function ProfilePage() {
                 </span>
               </div>
             ))}
-          </Card>
+          </Desk>
           <p className="text-xs text-on-surface-variant mt-2 text-center">
             Top 5% this week
           </p>

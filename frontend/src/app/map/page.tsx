@@ -122,7 +122,7 @@ export default function MapPage() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <TopAppBar title="TemuLokal" />
+      <TopAppBar title="Jajal.in" />
       <main className="flex-1 relative">
         {/* Search & Filters */}
         <div className="absolute top-4 left-4 right-4 z-[1000] space-y-3">
@@ -161,8 +161,8 @@ export default function MapPage() {
         {selectedGem && (
           <div className="absolute bottom-20 left-4 right-4 z-[1000] animate-slide-up">
             <Card className="flex items-center gap-4 shadow-lg relative">
-              <button 
-                onClick={() => setSelectedGem(null)} 
+              <button
+                onClick={() => setSelectedGem(null)}
                 className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-surface-dim border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors"
                 title="Tutup"
               >
@@ -183,7 +183,7 @@ export default function MapPage() {
                   <span>0.2 km</span>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => router.push(`/detail/${selectedGem.id}`)}
                 className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center shrink-0 hover:scale-105 transition-transform"
               >
@@ -203,7 +203,9 @@ export default function MapPage() {
         </button>
 
         {/* FAB Add Gem */}
-        <button className={`fixed ${selectedGem ? 'bottom-48' : 'bottom-20'} right-4 z-[1000] w-12 h-12 rounded-full bg-primary-container shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all`}>
+        <button 
+        title="Tambah"
+        className={`fixed ${selectedGem ? 'bottom-48' : 'bottom-20'} right-4 z-[1000] w-12 h-12 rounded-full bg-primary-container shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all`}>
           <Icon name="add" size={26} className="text-on-primary-container" />
         </button>
       </main>
@@ -220,7 +222,7 @@ export default function MapPage() {
               Aktifkan Lokasi Anda
             </h3>
             <p className="text-sm text-on-surface-variant mb-6">
-              TemuLokal membutuhkan akses lokasi GPS untuk menemukan hidden gems dan UMKM terdekat di sekitar Anda.
+              Jajal.in membutuhkan akses lokasi GPS untuk menemukan hidden gems dan UMKM terdekat di sekitar Anda.
             </p>
             <div className="w-full space-y-3">
               <button

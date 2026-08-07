@@ -45,7 +45,7 @@ export default function TopAppBar({
               size={24}
             />
           </button>
-          <h1 className="font-headline-lg text-primary font-bold text-xl">{title}</h1>
+          <h1 className="font-headline-lg text-primary font-extrabold text-xl">{title}</h1>
         </div>
         {rightContent || (
           user ? (
