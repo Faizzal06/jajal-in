@@ -59,20 +59,34 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           </button>
         </div>
 
-        {/* Menu List */}
-        <nav className="flex flex-col py-2">
-          {items.map((item) => (
+          {/* Menu List */}
+          <nav className="flex flex-col py-2 space-y-1">
+            {items.map((item) => (
+              <button
+                key={item.label}
+                type="button"
+                className="flex items-center gap-3 px-4 py-3 text-on-surface hover:bg-surface-dim rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                onClick={item.onClick}
+              >
+                <Icon name={item.icon} size={20} />
+                <span className="font-body-md">{item.label}</span>
+              </button>
+            ))}
+            {/* Divider before Admin */}
+            <hr className="my-2 border-t border-outline-variant" />
+            {/* Admin Item */}
             <button
-              key={item.label}
               type="button"
-              className="flex items-center gap-3 px-4 py-3 text-on-surface hover:bg-surface-dim transition-colors"
-              onClick={item.onClick}
+              onClick={() => {
+                // Assuming navigation via router, placeholder implementation
+                window.location.href = '/admin';
+              }}
+              className="flex items-center gap-3 px-4 py-3 mt-1 text-on-primary bg-primary-container hover:bg-primary-container/90 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
-              <Icon name={item.icon} size={20} />
-              <span className="font-body-md">{item.label}</span>
+              <Icon name="shield" size={20} />
+              <span className="font-body-md">Admin</span>
             </button>
-          ))}
-        </nav>
+          </nav>
       </aside>
     </>
   );

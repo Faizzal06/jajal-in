@@ -1,3 +1,4 @@
+'use client';
 import TopAppBar from './TopAppBar';
 import BottomNav from './BottomNav';
 

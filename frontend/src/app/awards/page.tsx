@@ -12,12 +12,14 @@ import { badges, milestones, leaderboardEntries } from '@/lib/mock/badges';
 import { users } from '@/lib/mock/users';
 import { awardsApi, LeaderboardResponse } from '@/lib/api-client';
 import { useAuth } from '@/lib/context/AuthContext';
+import Loading from '@/app/loading';
 
 const currentUser = users[0];
 
 export default function AwardsPage() {
   const router = useRouter();
   const { user } = useAuth();
+  const [pageReady, setPageReady] = useState(false);
   const [apiLeaderboard, setApiLeaderboard] = useState<LeaderboardResponse[]>([]);
   const [, setLbLoading] = useState(true);
 
@@ -27,6 +29,21 @@ export default function AwardsPage() {
       .catch(() => {})
       .finally(() => setLbLoading(false));
   }, []);
+
+  useEffect(() => {
+    const t = setTimeout(() => setPageReady(true), 1000);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (!pageReady) {
+    return (
+      <PageShell title="Jajal.in">
+        <div className="py-lg">
+          <Loading />
+        </div>
+      </PageShell>
+    );
+  }
 
   const nextLevel = { name: 'Elite Explorer', xpRequired: 4000 };
   const currentXp = currentUser.totalXp;

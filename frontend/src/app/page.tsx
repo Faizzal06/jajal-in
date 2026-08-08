@@ -1,14 +1,11 @@
-'use client';
-
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import PageShell from '@/components/layout/PageShell';
+import Card from '@/components/ui/Card';
 import Chip from '@/components/ui/Chip';
 import Button from '@/components/ui/Button';
 import Icon from '@/components/ui/Icon';
-import Card from '@/components/ui/Card';
 import PlaceImage from '@/components/ui/PlaceImage';
+import PageShell from '@/components/layout/PageShell';
 import { exploreApi, ExploreFeedResponse } from '@/lib/api-client';
+import Link from 'next/link';
 
 interface FeedItem {
   id: string;
@@ -33,34 +30,17 @@ function contactHref(item: FeedItem): string | undefined {
   return undefined;
 }
 
-export default function ExploreFeedPage() {
-  const router = useRouter();
-  const [places, setPlaces] = useState<ExploreFeedResponse[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-  const loadFeed = useCallback(() => {
-    setLoading(true);
-    setError(null);
-    exploreApi
-      .getFeed()
-      .then((data) => setPlaces(data))
-      .catch(() => setError('Gagal memuat data. Periksa koneksi internet lalu coba lagi.'))
-      .finally(() => setLoading(false));
-  }, []);
+export default async function ExploreFeedPage() {
+  let places: ExploreFeedResponse[] = [];
+  let error: string | null = null;
 
-  useEffect(() => {
-    loadFeed();
-  }, [loadFeed]);
-
-  if (loading) {
-    return (
-      <PageShell title="Jajal">
-        <div className="flex items-center justify-center h-64">
-          <div className="w-8 h-8 border-4 border-primary-container border-t-transparent rounded-full animate-spin" />
-        </div>
-      </PageShell>
-    );
+  try {
+    places = await exploreApi.getFeed();
+    await delay(1000);
+  } catch {
+    error = 'Gagal memuat data. Periksa koneksi internet lalu coba lagi.';
   }
 
   if (error) {
@@ -72,7 +52,7 @@ export default function ExploreFeedPage() {
             <h3 className="font-headline-md font-bold text-on-surface mb-1">Gagal Memuat Data</h3>
             <p className="text-sm text-on-surface-variant max-w-sm">{error}</p>
           </div>
-          <Button variant="secondary" size="md" onClick={loadFeed}>
+          <Button variant="secondary" size="md" onClick={() => location.reload()}>
             Coba Lagi
           </Button>
         </div>
@@ -86,9 +66,7 @@ export default function ExploreFeedPage() {
         <div className="flex flex-col items-center justify-center h-96 gap-4 text-center">
           <Icon name="explore_off" size={48} className="text-outline-variant" />
           <div>
-            <h3 className="font-headline-md font-bold text-on-surface mb-1">
-              Belum Ada Tempat Ditemukan
-            </h3>
+            <h3 className="font-headline-md font-bold text-on-surface mb-1">Belum Ada Tempat Ditemukan</h3>
             <p className="text-sm text-on-surface-variant max-w-sm">
               Belum ada UMKM atau tempat tersembunyi yang terdaftar. Coba lagi nanti.
             </p>
@@ -123,26 +101,18 @@ export default function ExploreFeedPage() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         <div className="relative z-10 flex flex-col justify-end h-full p-lg md:p-xl">
-          <Chip active className="w-fit mb-3 text-xs">
-            Vivid Explorer Mode
-          </Chip>
-          <h2 className="font-headline-lg text-white text-3xl md:text-4xl font-bold mb-2">
-            Radar UMKM
-          </h2>
+          <Chip active className="w-fit mb-3 text-xs">Vivid Explorer Mode</Chip>
+          <h2 className="font-headline-lg text-white text-3xl md:text-4xl font-bold mb-2">Radar UMKM</h2>
           <p className="text-white/80 text-sm md:text-base max-w-lg">
             Temukan permata tersembunyi dan produk lokal terbaik di sekitarmu dengan presisi tinggi.
           </p>
         </div>
       </section>
 
-      {/* Filter Row */}
+      {/* Search & Category */}
       <div className="flex flex-col sm:flex-row gap-3 mb-xl">
         <div className="relative flex-1">
-          <Icon
-            name="search"
-            size={20}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant"
-          />
+          <Icon name="search" size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" />
           <input
             type="text"
             placeholder="Cari UMKM..."
@@ -169,14 +139,10 @@ export default function ExploreFeedPage() {
               <div className="p-lg md:w-1/2 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="bg-primary-container text-on-primary-container text-xs font-bold px-3 py-1 rounded-full">
-                      REKOMENDASI
-                    </span>
+                    <span className="bg-primary-container text-on-primary-container text-xs font-bold px-3 py-1 rounded-full">REKOMENDASI</span>
                     <span className="text-xs text-on-surface-variant">Pilihan Editor</span>
                   </div>
-                  <h3 className="font-headline-md text-on-surface font-bold mb-1">
-                    {featured.name}
-                  </h3>
+                  <h3 className="font-headline-md text-on-surface font-bold mb-1">{featured.name}</h3>
                   <p className="text-sm text-on-surface-variant mb-3">{featured.description}</p>
                   <div className="flex items-center gap-3 text-sm text-on-surface-variant mb-4">
                     <span className="flex items-center gap-1">
@@ -193,17 +159,9 @@ export default function ExploreFeedPage() {
                 </div>
                 <div className="flex gap-3">
                   {contactHref(featured) && (
-                    <Button variant="secondary" size="sm" href={contactHref(featured)}>
-                      Hubungi
-                    </Button>
+                    <Button variant="secondary" size="sm" href={contactHref(featured)}>Hubungi</Button>
                   )}
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => router.push(`/detail/${featured.id}`)}
-                  >
-                    Detail
-                  </Button>
+                  <Button variant="primary" size="sm" href={`/detail/${featured.id}`}>Detail</Button>
                 </div>
               </div>
             </div>
@@ -211,40 +169,26 @@ export default function ExploreFeedPage() {
         </section>
       )}
 
-      {/* Grid */}
+      {/* Grid of Cards */}
       <section className="grid grid-cols-1 gap-lg mb-xl">
         {rest.map((m) => (
           <Card key={m.id} padding={false} className="overflow-hidden">
             <div className="md:flex">
-              {/* Sisi Kiri: Gambar */}
               <div className="md:w-1/2 h-48 md:h-auto overflow-hidden min-h-[12rem]">
                 <PlaceImage src={m.imageUrl} alt={m.name} />
               </div>
-
-              {/* Sisi Kanan: Konten & Tombol */}
               <div className="p-lg md:w-1/2 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     {m.categoryName && (
-                      <span className="bg-[#E5E7EB] text-slate-heavy text-xs font-medium px-3 py-1 rounded-full">
-                        {m.categoryName}
-                      </span>
+                      <span className="bg-[#E5E7EB] text-slate-heavy text-xs font-medium px-3 py-1 rounded-full">{m.categoryName}</span>
                     )}
                     {m.isSponsored && (
-                      <span className="bg-primary-container text-on-primary-container text-xs font-bold px-3 py-1 rounded-full">
-                        SPONSORED
-                      </span>
+                      <span className="bg-primary-container text-on-primary-container text-xs font-bold px-3 py-1 rounded-full">SPONSORED</span>
                     )}
                   </div>
-
-                  <h3 className="font-headline-md text-on-surface font-bold mb-1">
-                    {m.name}
-                  </h3>
-
-                  <p className="text-sm text-on-surface-variant mb-3 line-clamp-2">
-                    {m.description}
-                  </p>
-
+                  <h3 className="font-headline-md text-on-surface font-bold mb-1">{m.name}</h3>
+                  <p className="text-sm text-on-surface-variant mb-3 line-clamp-2">{m.description}</p>
                   <div className="flex items-center gap-3 text-sm text-on-surface-variant mb-4">
                     <span className="flex items-center gap-1">
                       <Icon name="star" size={16} filled className="text-primary-container" />
@@ -258,27 +202,17 @@ export default function ExploreFeedPage() {
                     )}
                   </div>
                 </div>
-
                 <div className="flex gap-3">
                   {contactHref(m) && (
-                    <Button variant="secondary" size="sm" href={contactHref(m)}>
-                      Hubungi
-                    </Button>
+                    <Button variant="secondary" size="sm" href={contactHref(m)}>Hubungi</Button>
                   )}
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => router.push(`/detail/${m.id}`)}
-                  >
-                    Detail
-                  </Button>
+                  <Button variant="primary" size="sm" href={`/detail/${m.id}`}>Detail</Button>
                 </div>
               </div>
             </div>
           </Card>
         ))}
-
-        {/* Dekat Denganmu Card - Tetap dipertahankan style-nya sebagai banner */}
+        {/* "Dekat Denganmu" banner card */}
         <Card className="bg-primary-container/20 border-primary-container flex flex-col items-center justify-center text-center p-xl">
           <div className="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-4 animate-pulse">
             <Icon name="explore" size={32} className="text-on-primary-container" />
@@ -287,17 +221,15 @@ export default function ExploreFeedPage() {
           <p className="text-sm text-on-surface-variant mb-4">
             Ada 12 UMKM baru yang buka di radius 500 meter dari lokasimu saat ini.
           </p>
-          <Button variant="secondary" size="md">
-            Lihat di Peta
-          </Button>
+          <Button variant="secondary" size="md">Lihat di Peta</Button>
         </Card>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="bg-slate-heavy rounded-full p-xl md:p-xl text-center mb-xl">
         <h3 className="font-headline-md text-white font-bold mb-2">Punya Usaha Lokal?</h3>
         <p className="text-white/70 text-sm mb-4 max-w-md mx-auto">
-          Daftarkan UMKM Anda dan jangkau ribuan traveler yang mencari keunikan lokal di TemuLokal.
+          Daftarkan UMKM Anda dan jangkau ribuan traveler yang mencari keunikan lokal di Jajal.in.
         </p>
         <Button
           variant="primary"
@@ -310,9 +242,9 @@ export default function ExploreFeedPage() {
 
       {/* Mobile FAB */}
       <div className="fixed bottom-20 right-6 z-30 md:hidden">
-        <button className="w-14 h-14 rounded-full bg-primary-container shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
+        <Link href="/map" className="w-14 h-14 rounded-full bg-primary-container shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
           <Icon name="near_me" size={28} className="text-on-primary-container" />
-        </button>
+        </Link>
       </div>
     </PageShell>
   );

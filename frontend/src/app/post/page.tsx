@@ -9,6 +9,7 @@ import Chip from '@/components/ui/Chip';
 import Input from '@/components/ui/Input';
 import StepIndicator from '@/components/ui/StepIndicator';
 import MapStatic from '@/components/ui/MapStatic';
+import Loading from '@/app/loading';
 import { categories } from '@/lib/mock/regions';
 import { contributionsApi, getAuthToken } from '@/lib/api-client';
 import { useAuth } from '@/lib/context/AuthContext';
@@ -65,6 +66,7 @@ const compressImage = (file: File, maxWidth = 1200, maxHeight = 1200, quality = 
 export default function PostPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
+  const [pageReady, setPageReady] = useState(false);
   const [step, setStep] = useState(0);
   const [agreed, setAgreed] = useState(false);
   const [name, setName] = useState('');
@@ -92,10 +94,15 @@ export default function PostPage() {
     }
   }, [user, authLoading, router]);
 
-  if (authLoading || (!user && !getAuthToken())) {
+  useEffect(() => {
+    const t = setTimeout(() => setPageReady(true), 1000);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (authLoading || !pageReady || (!user && !getAuthToken())) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-primary-container border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-background flex items-start justify-center pt-16 px-4">
+        <Loading />
       </div>
     );
   }

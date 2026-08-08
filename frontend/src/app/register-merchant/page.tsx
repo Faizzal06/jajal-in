@@ -98,7 +98,7 @@ export default function RegisterMerchantPage() {
                 'Usaha yang didaftarkan adalah milik sendiri atau memiliki izin pengelolaan',
                 'Informasi yang diberikan adalah benar dan akurat',
                 'Produk yang ditampilkan sesuai dengan ketersediaan',
-                'Bersedia mengikuti kode etik UMKM TemuLokal',
+                'Bersedia mengikuti kode etik UMKM Jajal.in',
               ].map((rule, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <Icon name="check_circle" size={20} className="text-primary-container mt-0.5 shrink-0" />
@@ -327,7 +327,7 @@ export default function RegisterMerchantPage() {
 
             {/* Bank Accounts */}
             <div>
-              <h3 className="font-bold text-on-surface mb-3">Transfer ke Rekening TemuLokal</h3>
+              <h3 className="font-bold text-on-surface mb-3">Transfer ke Rekening Jajal.in</h3>
               <div className="space-y-3">
                 {bankAccounts.map((bank) => (
                   <Card key={bank.id} className="flex items-center gap-4">
