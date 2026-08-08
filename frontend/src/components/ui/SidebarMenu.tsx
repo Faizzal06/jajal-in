@@ -68,7 +68,7 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
               className="flex items-center gap-3 px-4 py-3 text-on-surface hover:bg-surface-dim transition-colors"
               onClick={item.onClick}
             >
-              <Icon name={item.icon as any} size={20} />
+              <Icon name={item.icon} size={20} />
               <span className="font-body-md">{item.label}</span>
             </button>
           ))}
