@@ -25,7 +25,7 @@ describe('exploreService', () => {
       const result = await getExploreFeed();
 
       expect(supabase.from).toHaveBeenCalledWith('places');
-      expect(mockSelect).toHaveBeenCalledWith('*, regions(name), categories(name, icon)');
+      expect(mockSelect).toHaveBeenCalledWith('*, regions(name), categories(name, icon), place_media(url, media_type, caption)');
       expect(mockEq).toHaveBeenCalledWith('status', 'approved');
       expect(mockOrder).toHaveBeenCalledWith('is_sponsored', { ascending: false });
       expect(mockLimit).toHaveBeenCalledWith(20);

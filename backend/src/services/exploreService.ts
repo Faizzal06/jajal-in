@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 export const getExploreFeed = async () => {
   const { data, error } = await supabase
     .from('places')
-    .select('*, regions(name), categories(name, icon)')
+    .select('*, regions(name), categories(name, icon), place_media(url, media_type, caption)')
     .eq('status', 'approved')
     .order('is_sponsored', { ascending: false })
     .limit(20);
@@ -26,7 +26,7 @@ export const getExploreMap = async (lat: number, lng: number, radiusInMeters: nu
     console.warn('RPC get_places_within_radius missing in database, using fallback query');
     const query = supabase
       .from('places')
-      .select('*, regions(name), categories(name, icon)')
+      .select('*, regions(name), categories(name, icon), place_media(url, media_type, caption)')
       .eq('status', 'approved');
     const { data: fallbackData, error: fallbackError } = typeof (query as any).limit === 'function' ? await (query as any).limit(50) : await query;
 
@@ -46,6 +46,7 @@ export const getExploreMap = async (lat: number, lng: number, radiusInMeters: nu
       rating: p.rating ?? 0,
       review_count: p.review_count ?? 0,
       is_sponsored: p.is_sponsored ?? false,
+      place_media: p.place_media ?? [],
     }));
   }
 

@@ -7,6 +7,7 @@ import Chip from '@/components/ui/Chip';
 import Button from '@/components/ui/Button';
 import Icon from '@/components/ui/Icon';
 import Card from '@/components/ui/Card';
+import PlaceImage from '@/components/ui/PlaceImage';
 import { exploreApi, ExploreFeedResponse } from '@/lib/api-client';
 
 interface FeedItem {
@@ -19,6 +20,7 @@ interface FeedItem {
   distance: number | undefined;
   contactWhatsApp?: string;
   contactPhone?: string;
+  imageUrl?: string;
 }
 
 function contactHref(item: FeedItem): string | undefined {
@@ -106,6 +108,7 @@ export default function ExploreFeedPage() {
     distance: undefined as number | undefined,
     contactWhatsApp: p.contact_whatsapp,
     contactPhone: p.contact_phone,
+    imageUrl: p.place_media?.[0]?.url,
   }));
 
   const featured = feedItems[0];
@@ -160,8 +163,8 @@ export default function ExploreFeedPage() {
         <section className="mb-xl">
           <Card padding={false} className="overflow-hidden">
             <div className="md:flex">
-              <div className="md:w-1/2 h-48 md:h-auto bg-gradient-to-br from-primary-container/30 to-primary/5 flex items-center justify-center">
-                <Icon name="image" size={80} className="text-primary opacity-40" />
+              <div className="md:w-1/2 h-48 md:h-auto overflow-hidden min-h-[12rem]">
+                <PlaceImage src={featured.imageUrl} alt={featured.name} />
               </div>
               <div className="p-lg md:w-1/2 flex flex-col justify-between">
                 <div>
@@ -214,8 +217,8 @@ export default function ExploreFeedPage() {
           <Card key={m.id} padding={false} className="overflow-hidden">
             <div className="md:flex">
               {/* Sisi Kiri: Gambar */}
-              <div className="md:w-1/2 h-48 md:h-auto bg-gradient-to-br from-primary-container/30 to-primary/5 flex items-center justify-center">
-                <Icon name="image" size={80} className="text-primary opacity-40" />
+              <div className="md:w-1/2 h-48 md:h-auto overflow-hidden min-h-[12rem]">
+                <PlaceImage src={m.imageUrl} alt={m.name} />
               </div>
 
               {/* Sisi Kanan: Konten & Tombol */}

@@ -56,6 +56,7 @@ export interface ExploreFeedResponse {
   created_at: string;
   regions?: { name: string; slug?: string };
   categories?: { name: string; icon: string; applicable_to?: string };
+  place_media?: { url: string; media_type?: string; caption?: string }[];
 }
 
 export interface ExploreMapResponse {
@@ -71,6 +72,7 @@ export interface ExploreMapResponse {
   category_name?: string;
   category_icon?: string;
   region_name?: string;
+  place_media?: { url: string; media_type?: string; caption?: string }[];
 }
 
 export interface PlaceDetailResponse {
