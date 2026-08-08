@@ -15,7 +15,7 @@ interface TopAppBarProps {
 
 export default function TopAppBar({
   variant = 'default',
-  title = 'TemuLokal',
+  title = 'Jajal.in',
   onMenuClick,
   rightContent,
 }: TopAppBarProps) {

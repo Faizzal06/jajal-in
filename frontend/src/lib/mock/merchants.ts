@@ -2,8 +2,8 @@ import { Merchant, BankAccount, AdPackage } from '../types';
 import { regions } from './regions';
 
 export const bankAccounts: BankAccount[] = [
-  { id: 'ba1', bankName: 'Bank Mandiri', accountNumber: '123-00-6789012-3', accountHolder: 'PT TemuLokal Indonesia' },
-  { id: 'ba2', bankName: 'Bank BCA', accountNumber: '9876543210', accountHolder: 'PT TemuLokal Indonesia' },
+  { id: 'ba1', bankName: 'Bank Mandiri', accountNumber: '123-00-6789012-3', accountHolder: 'PT Jajal.in Indonesia' },
+  { id: 'ba2', bankName: 'Bank BCA', accountNumber: '9876543210', accountHolder: 'PT Jajal.in Indonesia' },
 ];
 
 export const adPackages: AdPackage[] = [

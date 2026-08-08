@@ -12,6 +12,7 @@ import { gems, reviews } from '@/lib/mock/gems';
 import { merchants } from '@/lib/mock/merchants';
 import { Gem, Merchant, Review } from '@/lib/types';
 import { placesApi, PlaceDetailResponse } from '@/lib/api-client';
+import Loading from '@/app/loading';
 
 function RatingStars({ rating }: { rating: number }) {
   const full = Math.floor(rating);
@@ -48,8 +49,8 @@ export default function DetailPage() {
   if (loading) {
     return (
       <PageShell variant="back" title="Jajal.in" hideNav>
-        <div className="flex items-center justify-center h-64">
-          <div className="w-8 h-8 border-4 border-primary-container border-t-transparent rounded-full animate-spin" />
+        <div className="py-lg">
+          <Loading />
         </div>
       </PageShell>
     );

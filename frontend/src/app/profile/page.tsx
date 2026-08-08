@@ -12,6 +12,7 @@ import { users } from '@/lib/mock/users';
 import { badges, leaderboardEntries } from '@/lib/mock/badges';
 import { profileApi, ProfileResponse, getAuthToken } from '@/lib/api-client';
 import { useAuth } from '@/lib/context/AuthContext';
+import Loading from '@/app/loading';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -19,6 +20,8 @@ export default function ProfilePage() {
   const [apiProfile, setApiProfile] = useState<ProfileResponse | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
 
+  // Introduce artificial delay (1.5‑2 sec) after data fetch
+  const artificialDelay = (ms: number) => new Promise((res) => setTimeout(res, ms));
   useEffect(() => {
     if (!authLoading && !user && !getAuthToken()) {
       router.replace('/login?redirect=/profile');
@@ -32,7 +35,11 @@ export default function ProfilePage() {
         .get()
         .then((data) => setApiProfile(data))
         .catch(() => {})
-        .finally(() => setProfileLoading(false));
+        .finally(async () => {
+          // Wait 1.5‑2 seconds before hiding the skeleton
+          await artificialDelay(1000);
+          setProfileLoading(false);
+        });
     } else {
       setProfileLoading(false);
     }
@@ -65,9 +72,7 @@ export default function ProfilePage() {
   if (authLoading || profileLoading) {
     return (
       <PageShell title="Jajal.in">
-        <div className="flex items-center justify-center h-64">
-          <div className="w-8 h-8 border-4 border-primary-container border-t-transparent rounded-full animate-spin" />
-        </div>
+        <Loading />
       </PageShell>
     );
   }

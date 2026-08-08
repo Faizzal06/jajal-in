@@ -18,7 +18,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: 'TemuLokal - Temukan Hidden Gem Indonesia',
+  title: 'Jajal.in - Temukan Hidden Gem Indonesia',
   description: 'Platform discovery hidden gems, UMKM, dan pengalaman budaya otentik di seluruh Indonesia.',
   manifest: '/manifest.json',
 };

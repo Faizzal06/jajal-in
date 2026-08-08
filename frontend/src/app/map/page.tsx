@@ -9,6 +9,7 @@ import Card from '@/components/ui/Card';
 import PlaceImage from '@/components/ui/PlaceImage';
 import TopAppBar from '@/components/layout/TopAppBar';
 import BottomNav from '@/components/layout/BottomNav';
+import Loading from '@/app/loading';
 import { gems as mockGems } from '@/lib/mock/gems';
 import { exploreApi } from '@/lib/api-client';
 import { Gem } from '@/lib/types';
@@ -23,6 +24,7 @@ const DEFAULT_RADIUS = 10000;
 
 export default function MapPage() {
   const router = useRouter();
+  const [pageReady, setPageReady] = useState(false);
   const [activeChip, setActiveChip] = useState(0);
   const [selectedGem, setSelectedGem] = useState<Gem | null>(null);
   const [showMap, setShowMap] = useState(false);
@@ -35,6 +37,11 @@ export default function MapPage() {
 
   useEffect(() => {
     setShowMap(true);
+  }, []);
+
+  useEffect(() => {
+    const t = setTimeout(() => setPageReady(true), 1000);
+    return () => clearTimeout(t);
   }, []);
 
   const fetchMapData = useCallback(async (lat: number, lng: number) => {
@@ -120,6 +127,18 @@ export default function MapPage() {
       fetchMapData(PEKALONGAN_LAT, PEKALONGAN_LNG);
     }
   }, [fetchMapData, requestGpsLocation]);
+
+  if (!pageReady) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <TopAppBar title="Jajal.in" />
+        <main className="flex-1 px-4 py-6">
+          <Loading />
+        </main>
+        <BottomNav />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">

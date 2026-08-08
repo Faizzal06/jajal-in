@@ -66,7 +66,7 @@ function LoginPageContent() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <TopAppBar title="Masuk ke TemuLokal" variant="back" />
+      <TopAppBar title="Masuk ke Jajal.in" variant="back" />
 
       <main className="flex-1 flex items-center justify-center p-margin-mobile md:p-margin-desktop py-8">
         <div className="w-full max-w-md space-y-6">
@@ -173,7 +173,7 @@ export default function LoginPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-background flex flex-col">
-          <TopAppBar title="Masuk ke TemuLokal" variant="back" />
+          <TopAppBar title="Masuk ke Jajal.in" variant="back" />
           <div className="flex-1 flex items-center justify-center">
             <div className="w-8 h-8 border-4 border-primary-container border-t-transparent rounded-full animate-spin" />
           </div>
