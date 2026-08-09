@@ -52,7 +52,7 @@ export default async function ExploreFeedPage() {
             <h3 className="font-headline-md font-bold text-on-surface mb-1">Gagal Memuat Data</h3>
             <p className="text-sm text-on-surface-variant max-w-sm">{error}</p>
           </div>
-          <Button variant="secondary" size="md" onClick={() => location.reload()}>
+          <Button variant="secondary" size="md" href="/">
             Coba Lagi
           </Button>
         </div>
@@ -221,7 +221,7 @@ export default async function ExploreFeedPage() {
           <p className="text-sm text-on-surface-variant mb-4">
             Ada 12 UMKM baru yang buka di radius 500 meter dari lokasimu saat ini.
           </p>
-          <Button variant="secondary" size="md">Lihat di Peta</Button>
+          <Button variant="secondary" size="md" href="/map">Lihat di Peta</Button>
         </Card>
       </section>
 
@@ -234,6 +234,7 @@ export default async function ExploreFeedPage() {
         <Button
           variant="primary"
           size="lg"
+          href="/register-merchant"
           className="shadow-[0_0_20px_rgba(163,230,53,0.3)] hover:shadow-[0_0_30px_rgba(163,230,53,0.5)] transition-shadow"
         >
           Daftarkan Sekarang
