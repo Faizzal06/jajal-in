@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase';
 import { uploadBase64ToStorage } from './storageService';
+import { getAddressFromCoordinates } from '../utils/geocoding';
 
 export interface ProductInput {
   name: string;
@@ -32,6 +33,8 @@ export const registerMerchant = async (
     .replace(/^-+|-+$/g, '');
   const slug = `${slugBase}-${Date.now()}`;
 
+  const address = await getAddressFromCoordinates(payload.lat, payload.lng);
+
   const { data: placeData, error: placeError } = await supabase
     .from('places')
     .insert({
@@ -39,6 +42,7 @@ export const registerMerchant = async (
       name: payload.name,
       slug,
       description: payload.description,
+      address,
       location: `POINT(${payload.lng} ${payload.lat})`,
       region_id: payload.regionId,
       category_id: payload.categoryId,

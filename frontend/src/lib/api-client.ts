@@ -21,6 +21,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 
   const res = await fetch(`${BASE_URL}${path}`, {
     headers,
+    cache: 'no-store',
     ...options,
   });
 
@@ -47,6 +48,9 @@ export interface ExploreFeedResponse {
   slug: string;
   description: string;
   location: string;
+  address?: string;
+  lat?: number;
+  lng?: number;
   rating: number;
   review_count: number;
   is_sponsored: boolean;
@@ -82,6 +86,9 @@ export interface PlaceDetailResponse {
   slug: string;
   description: string;
   location: string;
+  address?: string;
+  lat?: number;
+  lng?: number;
   rating: number;
   review_count: number;
   is_sponsored: boolean;

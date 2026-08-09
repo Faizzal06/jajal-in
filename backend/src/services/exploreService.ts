@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import { parseEWKBPoint } from '../utils/wkbParser';
 
 export const getExploreFeed = async () => {
   const { data, error } = await supabase
@@ -9,7 +10,15 @@ export const getExploreFeed = async () => {
     .limit(20);
 
   if (error) throw new Error(error.message);
-  return data;
+
+  return (data || []).map(p => {
+    const coords = parseEWKBPoint(p.location);
+    if (coords) {
+      p.lat = coords.lat;
+      p.lng = coords.lng;
+    }
+    return p;
+  });
 };
 
 export const getExploreMap = async (lat: number, lng: number, radiusInMeters: number) => {
@@ -32,25 +41,35 @@ export const getExploreMap = async (lat: number, lng: number, radiusInMeters: nu
 
     if (fallbackError) throw new Error(fallbackError.message);
 
-    return (fallbackData || []).map((p: any) => ({
-      id: p.id,
-      type: p.type,
-      name: p.name,
-      slug: p.slug,
-      description: p.description,
-      lat: p.lat || -6.8898,
-      lng: p.lng || 109.6753,
-      region_name: p.regions?.name ?? '',
-      category_name: p.categories?.name ?? '',
-      category_icon: p.categories?.icon ?? 'place',
-      rating: p.rating ?? 0,
-      review_count: p.review_count ?? 0,
-      is_sponsored: p.is_sponsored ?? false,
-      place_media: p.place_media ?? [],
-    }));
+    return (fallbackData || []).map((p: any) => {
+      let plat = -6.8898;
+      let plng = 109.6753;
+      const coords = parseEWKBPoint(p.location);
+      if (coords) {
+        plat = coords.lat;
+        plng = coords.lng;
+      }
+      return {
+        id: p.id,
+        type: p.type,
+        name: p.name,
+        slug: p.slug,
+        description: p.description,
+        address: p.address,
+        lat: plat,
+        lng: plng,
+        region_name: p.regions?.name,
+        category_name: p.categories?.name,
+        category_icon: p.categories?.icon,
+        rating: p.rating,
+        review_count: p.review_count,
+        is_sponsored: p.is_sponsored,
+        place_media: p.place_media ?? [],
+        distance_meters: Math.round(Math.random() * 5000) // mock distance
+      };
+    });
   }
 
   if (error) throw new Error(error.message);
   return data || [];
 };
-

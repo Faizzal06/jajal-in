@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase';
 import { uploadBase64ToStorage } from './storageService';
+import { getAddressFromCoordinates } from '../utils/geocoding';
 
 export interface CreateContributionPayload {
   name: string;
@@ -71,6 +72,8 @@ export const createContribution = async (
     }
   }
 
+  const address = await getAddressFromCoordinates(payload.lat, payload.lng);
+
   const { data: placeData, error: placeError } = await supabase
     .from('places')
     .insert({
@@ -78,6 +81,7 @@ export const createContribution = async (
       name: payload.name,
       slug,
       description: payload.description,
+      address,
       location: `POINT(${payload.lng} ${payload.lat})`,
       region_id: resolvedRegionId,
       category_id: resolvedCategoryId,

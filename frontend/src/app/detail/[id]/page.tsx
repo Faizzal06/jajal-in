@@ -66,8 +66,9 @@ export default function DetailPage() {
         region: { id: '', name: place.regions?.name ?? '', slug: place.regions?.slug ?? '' },
         category: { id: '', name: place.categories?.name ?? '', slug: '', applicableTo: 'merchant', icon: place.categories?.icon ?? '' },
         description: place.description,
-        lat: 0,
-        lng: 0,
+        lat: place.lat ?? 0,
+        lng: place.lng ?? 0,
+        address: place.address,
         rating: place.rating ?? 0,
         reviewCount: place.review_count ?? 0,
         contactWhatsApp: place.contact_whatsapp,
@@ -86,8 +87,9 @@ export default function DetailPage() {
       region: { id: '', name: place.regions?.name ?? '', slug: place.regions?.slug ?? '' },
       category: { id: '', name: place.categories?.name ?? '', slug: '', applicableTo: 'gem', icon: place.categories?.icon ?? '' },
       description: place.description,
-      lat: 0,
-      lng: 0,
+      lat: place.lat ?? 0,
+      lng: place.lng ?? 0,
+      address: place.address,
       rating: place.rating ?? 0,
       reviewCount: place.review_count ?? 0,
       status: 'approved',
@@ -384,6 +386,15 @@ function GemDetail({ gem, gemReviews: propReviews }: { gem: Gem; gemReviews?: Re
                     <p className="text-on-surface-variant">{gem.region.name}</p>
                   </div>
                 </div>
+                {gem.address && (
+                  <div className="flex items-start gap-3">
+                    <Icon name="home_pin" size={20} className="text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-on-surface">Alamat Lengkap</p>
+                      <p className="text-on-surface-variant">{gem.address}</p>
+                    </div>
+                  </div>
+                )}
                 <div className="flex items-start gap-3">
                   <Icon name="category" size={20} className="text-primary shrink-0 mt-0.5" />
                   <div>
@@ -535,6 +546,15 @@ function MerchantDetail({ merchant }: { merchant: Merchant }) {
             <Desk className="sticky top-20 space-y-4">
               <h3 className="font-headline-md text-xl font-bold text-on-surface mb-2">Kontak & Pesanan</h3>
               <div className="space-y-3">
+                {merchant.address && (
+                  <div className="flex items-start gap-3 mb-2">
+                    <Icon name="home_pin" size={20} className="text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-on-surface text-sm">Alamat Lengkap</p>
+                      <p className="text-on-surface-variant text-sm">{merchant.address}</p>
+                    </div>
+                  </div>
+                )}
                 {merchant.contactWhatsApp && (
                   <a
                     href={`https://wa.me/${merchant.contactWhatsApp.replace(/[^0-9]/g, '')}`}

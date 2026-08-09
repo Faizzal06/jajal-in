@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import { parseEWKBPoint } from '../utils/wkbParser';
 
 export const getPlaceById = async (id: string) => {
   const { data, error } = await supabase
@@ -19,6 +20,12 @@ export const getPlaceById = async (id: string) => {
     const err: any = new Error(error.message);
     err.code = error.code;
     throw err;
+  }
+
+  const coords = parseEWKBPoint(data.location);
+  if (coords) {
+    data.lat = coords.lat;
+    data.lng = coords.lng;
   }
 
   return data;

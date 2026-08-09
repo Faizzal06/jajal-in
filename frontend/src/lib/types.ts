@@ -42,6 +42,7 @@ export interface Gem {
   region: Region;
   category: Category;
   description: string;
+  address?: string;
   lat: number;
   lng: number;
   rating: number;
@@ -81,6 +82,7 @@ export interface Merchant {
   region: Region;
   category: Category;
   description: string;
+  address?: string;
   lat: number;
   lng: number;
   rating: number;
