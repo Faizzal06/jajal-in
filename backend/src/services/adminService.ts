@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import { uploadBase64ToStorage } from './storageService';
 
 const logAdminAction = async (
   adminId: string,
@@ -95,6 +96,7 @@ export const getAdminPlaceById = async (id: string) => {
       regions(name, slug),
       categories(name, icon, applicable_to),
       place_media(url, media_type, caption),
+      place_highlights(id, title, description, icon),
       products(id, name, price, description, image_url),
       reviews(id, rating, text, is_tip, created_at, users(name, avatar_url))
     `)
@@ -143,22 +145,77 @@ export const updatePlace = async (
     status?: string;
     category_id?: string;
     region_id?: string;
+    lat?: number;
+    lng?: number;
+    media?: string[];
+    highlights?: { title: string; description: string; icon?: string }[];
   },
   adminId: string
 ) => {
+  const { name, description, status, category_id, region_id, lat, lng, media, highlights } = updateData;
+
+  const fieldsToUpdate: Record<string, any> = {};
+  if (name !== undefined) fieldsToUpdate.name = name;
+  if (description !== undefined) fieldsToUpdate.description = description;
+  if (status !== undefined) fieldsToUpdate.status = status;
+  if (category_id !== undefined) fieldsToUpdate.category_id = category_id;
+  if (region_id !== undefined) fieldsToUpdate.region_id = region_id;
+  if (lat !== undefined && lng !== undefined && !isNaN(lat) && !isNaN(lng)) {
+    fieldsToUpdate.location = `POINT(${lng} ${lat})`;
+  }
+
   const { data: oldPlace } = await supabase.from('places').select('*').eq('id', id).single();
 
-  const { data, error } = await supabase
-    .from('places')
-    .update(updateData)
-    .eq('id', id)
-    .select()
-    .single();
+  let data = oldPlace;
+  if (Object.keys(fieldsToUpdate).length > 0) {
+    const { data: updatedData, error } = await supabase
+      .from('places')
+      .update(fieldsToUpdate)
+      .eq('id', id)
+      .select()
+      .single();
 
-  if (error) {
-    const err: any = new Error(error.message);
-    err.code = error.code;
-    throw err;
+    if (error) {
+      const err: any = new Error(error.message);
+      err.code = error.code;
+      throw err;
+    }
+    data = updatedData;
+  }
+
+  // Handle Highlights update
+  if (highlights !== undefined) {
+    await supabase.from('place_highlights').delete().eq('place_id', id);
+    const validHighlights = highlights
+      .filter((h) => h && h.title && h.title.trim() !== '')
+      .map((h) => ({
+        place_id: id,
+        title: h.title.trim(),
+        description: h.description ? h.description.trim() : '',
+        icon: h.icon || 'landscape',
+      }));
+
+    if (validHighlights.length > 0) {
+      await supabase.from('place_highlights').insert(validHighlights);
+    }
+  }
+
+  // Handle new media upload if base64 provided
+  if (media !== undefined && media.length > 0) {
+    const base64Media = media.filter((m) => m.startsWith('data:image'));
+    if (base64Media.length > 0) {
+      const uploadedUrls = await Promise.all(
+        base64Media.map((item) => uploadBase64ToStorage(item, 'place-media', 'admin'))
+      );
+
+      const mediaRecords = uploadedUrls.map((url) => ({
+        place_id: id,
+        media_type: 'image',
+        url,
+      }));
+
+      await supabase.from('place_media').insert(mediaRecords);
+    }
   }
 
   await logAdminAction(adminId, 'edit_place', 'place', id, {

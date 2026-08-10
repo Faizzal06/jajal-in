@@ -63,15 +63,29 @@ export const updatePlaceStatus = async (req: AuthRequest, res: Response, next: N
   }
 };
 
-export const updatePlace = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const updatePlace = async (req: AuthRequest, res: Response, NextFunction: NextFunction) => {
   try {
     const id = req.params.id as string;
-    const { name, description, status, category_id, region_id } = req.body;
+    const { name, description, status, category_id, region_id, lat, lng, media, highlights } = req.body || {};
     const adminId = req.user?.id || '';
-    const data = await adminService.updatePlace(id, { name, description, status, category_id, region_id }, adminId);
+    const data = await adminService.updatePlace(
+      id,
+      {
+        name,
+        description,
+        status,
+        category_id,
+        region_id,
+        lat: lat !== undefined ? Number(lat) : undefined,
+        lng: lng !== undefined ? Number(lng) : undefined,
+        media,
+        highlights,
+      },
+      adminId
+    );
     res.json(data);
   } catch (error) {
-    next(error);
+    NextFunction(error);
   }
 };
 

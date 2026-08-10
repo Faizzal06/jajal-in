@@ -15,7 +15,7 @@ export const createContributionController = async (
       throw error;
     }
 
-    const { name, description, lat, lng, regionId, categoryId, media } = req.body || {};
+    const { name, description, lat, lng, regionId, categoryId, media, highlights } = req.body || {};
 
     if (
       !name ||
@@ -59,6 +59,7 @@ export const createContributionController = async (
       regionId,
       categoryId,
       media: Array.isArray(media) ? media : undefined,
+      highlights: Array.isArray(highlights) ? highlights : undefined,
     });
 
     res.status(201).json(result);

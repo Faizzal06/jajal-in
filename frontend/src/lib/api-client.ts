@@ -99,6 +99,7 @@ export interface PlaceDetailResponse {
   regions?: { name: string; slug?: string };
   categories?: { name: string; icon: string; applicable_to?: string };
   place_media?: { url: string; media_type: string; caption?: string }[];
+  place_highlights?: { id: string; title: string; description: string; icon: string }[];
   audio_stories?: { title: string; narrator: string; duration: string; url: string }[];
   products?: { id: string; name: string; price: number; description: string; image_url?: string }[];
   reviews?: {
@@ -145,6 +146,7 @@ export interface CreateContributionPayload {
   regionId: string;
   categoryId: string;
   media?: string[];
+  highlights?: { title: string; description: string; icon?: string }[];
 }
 
 export interface RegisterMerchantPayload {
@@ -217,8 +219,14 @@ export interface AdminPlace {
   rating: number;
   review_count: number;
   created_at: string;
+  category_id?: string;
+  region_id?: string;
+  lat?: number;
+  lng?: number;
   regions?: { name: string; slug: string };
   categories?: { name: string; icon: string };
+  place_media?: { url: string; media_type?: string; caption?: string }[];
+  place_highlights?: { id: string; title: string; description: string; icon: string }[];
 }
 
 export interface AdminUser {

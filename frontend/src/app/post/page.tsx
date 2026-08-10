@@ -2,17 +2,27 @@
 
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import TopAppBar from '@/components/layout/TopAppBar';
 import Icon from '@/components/ui/Icon';
 import Button from '@/components/ui/Button';
 import Chip from '@/components/ui/Chip';
 import Input from '@/components/ui/Input';
 import StepIndicator from '@/components/ui/StepIndicator';
-import MapStatic from '@/components/ui/MapStatic';
 import Loading from '@/app/loading';
 import { categories } from '@/lib/mock/regions';
 import { contributionsApi, getAuthToken } from '@/lib/api-client';
 import { useAuth } from '@/lib/context/AuthContext';
+
+const LocationPicker = dynamic(() => import('@/components/map/LocationPicker'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-64 sm:h-80 bg-surface-dim/40 rounded-2xl border border-outline-variant animate-pulse flex flex-col items-center justify-center gap-2 text-on-surface-variant">
+      <Icon name="map" size={32} className="text-outline-variant animate-bounce" />
+      <span className="text-xs font-medium">Memuat Peta Interaktif...</span>
+    </div>
+  ),
+});
 
 const steps = [
   { label: 'Syarat & Ketentuan' },
@@ -75,7 +85,6 @@ export default function PostPage() {
   const [images, setImages] = useState<string[]>([]);
   const [lat, setLat] = useState<number>(-8.5069);
   const [lng, setLng] = useState<number>(115.2625);
-  const [isLocating, setIsLocating] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
@@ -142,26 +151,6 @@ export default function PostPage() {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleDetectLocation = () => {
-    if (!navigator.geolocation) {
-      setSubmitError('Geolocation tidak didukung oleh browser Anda.');
-      return;
-    }
-    setIsLocating(true);
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLat(Number(position.coords.latitude.toFixed(6)));
-        setLng(Number(position.coords.longitude.toFixed(6)));
-        setIsLocating(false);
-      },
-      (error) => {
-        setIsLocating(false);
-        setSubmitError(`Gagal mengambil lokasi: ${error.message}`);
-      },
-      { enableHighAccuracy: true }
-    );
-  };
-
   const handleNext = async () => {
     if (!canContinue) return;
     if (step === 1) {
@@ -181,6 +170,7 @@ export default function PostPage() {
           regionId: '22222222-2222-2222-2222-222222222222',
           categoryId: category,
           media: images.length > 0 ? images : undefined,
+          highlights: highlights.filter((h) => h.title.trim()),
         });
         setStep(2);
       } catch (err) {
@@ -425,48 +415,22 @@ export default function PostPage() {
               </div>
             </div>
 
-            {/* Location & Manual Coordinates */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold text-on-surface block">Lokasi Presisi</label>
-                <button
-                  type="button"
-                  onClick={handleDetectLocation}
-                  disabled={isLocating}
-                  className="text-xs font-semibold text-primary hover:underline flex items-center gap-1 cursor-pointer"
-                >
-                  <Icon name="my_location" size={16} />
-                  {isLocating ? 'Mencari lokasi...' : 'Gunakan Lokasi Saat Ini'}
-                </button>
+            {/* Location & Interactive Picker */}
+            <div className="space-y-3 pt-2 border-t border-outline-variant/40">
+              <div>
+                <label className="text-sm font-semibold text-on-surface block">Lokasi Presisi Tempat</label>
+                <p className="text-xs text-on-surface-variant mb-2">
+                  Cari lokasi/alamat, geser pin di peta, atau tekan tombol GPS untuk menentukan posisi secara akurat.
+                </p>
               </div>
-
-              {/* Input Manual Koordinat */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="text-xs font-medium text-on-surface-variant mb-1 block">Latitude</label>
-                  <input
-                    type="number"
-                    step="any"
-                    value={lat}
-                    onChange={(e) => setLat(parseFloat(e.target.value) || 0)}
-                    placeholder="Contoh: -8.5069"
-                    className="w-full bg-white border border-outline-variant rounded-input px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-slate-heavy"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-medium text-on-surface-variant mb-1 block">Longitude</label>
-                  <input
-                    type="number"
-                    step="any"
-                    value={lng}
-                    onChange={(e) => setLng(parseFloat(e.target.value) || 0)}
-                    placeholder="Contoh: 115.2625"
-                    className="w-full bg-white border border-outline-variant rounded-input px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-slate-heavy"
-                  />
-                </div>
-              </div>
-
-              <MapStatic lat={lat} lng={lng} label="PREVIEW LOKASI" height="h-40" />
+              <LocationPicker
+                lat={lat}
+                lng={lng}
+                onChange={(newLat, newLng) => {
+                  setLat(newLat);
+                  setLng(newLng);
+                }}
+              />
             </div>
 
             {submitError && (

@@ -98,6 +98,12 @@ export default function DetailPage() {
       audioStory: place.audio_stories?.[0]
         ? { id: '', title: place.audio_stories[0].title, narrator: place.audio_stories[0].narrator, duration: place.audio_stories[0].duration, url: place.audio_stories[0].url }
         : undefined,
+      highlights: (place.place_highlights ?? []).map((h) => ({
+        id: h.id,
+        title: h.title,
+        description: h.description,
+        icon: h.icon,
+      })),
       tags: [],
     };
     const apiReviews = (place.reviews ?? []).map((r) => ({

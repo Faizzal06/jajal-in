@@ -10,6 +10,7 @@ export interface CreateContributionPayload {
   regionId: string;
   categoryId: string;
   media?: string[];
+  highlights?: { title: string; description: string; icon?: string }[];
 }
 
 export const createContribution = async (
@@ -112,6 +113,21 @@ export const createContribution = async (
 
     if (mediaError) {
       throw new Error(mediaError.message);
+    }
+  }
+
+  if (payload.highlights && payload.highlights.length > 0) {
+    const validHighlights = payload.highlights
+      .filter((h) => h && h.title && h.title.trim() !== '')
+      .map((h) => ({
+        place_id: placeData.id,
+        title: h.title.trim(),
+        description: h.description ? h.description.trim() : '',
+        icon: h.icon || 'landscape',
+      }));
+
+    if (validHighlights.length > 0) {
+      await supabase.from('place_highlights').insert(validHighlights);
     }
   }
 

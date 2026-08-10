@@ -9,6 +9,7 @@ export const getPlaceById = async (id: string) => {
       regions(name, slug),
       categories(name, icon, applicable_to),
       place_media(url, media_type, caption),
+      place_highlights(id, title, description, icon),
       audio_stories(title, narrator, duration, url),
       products(id, name, price, description, image_url),
       reviews(id, rating, text, is_tip, created_at, users(name, avatar_url))
