@@ -7,8 +7,7 @@ import Chip from '@/components/ui/Chip';
 import Icon from '@/components/ui/Icon';
 import Card from '@/components/ui/Card';
 import PlaceImage from '@/components/ui/PlaceImage';
-import TopAppBar from '@/components/layout/TopAppBar';
-import BottomNav from '@/components/layout/BottomNav';
+import PageShell from '@/components/layout/PageShell';
 import Loading from '@/app/loading';
 import { gems as mockGems } from '@/lib/mock/gems';
 import { exploreApi } from '@/lib/api-client';
@@ -130,23 +129,26 @@ export default function MapPage() {
 
   if (!pageReady) {
     return (
-      <div className="min-h-screen bg-background flex flex-col">
-        <TopAppBar title="Jajal.in" />
-        <main className="flex-1 px-4 py-6">
-          <Loading />
-        </main>
-        <BottomNav />
-      </div>
+      <PageShell title="Jajal.in">
+        <Loading />
+      </PageShell>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <TopAppBar title="Jajal.in" />
-      <main className="flex-1 relative">
+    <PageShell title="Jajal.in" maxWidth="max-w-none">
+      <div className="fixed inset-0 top-16 bottom-16 z-0">
+        {/* Map */}
+        <div className="h-full w-full bg-surface-dim">
+          {showMap && <MapView gems={mapGems} onSelectGem={setSelectedGem} userLocation={userLocation} />}
+        </div>
+      </div>
+
+      {/* Floating Elements (Search, Chips, Banner) */}
+      <div className="relative z-10 pointer-events-none">
         {/* Search & Filters */}
-        <div className="absolute top-4 left-4 right-4 z-[1000] space-y-3">
-          <div className="glass-panel rounded-full px-4 h-12 flex items-center gap-3 shadow-sm">
+        <div className="absolute top-4 left-4 right-4 space-y-3 pointer-events-auto">
+          <div className="glass-panel rounded-full px-4 h-12 flex items-center gap-3 shadow-sm bg-white/80 backdrop-blur-md border border-outline-variant">
             <Icon name="search" size={20} className="text-on-surface-variant shrink-0" />
             <input
               type="text"
@@ -155,7 +157,7 @@ export default function MapPage() {
             />
             <Icon name="tune" size={20} className="text-on-surface-variant shrink-0" />
           </div>
-          <div className="flex gap-2 overflow-x-auto no-scrollbar">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
             {categories.map((cat, i) => (
               <Chip key={cat} active={i === activeChip} onClick={() => setActiveChip(i)}>
                 {cat}
@@ -166,75 +168,75 @@ export default function MapPage() {
 
         {/* GPS Denied Banner */}
         {gpsDenied && !showPermissionModal && (
-          <div className="absolute top-24 left-4 right-4 z-[1000] bg-surface-dim/90 border border-outline-variant text-on-surface text-xs p-2.5 rounded-xl shadow flex items-center justify-between">
+          <div className="absolute top-24 left-4 right-4 bg-surface-dim/90 border border-outline-variant text-on-surface text-xs p-2.5 rounded-xl shadow flex items-center justify-between pointer-events-auto">
             <span>📍 Lokasi default: Pekalongan. Aktifkan GPS di browser untuk menemukan tempat di dekat Anda.</span>
             <button onClick={requestGpsLocation} className="text-primary font-bold ml-2 underline shrink-0">Coba lagi</button>
           </div>
         )}
+      </div>
 
-        {/* Map */}
-        <div className="h-[calc(100vh-64px-80px)] w-full bg-surface-dim">
-          {showMap && <MapView gems={mapGems} onSelectGem={setSelectedGem} userLocation={userLocation} />}
-        </div>
-
-        {/* Peek Card */}
-        {selectedGem && (
-          <div className="absolute bottom-20 left-4 right-4 z-[1000] animate-slide-up">
-            <Card className="flex items-center gap-4 shadow-lg relative">
-              <button
-                onClick={() => setSelectedGem(null)}
-                className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-surface-dim border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors"
-                title="Tutup"
-              >
-                <Icon name="close" size={16} />
-              </button>
-              <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0">
-                <PlaceImage
-                  src={selectedGem.media?.[0]?.url}
-                  alt={selectedGem.name}
-                  fallbackIcon="place"
-                  iconSize={32}
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-headline-md text-on-surface font-bold text-base truncate">
-                  {selectedGem.name}
-                </h3>
-                <div className="flex items-center gap-3 text-sm text-on-surface-variant mt-0.5">
-                  <span className="flex items-center gap-1">
-                    <Icon name="star" size={14} filled className="text-primary-container" />
-                    {selectedGem.rating}
-                  </span>
-                  <span>0.2 km</span>
+      {/* Overlays (Card, FABs) */}
+      <div className="fixed bottom-20 left-0 right-0 px-4 pointer-events-none z-10">
+        <div className="max-w-7xl mx-auto relative h-full">
+          {/* Peek Card */}
+          {selectedGem && (
+            <div className="animate-slide-up pointer-events-auto mb-4">
+              <Card className="flex items-center gap-4 shadow-lg relative bg-white/95 backdrop-blur-sm">
+                <button
+                  onClick={() => setSelectedGem(null)}
+                  className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-surface-dim border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors"
+                  title="Tutup"
+                >
+                  <Icon name="close" size={16} />
+                </button>
+                <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0">
+                  <PlaceImage
+                    src={selectedGem.media?.[0]?.url}
+                    alt={selectedGem.name}
+                    fallbackIcon="place"
+                    iconSize={32}
+                  />
                 </div>
-              </div>
-              <button
-                onClick={() => router.push(`/detail/${selectedGem.id}`)}
-                className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center shrink-0 hover:scale-105 transition-transform"
-              >
-                <Icon name="chevron_right" size={20} className="text-on-primary-container" />
-              </button>
-            </Card>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-headline-md text-on-surface font-bold text-base truncate">
+                    {selectedGem.name}
+                  </h3>
+                  <div className="flex items-center gap-3 text-sm text-on-surface-variant mt-0.5">
+                    <span className="flex items-center gap-1">
+                      <Icon name="star" size={14} filled className="text-primary-container" />
+                      {selectedGem.rating}
+                    </span>
+                    <span>0.2 km</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => router.push(`/detail/${selectedGem.id}`)}
+                  className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center shrink-0 hover:scale-105 transition-transform"
+                >
+                  <Icon name="chevron_right" size={20} className="text-on-primary-container" />
+                </button>
+              </Card>
+            </div>
+          )}
+
+          {/* FABs */}
+          <div className="flex justify-end gap-3 pointer-events-auto">
+            <button
+              onClick={requestGpsLocation}
+              title="Lokasi Saya"
+              className="w-12 h-12 rounded-full bg-white dark:bg-inverse-surface border border-outline-variant shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
+            >
+              <Icon name="my_location" size={22} className="text-primary" />
+            </button>
+            <button 
+              title="Tambah"
+              className="w-12 h-12 rounded-full bg-primary-container shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all"
+            >
+              <Icon name="add" size={26} className="text-on-primary-container" />
+            </button>
           </div>
-        )}
-
-        {/* My Location FAB */}
-        <button
-          onClick={requestGpsLocation}
-          title="Lokasi Saya"
-          className={`fixed ${selectedGem ? 'bottom-48' : 'bottom-20'} right-20 z-[1000] w-12 h-12 rounded-full bg-white dark:bg-inverse-surface border border-outline-variant shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all`}
-        >
-          <Icon name="my_location" size={22} className="text-primary" />
-        </button>
-
-        {/* FAB Add Gem */}
-        <button 
-        title="Tambah"
-        className={`fixed ${selectedGem ? 'bottom-48' : 'bottom-20'} right-4 z-[1000] w-12 h-12 rounded-full bg-primary-container shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all`}>
-          <Icon name="add" size={26} className="text-on-primary-container" />
-        </button>
-      </main>
-      <BottomNav />
+        </div>
+      </div>
 
       {/* GPS Permission Modal */}
       {showPermissionModal && (
@@ -266,6 +268,6 @@ export default function MapPage() {
           </div>
         </div>
       )}
-    </div>
+    </PageShell>
   );
 }

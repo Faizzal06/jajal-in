@@ -33,7 +33,7 @@ export default function TopAppBar({
   const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
 
   return (
-    <header className="sticky top-0 z-40 bg-background border-b border-outline-variant">
+    <header className="sticky top-0 z-[1100] bg-background border-b border-outline-variant">
       <div className="flex items-center justify-between h-16 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
         <div className="flex items-center gap-3">
           <button
