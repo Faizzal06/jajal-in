@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import Card from '@/components/ui/Card';
 import Chip from '@/components/ui/Chip';
 import Button from '@/components/ui/Button';
@@ -32,7 +33,24 @@ function contactHref(item: FeedItem): string | undefined {
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-export default async function ExploreFeedPage() {
+function FeedSkeleton() {
+  return (
+    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="border border-outline-variant rounded-xl overflow-hidden animate-pulse bg-surface">
+          <div className="h-48 w-full bg-gray-200" />
+          <div className="p-lg">
+            <div className="h-5 w-3/4 bg-gray-200 rounded" />
+            <div className="mt-2 h-4 w-full bg-gray-200 rounded" />
+            <div className="mt-1 h-4 w-5/6 bg-gray-200 rounded" />
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+async function ExploreFeedContent() {
   let places: ExploreFeedResponse[] = [];
   let error: string | null = null;
 
@@ -45,34 +63,30 @@ export default async function ExploreFeedPage() {
 
   if (error) {
     return (
-      <PageShell title="Jajal-in">
-        <div className="flex flex-col items-center justify-center h-96 gap-4 text-center">
-          <Icon name="cloud_off" size={48} className="text-outline-variant" />
-          <div>
-            <h3 className="font-headline-md font-bold text-on-surface mb-1">Gagal Memuat Data</h3>
-            <p className="text-sm text-on-surface-variant max-w-sm">{error}</p>
-          </div>
-          <Button variant="secondary" size="md" href="/">
-            Coba Lagi
-          </Button>
+      <div className="flex flex-col items-center justify-center h-96 gap-4 text-center">
+        <Icon name="cloud_off" size={48} className="text-outline-variant" />
+        <div>
+          <h3 className="font-headline-md font-bold text-on-surface mb-1">Gagal Memuat Data</h3>
+          <p className="text-sm text-on-surface-variant max-w-sm">{error}</p>
         </div>
-      </PageShell>
+        <Button variant="secondary" size="md" href="/">
+          Coba Lagi
+        </Button>
+      </div>
     );
   }
 
   if (places.length === 0) {
     return (
-      <PageShell title="Jajal">
-        <div className="flex flex-col items-center justify-center h-96 gap-4 text-center">
-          <Icon name="explore_off" size={48} className="text-outline-variant" />
-          <div>
-            <h3 className="font-headline-md font-bold text-on-surface mb-1">Belum Ada Tempat Ditemukan</h3>
-            <p className="text-sm text-on-surface-variant max-w-sm">
-              Belum ada UMKM atau tempat tersembunyi yang terdaftar. Coba lagi nanti.
-            </p>
-          </div>
+      <div className="flex flex-col items-center justify-center h-96 gap-4 text-center">
+        <Icon name="explore_off" size={48} className="text-outline-variant" />
+        <div>
+          <h3 className="font-headline-md font-bold text-on-surface mb-1">Belum Ada Tempat Ditemukan</h3>
+          <p className="text-sm text-on-surface-variant max-w-sm">
+            Belum ada UMKM atau tempat tersembunyi yang terdaftar. Coba lagi nanti.
+          </p>
         </div>
-      </PageShell>
+      </div>
     );
   }
 
@@ -93,7 +107,7 @@ export default async function ExploreFeedPage() {
   const rest = feedItems.slice(1);
 
   return (
-    <PageShell title="Jajal.in">
+    <>
       {/* Hero Section */}
       <section className="relative rounded-full overflow-hidden h-60 md:h-80 mt-lg mb-xl bg-gradient-to-br from-primary-container/20 to-primary/10">
         <div className="absolute inset-0 flex items-center justify-center opacity-40">
@@ -247,6 +261,16 @@ export default async function ExploreFeedPage() {
           <Icon name="near_me" size={28} className="text-on-primary-container" />
         </Link>
       </div>
+    </>
+  );
+}
+
+export default function ExploreFeedPage() {
+  return (
+    <PageShell title="Jajal.in">
+      <Suspense fallback={<FeedSkeleton />}>
+        <ExploreFeedContent />
+      </Suspense>
     </PageShell>
   );
 }
