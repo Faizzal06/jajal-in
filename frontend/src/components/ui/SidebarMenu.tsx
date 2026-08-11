@@ -39,7 +39,7 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[1900]"
           onClick={onClose}
           aria-label="Close sidebar overlay"
         />
@@ -49,7 +49,7 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
       <aside
         className={`fixed inset-y-0 left-0 w-64 bg-white border-r border-outline-variant transform ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } transition-transform duration-300 ease-in-out z-50`}
+        } transition-transform duration-300 ease-in-out z-[2000]`}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-outline-variant">
