@@ -5,7 +5,6 @@ import { useParams, useRouter } from 'next/navigation';
 import PageShell from '@/components/layout/PageShell';
 import Icon from '@/components/ui/Icon';
 import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
 import Desk from '@/components/ui/Desk';
 import ProgressBar from '@/components/ui/ProgressBar';
 import { badges } from '@/lib/mock/badges';

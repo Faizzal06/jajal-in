@@ -7,14 +7,13 @@ import Icon from '@/components/ui/Icon';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Desk from '@/components/ui/Desk';
-import { profileApi, ProfileResponse, getAuthToken } from '@/lib/api-client';
+import { profileApi, getAuthToken } from '@/lib/api-client';
 import { useAuth } from '@/lib/context/AuthContext';
 import Loading from '@/app/loading';
 
 export default function EditProfilePage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-  const [profile, setProfile] = useState<ProfileResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Form states
@@ -37,13 +36,13 @@ export default function EditProfilePage() {
       profileApi
         .get()
         .then((data) => {
-          setProfile(data);
           setName(data.name || '');
           setBio(data.bio || '');
           setAvatarUrl(data.avatar_url || '');
         })
-        .catch((err) => {
-          setErrorMsg(err.message || 'Gagal memuat data profil');
+        .catch((err: unknown) => {
+          const message = err instanceof Error ? err.message : 'Gagal memuat data profil';
+          setErrorMsg(message);
         })
         .finally(() => {
           setLoading(false);
@@ -94,8 +93,9 @@ export default function EditProfilePage() {
       setTimeout(() => {
         router.push('/profile');
       }, 1000);
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Gagal menyimpan perubahan');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Gagal menyimpan perubahan';
+      setErrorMsg(message);
     } finally {
       setSaving(false);
     }
