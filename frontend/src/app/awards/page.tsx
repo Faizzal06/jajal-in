@@ -82,29 +82,65 @@ export default function AwardsPage() {
         {user && (
           <>
             {/* Hero Level Card */}
-            <Card className="bg-slate-heavy text-white border-none !p-xl">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <span className="inline-block bg-primary-container text-on-primary-container text-xs font-bold px-3 py-1 rounded-full mb-2">
-                    Level {currentUser.level.number}
-                  </span>
-                  <h2 className="font-headline-lg text-white font-bold text-2xl">{currentUser.level.name}</h2>
-                </div>
-                <div className="flex items-center gap-1 bg-white/10 rounded-full px-4 py-2">
-                  <Icon name="stars" size={20} filled className="text-primary-container" />
-                  <span className="font-bold">{currentXp.toLocaleString()} XP</span>
-                </div>
+            <Card className="bg-slate-heavy text-white border-none !p-xl relative overflow-hidden group">
+              {/* Deep Base + Faded Background Iconography */}
+              <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-slate-heavy to-black/20 pointer-events-none" />
+              <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <Icon name="military_tech" size={130} filled className="absolute -top-6 -right-6 text-white/[0.03] rotate-12" />
+                <Icon name="emoji_events" size={95} filled className="absolute -bottom-5 -left-5 text-white/[0.03] -rotate-12" />
+                <Icon name="stars" size={60} filled className="absolute top-1/2 right-8 text-white/[0.03]" />
               </div>
-              <div className="mb-2">
-                <div className="flex justify-between text-sm text-white/70 mb-1">
-                  <span>Pangkat Berikutnya: {nextLevel.name}</span>
-                  <span>{progress}% Selesai</span>
+              <div className="absolute top-0 left-0 w-64 h-64 bg-primary-container/10 blur-[90px] -ml-24 -mt-24 pointer-events-none" />
+
+              <div className="relative z-10 flex flex-col items-center text-center gap-5">
+                {/* Level Chip */}
+                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white/90">
+                  <Icon name="military_tech" size={12} filled className="text-primary-container" />
+                  Level {currentUser.level.number}
+                </span>
+
+                {/* Glowing Trophy Icon */}
+                <div className="relative mt-1">
+                  <div className="absolute inset-0 rounded-full bg-primary-container/25 blur-2xl scale-150" />
+                  <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-primary-container via-primary-container/70 to-primary/60 flex items-center justify-center border-2 border-white/25 shadow-[0_0_40px_rgba(163,230,53,0.45)]">
+                    <Icon name="emoji_events" size={40} filled className="text-on-primary-container drop-shadow-[0_0_10px_rgba(163,230,53,0.6)]" />
+                  </div>
                 </div>
-                <ProgressBar value={currentXp} max={nextXp} barClassName="bg-primary-container" showGlow />
+
+                {/* Typography */}
+                <div className="space-y-1.5">
+                  <h2 className="font-headline-lg text-white font-bold text-2xl tracking-tight leading-none">
+                    {currentUser.level.name}
+                  </h2>
+                  <p className="text-white/70 text-sm max-w-[34ch] leading-relaxed">
+                    Dapatkan {(nextXp - currentXp).toLocaleString()} XP lagi untuk naik ke {nextLevel.name}.
+                  </p>
+                </div>
+
+                {/* XP Progress */}
+                <div className="w-full max-w-xs">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[10px] uppercase font-bold text-white/60 tracking-widest">Menuju {nextLevel.name}</span>
+                    <span className="text-[11px] font-mono font-semibold text-white">{currentXp.toLocaleString()} / {nextXp.toLocaleString()}</span>
+                  </div>
+                  <div className="h-1.5 bg-white/15 rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full"
+                      style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #bef264 0%, #a3e635 50%, #65a30d 100%)' }}
+                    />
+                  </div>
+                </div>
+
+                {/* CTA Button */}
+                <Button variant="primary" size="sm" className="group/btn mt-1 hover:scale-[1.03] active:scale-[0.97]">
+                  Lihat Papan Peringkat
+                  <Icon
+                    name="arrow_forward"
+                    size={16}
+                    className="text-on-primary-container transition-transform duration-200 group-hover/btn:translate-x-0.5"
+                  />
+                </Button>
               </div>
-              <p className="text-xs text-white/50">
-                Dapatkan {nextXp - currentXp} XP lagi untuk naik level!
-              </p>
             </Card>
 
             {/* Badge Collection */}
