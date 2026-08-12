@@ -19,7 +19,7 @@ const categories = ['All Gems', 'Local Eats', 'Photo Spots', 'Culture', 'Nature'
 
 const PEKALONGAN_LAT = -6.8898;
 const PEKALONGAN_LNG = 109.6753;
-const DEFAULT_RADIUS = 10000;
+const DEFAULT_RADIUS = 20000;
 
 export default function MapPage() {
   const router = useRouter();

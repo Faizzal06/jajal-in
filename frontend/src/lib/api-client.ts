@@ -128,6 +128,7 @@ export interface ProfileResponse {
   id: string;
   name: string;
   email: string;
+  bio?: string | null;
   avatar_url: string | null;
   role: string;
   region_id: string | null;
@@ -181,7 +182,8 @@ export const awardsApi = {
 
 export const profileApi = {
   get: () => api.get<ProfileResponse>('/profile'),
-  update: (data: { display_name?: string; bio?: string; avatar_url?: string }) =>
+  getById: (id: string) => api.get<ProfileResponse>(`/profile/${id}`),
+  update: (data: { name?: string; bio?: string; avatar_url?: string }) =>
     api.put<ProfileResponse>('/profile', data),
 };
 

@@ -61,8 +61,8 @@ export default function LocationPicker({
   useEffect(() => {
     if (!mapContainerRef.current || mapInstanceRef.current) return;
 
-    const initialLat = lat || -8.5069;
-    const initialLng = lng || 115.2625;
+    const initialLat = lat || -6.8898;
+    const initialLng = lng || 109.6753;
 
     const map = L.map(mapContainerRef.current, {
       center: [initialLat, initialLng],

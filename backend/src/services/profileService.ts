@@ -1,9 +1,11 @@
 import { supabase } from '../lib/supabase';
+import { uploadBase64ToStorage } from './storageService';
 
 export interface UserProfileResponse {
   id: string;
   name: string;
   email: string;
+  bio?: string | null;
   avatar_url: string | null;
   role: string;
   region_id: string | null;
@@ -50,7 +52,7 @@ export const getUserProfile = async (userId: string): Promise<UserProfileRespons
 
   let { data: user, error: userError } = await supabase
     .from('users')
-    .select('id, email, name, avatar_url, role, region_id, created_at')
+    .select('id, email, name, bio, avatar_url, role, region_id, created_at')
     .eq('id', userId)
     .single();
 
@@ -76,7 +78,7 @@ export const getUserProfile = async (userId: string): Promise<UserProfileRespons
           avatar_url: avatarUrl,
           role: 'user',
         })
-        .select('id, email, name, avatar_url, role, region_id, created_at')
+        .select('id, email, name, bio, avatar_url, role, region_id, created_at')
         .single();
       newUser = data;
     }
@@ -99,6 +101,7 @@ export const getUserProfile = async (userId: string): Promise<UserProfileRespons
     id: user.id,
     name: user.name,
     email: user.email,
+    bio: user.bio || null,
     avatar_url: user.avatar_url || null,
     role: user.role,
     region_id: user.region_id || null,
@@ -108,4 +111,47 @@ export const getUserProfile = async (userId: string): Promise<UserProfileRespons
     reviews_count: reviews,
     approved_places_count: approvedPlaces,
   };
+};
+
+export interface UpdateProfileInput {
+  name?: string;
+  bio?: string;
+  avatar_url?: string;
+}
+
+export const updateUserProfile = async (
+  userId: string,
+  input: UpdateProfileInput
+): Promise<UserProfileResponse> => {
+  const updatePayload: Record<string, any> = {};
+
+  if (input.name !== undefined) {
+    updatePayload.name = input.name.trim();
+  }
+
+  if (input.bio !== undefined) {
+    updatePayload.bio = input.bio.trim();
+  }
+
+  if (input.avatar_url !== undefined) {
+    if (input.avatar_url && input.avatar_url.startsWith('data:')) {
+      const uploadedUrl = await uploadBase64ToStorage(input.avatar_url, 'avatars', 'user-avatars');
+      updatePayload.avatar_url = uploadedUrl;
+    } else {
+      updatePayload.avatar_url = input.avatar_url;
+    }
+  }
+
+  if (Object.keys(updatePayload).length > 0) {
+    const { error } = await supabase
+      .from('users')
+      .update(updatePayload)
+      .eq('id', userId);
+
+    if (error) {
+      throw new Error(`Failed to update profile: ${error.message}`);
+    }
+  }
+
+  return getUserProfile(userId);
 };
