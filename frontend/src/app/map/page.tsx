@@ -147,7 +147,7 @@ export default function MapPage() {
       {/* Floating Elements (Search, Chips, Banner) */}
       <div className="relative z-10 pointer-events-none">
         {/* Search & Filters */}
-        <div className="absolute top-4 left-4 right-4 space-y-3 pointer-events-auto">
+        <div className="absolute top-4 left-0 right-0 space-y-3 pointer-events-auto">
           <div className="glass-panel rounded-full px-4 h-12 flex items-center gap-3 shadow-sm bg-white/80 backdrop-blur-md border border-outline-variant">
             <Icon name="search" size={20} className="text-on-surface-variant shrink-0" />
             <input

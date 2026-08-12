@@ -16,7 +16,6 @@ interface SidebarMenuProps {
 
 const items: MenuItem[] = [
   { label: 'Pengaturan Aplikasi', icon: 'settings' },
-  { label: 'Pusat Bantuan', icon: 'help' },
   { label: 'Hubungi Kami', icon: 'support_agent' },
   { label: 'Syarat & Ketentuan', icon: 'description' },
 ];
