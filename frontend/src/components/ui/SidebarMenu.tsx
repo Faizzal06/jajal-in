@@ -1,10 +1,13 @@
+'use client';
+
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Icon from '@/components/ui/Icon';
 
 interface MenuItem {
   label: string;
   icon: string;
-  onClick?: () => void;
+  href?: string;
 }
 
 interface SidebarMenuProps {
@@ -15,13 +18,13 @@ interface SidebarMenuProps {
 }
 
 const items: MenuItem[] = [
-  { label: 'Pengaturan Aplikasi', icon: 'settings' },
-  { label: 'Pusat Bantuan', icon: 'help' },
-  { label: 'Hubungi Kami', icon: 'support_agent' },
-  { label: 'Syarat & Ketentuan', icon: 'description' },
+  { label: 'Pengaturan Aplikasi', icon: 'settings', href: '/settings' },
+  { label: 'Hubungi Kami', icon: 'support_agent', href: '/contact' },
+  { label: 'Syarat & Ketentuan', icon: 'description', href: '/terms' },
 ];
 
 export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
+  const router = useRouter();
   // Prevent body scroll when the sidebar is open
   useEffect(() => {
     if (isOpen) {
@@ -66,7 +69,12 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
                 key={item.label}
                 type="button"
                 className="flex items-center gap-3 px-4 py-3 text-on-surface hover:bg-surface-dim rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                onClick={item.onClick}
+                onClick={() => {
+                  if (item.href) {
+                    router.push(item.href);
+                    onClose();
+                  }
+                }}
               >
                 <Icon name={item.icon} size={20} />
                 <span className="font-body-md">{item.label}</span>
@@ -78,8 +86,8 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
             <button
               type="button"
               onClick={() => {
-                // Assuming navigation via router, placeholder implementation
-                window.location.href = '/admin';
+                router.push('/admin');
+                onClose();
               }}
               className="flex items-center gap-3 px-4 py-3 mt-1 text-on-primary bg-primary-container hover:bg-primary-container/90 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
