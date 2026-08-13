@@ -83,6 +83,7 @@ export default function PostPage() {
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [images, setImages] = useState<string[]>([]);
+  const [primaryImageIndex, setPrimaryImageIndex] = useState<number>(0);
   const [lat, setLat] = useState<number>(-8.5069);
   const [lng, setLng] = useState<number>(115.2625);
   const [submitting, setSubmitting] = useState(false);
@@ -149,6 +150,11 @@ export default function PostPage() {
 
   const handleRemoveImage = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
+    setPrimaryImageIndex((prev) => {
+      if (prev === index) return 0;
+      if (prev > index) return prev - 1;
+      return prev;
+    });
   };
 
   const handleNext = async () => {
@@ -162,6 +168,11 @@ export default function PostPage() {
       setSubmitting(true);
       setSubmitError('');
       try {
+        const validPrimaryIndex = primaryImageIndex < images.length ? primaryImageIndex : 0;
+        const orderedMedia = images.length > 0
+          ? [images[validPrimaryIndex], ...images.filter((_, i) => i !== validPrimaryIndex)]
+          : undefined;
+
         await contributionsApi.create({
           name: name.trim(),
           description: description.trim(),
@@ -169,7 +180,7 @@ export default function PostPage() {
           lng: Number(lng),
           regionId: '22222222-2222-2222-2222-222222222222',
           categoryId: category,
-          media: images.length > 0 ? images : undefined,
+          media: orderedMedia,
           highlights: highlights.filter((h) => h.title.trim()),
         });
         setStep(2);
@@ -387,8 +398,25 @@ export default function PostPage() {
               <label className="text-sm font-semibold text-on-surface mb-2 block">Foto & Video (Maks 10)</label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
                 {images.map((img, idx) => (
-                  <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-outline-variant group">
+                  <div
+                    key={idx}
+                    className={`relative aspect-square rounded-xl overflow-hidden group transition-all ${
+                      idx === primaryImageIndex ? 'border-2 border-primary' : 'border border-outline-variant'
+                    }`}
+                  >
                     <img src={img} alt={`Preview ${idx + 1}`} className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => setPrimaryImageIndex(idx)}
+                      className={`absolute top-1 left-1 rounded-full p-1 transition-colors ${
+                        idx === primaryImageIndex
+                          ? 'bg-primary text-on-primary'
+                          : 'bg-black/60 text-white hover:bg-black/80'
+                      }`}
+                      title="Jadikan Foto Utama"
+                    >
+                      <Icon name="push_pin" size={16} />
+                    </button>
                     <button
                       type="button"
                       onClick={() => handleRemoveImage(idx)}
@@ -397,6 +425,12 @@ export default function PostPage() {
                     >
                       <Icon name="close" size={16} />
                     </button>
+                    {idx === primaryImageIndex && (
+                      <div className="absolute bottom-1.5 left-1.5 z-10 bg-primary-container text-on-primary-container font-bold text-xs px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+                        <Icon name="push_pin" size={12} />
+                        <span>Foto Utama</span>
+                      </div>
+                    )}
                   </div>
                 ))}
                 {images.length < 10 && (

@@ -147,6 +147,136 @@ export default function DetailPage() {
   return <GemDetail gem={mockGem!} />;
 }
 
+interface GalleryImage {
+  url: string;
+  caption?: string;
+}
+
+function GallerySection({ images }: { images: GalleryImage[] }) {
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setLightboxIndex(null);
+      } else if (e.key === 'ArrowLeft') {
+        setLightboxIndex((prev) => (prev !== null ? (prev === 0 ? images.length - 1 : prev - 1) : null));
+      } else if (e.key === 'ArrowRight') {
+        setLightboxIndex((prev) => (prev !== null ? (prev === images.length - 1 ? 0 : prev + 1) : null));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxIndex, images.length]);
+
+  if (!images || images.length === 0) return null;
+
+  const currentImage = lightboxIndex !== null ? images[lightboxIndex] : null;
+
+  return (
+    <section className="bg-white border border-outline-variant p-lg rounded-3xl space-y-md shadow-sm">
+      <div>
+        <h3 className="font-headline-md text-xl font-bold text-on-surface">Galeri Foto</h3>
+        <p className="text-sm text-on-surface-variant">Koleksi momen dan sudut tempat ini</p>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {images.map((img, idx) => (
+          <div
+            key={idx}
+            onClick={() => setLightboxIndex(idx)}
+            className="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group border border-outline-variant/40 hover:scale-105 transition-transform duration-300"
+          >
+            <PlaceImage
+              src={img.url}
+              alt={img.caption || `Foto galeri ${idx + 1}`}
+              className="w-full h-full object-cover"
+            />
+            {idx === 0 && (
+              <span className="absolute bottom-2 left-2 bg-primary-container text-on-primary-container font-bold text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm z-10">
+                <Icon name="star" size={12} filled />
+                Foto Utama
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {lightboxIndex !== null && currentImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex flex-col justify-between p-4 md:p-8"
+          onClick={() => setLightboxIndex(null)}
+        >
+          <div className="flex items-center justify-between text-white" onClick={(e) => e.stopPropagation()}>
+            <div>
+              <p className="font-semibold text-sm md:text-base">
+                {currentImage.caption || 'Galeri Foto'}
+              </p>
+              <p className="text-xs text-white/70">
+                Foto {lightboxIndex + 1} dari {images.length}
+              </p>
+            </div>
+            <button
+              onClick={() => setLightboxIndex(null)}
+              className="p-2 rounded-full hover:bg-white/20 text-white transition-colors"
+              title="Tutup"
+            >
+              <Icon name="close" size={24} />
+            </button>
+          </div>
+
+          <div
+            className="relative flex-1 flex items-center justify-center my-4 overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {images.length > 1 && (
+              <button
+                onClick={() =>
+                  setLightboxIndex((prev) =>
+                    prev !== null ? (prev === 0 ? images.length - 1 : prev - 1) : null
+                  )
+                }
+                className="absolute left-2 md:left-4 z-10 p-2 md:p-3 rounded-full bg-black/50 hover:bg-black/80 text-white transition-colors"
+                title="Foto Sebelumnya"
+              >
+                <Icon name="chevron_left" size={28} />
+              </button>
+            )}
+
+            <PlaceImage
+              src={currentImage.url}
+              alt={currentImage.caption || `Foto ${lightboxIndex + 1}`}
+              className="max-h-[75vh] max-w-full object-contain rounded-lg shadow-2xl"
+              containerClassName="max-h-[75vh] w-full flex items-center justify-center"
+            />
+
+            {images.length > 1 && (
+              <button
+                onClick={() =>
+                  setLightboxIndex((prev) =>
+                    prev !== null ? (prev === images.length - 1 ? 0 : prev + 1) : null
+                  )
+                }
+                className="absolute right-2 md:right-4 z-10 p-2 md:p-3 rounded-full bg-black/50 hover:bg-black/80 text-white transition-colors"
+                title="Foto Selanjutnya"
+              >
+                <Icon name="chevron_right" size={28} />
+              </button>
+            )}
+          </div>
+
+          <div className="text-center text-xs text-white/60" onClick={(e) => e.stopPropagation()}>
+            Tekan ESC untuk menutup, &larr; / &rarr; untuk navigasi
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
 function GemDetail({ gem, gemReviews: propReviews }: { gem: Gem; gemReviews?: Review[] }) {
   const router = useRouter();
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -357,6 +487,11 @@ function GemDetail({ gem, gemReviews: propReviews }: { gem: Gem; gemReviews?: Re
               )}
             </Card>
 
+            {/* Gallery Section */}
+            <GallerySection
+              images={(gem.media || []).map((m) => ({ url: m.url, caption: m.caption }))}
+            />
+
             {/* Map Section */}
             <section className="bg-white border border-outline-variant rounded-3xl overflow-hidden">
               <div className="p-lg flex justify-between items-center border-b border-outline-variant/30">
@@ -521,6 +656,11 @@ function MerchantDetail({ merchant }: { merchant: Merchant }) {
                 {merchant.description}
               </p>
             </Desk>
+
+            {/* Gallery Section */}
+            <GallerySection
+              images={(merchant.media || []).map((url) => ({ url }))}
+            />
 
             <div>
               <h3 className="font-headline-md text-xl font-bold text-on-surface mb-3">Katalog Produk</h3>
