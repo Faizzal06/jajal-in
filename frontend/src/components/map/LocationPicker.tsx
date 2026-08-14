@@ -5,10 +5,17 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import Icon from '@/components/ui/Icon';
 
+export interface AddressInfo {
+  address: string;
+  cityOrRegency?: string;
+  province?: string;
+}
+
 export interface LocationPickerProps {
   lat: number;
   lng: number;
   onChange: (lat: number, lng: number) => void;
+  onAddressChange?: (info: AddressInfo) => void;
   height?: string;
   className?: string;
 }
@@ -24,12 +31,14 @@ export default function LocationPicker({
   lat,
   lng,
   onChange,
+  onAddressChange,
   height = 'h-64 sm:h-80',
   className = '',
 }: LocationPickerProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markerRef = useRef<L.Marker | null>(null);
+  const reverseGeocodeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -37,6 +46,46 @@ export default function LocationPicker({
   const [showDropdown, setShowDropdown] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  const fetchReverseGeocode = useCallback(
+    async (targetLat: number, targetLng: number) => {
+      if (!onAddressChange) return;
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${targetLat}&lon=${targetLng}`,
+          {
+            headers: {
+              'Accept-Language': 'id,en;q=0.9',
+            },
+          }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          const rawCityOrRegency =
+            data.address?.city ||
+            data.address?.town ||
+            data.address?.municipality ||
+            data.address?.county ||
+            data.address?.state_district ||
+            '';
+          let cityOrRegency = rawCityOrRegency.trim();
+          cityOrRegency = cityOrRegency.replace(/Gunung\s+Kidul/gi, 'Gunungkidul');
+          cityOrRegency = cityOrRegency.replace(/ Regency$/i, '');
+          cityOrRegency = cityOrRegency.replace(/^City of /i, '');
+          cityOrRegency = cityOrRegency.replace(/ City$/i, '');
+
+          onAddressChange({
+            address: data.display_name || '',
+            cityOrRegency: cityOrRegency || undefined,
+            province: data.address?.state || undefined,
+          });
+        }
+      } catch {
+        // Silently ignore reverse geocode fetch errors
+      }
+    },
+    [onAddressChange]
+  );
 
   // Handle Marker Position Changes
   const updatePosition = useCallback(
@@ -53,8 +102,17 @@ export default function LocationPicker({
       if (fly && mapInstanceRef.current) {
         mapInstanceRef.current.flyTo([precisionLat, precisionLng], 15, { animate: true });
       }
+
+      if (onAddressChange) {
+        if (reverseGeocodeTimeoutRef.current) {
+          clearTimeout(reverseGeocodeTimeoutRef.current);
+        }
+        reverseGeocodeTimeoutRef.current = setTimeout(() => {
+          fetchReverseGeocode(precisionLat, precisionLng);
+        }, 500);
+      }
     },
-    [onChange]
+    [onChange, onAddressChange, fetchReverseGeocode]
   );
 
   // Initialize Map

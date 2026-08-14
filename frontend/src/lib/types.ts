@@ -2,7 +2,14 @@ export interface Region {
   id: string;
   name: string;
   slug: string;
-  parentId?: string;
+  parentId?: string | null;
+  parent_id?: string | null;
+  parent?: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
+  regencies?: Region[];
 }
 
 export interface Category {

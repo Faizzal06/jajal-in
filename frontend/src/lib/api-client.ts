@@ -180,6 +180,31 @@ export const awardsApi = {
     ),
 };
 
+export interface RegionResponse {
+  id: string;
+  name: string;
+  slug: string;
+  parent_id?: string | null;
+  parent?: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
+  regencies?: RegionResponse[];
+}
+
+export const regionsApi = {
+  getAll: (options?: { parentId?: string; type?: 'province' | 'regency'; grouped?: boolean }) => {
+    const params = new URLSearchParams();
+    if (options?.parentId) params.append('parentId', options.parentId);
+    if (options?.type) params.append('type', options.type);
+    if (options?.grouped) params.append('grouped', 'true');
+    const queryString = params.toString();
+    return api.get<RegionResponse[]>(`/regions${queryString ? `?${queryString}` : ''}`);
+  },
+  getGrouped: () => api.get<RegionResponse[]>('/regions?grouped=true'),
+};
+
 export const profileApi = {
   get: () => api.get<ProfileResponse>('/profile'),
   getById: (id: string) => api.get<ProfileResponse>(`/profile/${id}`),
