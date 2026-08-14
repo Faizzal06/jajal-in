@@ -12,6 +12,11 @@ jest.mock('./storageService', () => ({
   uploadBase64ToStorage: jest.fn((input: string) => Promise.resolve(input)),
 }));
 
+jest.mock('../utils/geocoding', () => ({
+  getAddressFromCoordinates: jest.fn().mockResolvedValue('Mock Address, Indonesia'),
+  resolveRegionFromCoordinates: jest.fn().mockResolvedValue('region-123'),
+}));
+
 describe('merchantService', () => {
   const defaultDeleteMock = jest.fn().mockReturnValue({ eq: jest.fn().mockResolvedValue({ error: null }) });
 

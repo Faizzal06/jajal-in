@@ -12,6 +12,11 @@ jest.mock('./storageService', () => ({
   uploadBase64ToStorage: jest.fn((input: string) => Promise.resolve(input)),
 }));
 
+jest.mock('../utils/geocoding', () => ({
+  getAddressFromCoordinates: jest.fn().mockResolvedValue('Mock Address, Indonesia'),
+  resolveRegionFromCoordinates: jest.fn().mockResolvedValue('resolved-region-id'),
+}));
+
 describe('contributionsService', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -24,7 +29,7 @@ describe('contributionsService', () => {
       description: 'Air terjun tersembunyi yang sangat indah',
       lat: -6.9175,
       lng: 107.6191,
-      regionId: 'region-456',
+      regionId: '11111111-1111-1111-1111-111111111111',
       categoryId: 'cat-789',
       media: ['http://example.com/photo1.jpg', 'http://example.com/photo2.jpg'],
     };
@@ -61,7 +66,7 @@ describe('contributionsService', () => {
           name: 'Curug Hidden Gem',
           description: payload.description,
           location: 'POINT(107.6191 -6.9175)',
-          region_id: 'region-456',
+          region_id: '11111111-1111-1111-1111-111111111111',
           category_id: 'cat-789',
           owner_id: userId,
           status: 'pending',
