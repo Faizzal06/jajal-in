@@ -10,7 +10,7 @@ import Desk from '@/components/ui/Desk';
 import Button from '@/components/ui/Button';
 import { badges, milestones, leaderboardEntries } from '@/lib/mock/badges';
 import { users } from '@/lib/mock/users';
-import { awardsApi, LeaderboardResponse } from '@/lib/api-client';
+import { awardsApi, regionsApi, RegionResponse, LeaderboardResponse } from '@/lib/api-client';
 import { useAuth } from '@/lib/context/AuthContext';
 import Loading from '@/app/loading';
 
@@ -21,14 +21,25 @@ export default function AwardsPage() {
   const { user } = useAuth();
   const [pageReady, setPageReady] = useState(false);
   const [apiLeaderboard, setApiLeaderboard] = useState<LeaderboardResponse[]>([]);
+  const [selectedRegionId, setSelectedRegionId] = useState<string>('');
+  const [regionsGrouped, setRegionsGrouped] = useState<RegionResponse[]>([]);
   const [, setLbLoading] = useState(true);
 
   useEffect(() => {
-    awardsApi.getLeaderboard()
+    regionsApi
+      .getGrouped()
+      .then((data) => setRegionsGrouped(data))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    setLbLoading(true);
+    awardsApi
+      .getLeaderboard(selectedRegionId || undefined)
       .then((data) => setApiLeaderboard(data))
       .catch(() => {})
       .finally(() => setLbLoading(false));
-  }, []);
+  }, [selectedRegionId]);
 
   useEffect(() => {
     const t = setTimeout(() => setPageReady(true), 1000);
@@ -190,9 +201,30 @@ export default function AwardsPage() {
 
         {/* Leaderboard */}
         <section>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-headline-md text-on-surface font-bold text-lg">Papan Peringkat</h3>
-            <span className="text-xs text-on-surface-variant bg-[#E5E7EB] px-3 py-1 rounded-full">Mingguan</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div className="flex items-center gap-2">
+              <h3 className="font-headline-md text-on-surface font-bold text-lg">Papan Peringkat</h3>
+              <span className="text-xs text-on-surface-variant bg-[#E5E7EB] px-3 py-1 rounded-full">Mingguan</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Icon name="location_on" size={18} className="text-primary shrink-0" />
+              <select
+                value={selectedRegionId}
+                onChange={(e) => setSelectedRegionId(e.target.value)}
+                className="bg-white border border-outline-variant rounded-xl px-3 py-1.5 text-xs font-semibold text-on-surface focus:outline-none focus:border-slate-heavy transition-all"
+              >
+                <option value="">Semua Wilayah</option>
+                {regionsGrouped.map((prov) => (
+                  <optgroup key={prov.id} label={prov.name}>
+                    {(prov.regencies || []).map((reg) => (
+                      <option key={reg.id} value={reg.id}>
+                        {reg.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </div>
           </div>
           <Desk className="divide-y divide-outline-variant !p-0">
             {apiLeaderboard.length > 0
