@@ -1,6 +1,6 @@
 import { supabase } from '../lib/supabase';
 import { uploadBase64ToStorage } from './storageService';
-import { getAddressFromCoordinates } from '../utils/geocoding';
+import { getAddressFromCoordinates, resolveRegionFromCoordinates } from '../utils/geocoding';
 
 export interface ProductInput {
   name: string;
@@ -33,6 +33,44 @@ export const registerMerchant = async (
     .replace(/^-+|-+$/g, '');
   const slug = `${slugBase}-${Date.now()}`;
 
+  const isValidUuid = (id?: string) =>
+    id ? /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id) : false;
+
+  let resolvedCategoryId = payload.categoryId;
+  if (!isValidUuid(resolvedCategoryId)) {
+    const catTable = supabase.from('categories');
+    if (catTable && typeof catTable.select === 'function') {
+      const { data: catData } = await catTable
+        .select('id')
+        .eq('slug', payload.categoryId)
+        .maybeSingle();
+      if (catData?.id) {
+        resolvedCategoryId = catData.id;
+      }
+    }
+  }
+
+  let resolvedRegionId = payload.regionId;
+  if (!isValidUuid(resolvedRegionId)) {
+    const regTable = supabase.from('regions');
+    if (regTable && typeof regTable.select === 'function') {
+      const { data: regData } = await regTable
+        .select('id')
+        .eq('slug', payload.regionId)
+        .maybeSingle();
+      if (regData?.id) {
+        resolvedRegionId = regData.id;
+      }
+    }
+  }
+
+  if (!resolvedRegionId || !isValidUuid(resolvedRegionId)) {
+    const autoResolved = await resolveRegionFromCoordinates(payload.lat, payload.lng);
+    if (autoResolved) {
+      resolvedRegionId = autoResolved;
+    }
+  }
+
   const address = await getAddressFromCoordinates(payload.lat, payload.lng);
 
   const { data: placeData, error: placeError } = await supabase
@@ -44,8 +82,8 @@ export const registerMerchant = async (
       description: payload.description,
       address,
       location: `POINT(${payload.lng} ${payload.lat})`,
-      region_id: payload.regionId,
-      category_id: payload.categoryId,
+      region_id: resolvedRegionId,
+      category_id: resolvedCategoryId,
       contact_whatsapp: payload.contactWhatsApp,
       owner_id: userId,
       status: 'pending_payment',

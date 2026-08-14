@@ -1,6 +1,6 @@
 import { supabase } from '../lib/supabase';
 import { uploadBase64ToStorage } from './storageService';
-import { getAddressFromCoordinates } from '../utils/geocoding';
+import { getAddressFromCoordinates, resolveRegionFromCoordinates } from '../utils/geocoding';
 
 export interface CreateContributionPayload {
   name: string;
@@ -70,6 +70,13 @@ export const createContribution = async (
       if (regData?.id) {
         resolvedRegionId = regData.id;
       }
+    }
+  }
+
+  if (!resolvedRegionId || !isValidUuid(resolvedRegionId)) {
+    const autoResolved = await resolveRegionFromCoordinates(payload.lat, payload.lng);
+    if (autoResolved) {
+      resolvedRegionId = autoResolved;
     }
   }
 
