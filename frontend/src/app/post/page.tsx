@@ -11,7 +11,7 @@ import Input from '@/components/ui/Input';
 import StepIndicator from '@/components/ui/StepIndicator';
 import Loading from '@/app/loading';
 import { categories } from '@/lib/mock/regions';
-import { contributionsApi, getAuthToken } from '@/lib/api-client';
+import { contributionsApi, regionsApi, RegionResponse, getAuthToken } from '@/lib/api-client';
 import { useAuth } from '@/lib/context/AuthContext';
 
 const LocationPicker = dynamic(() => import('@/components/map/LocationPicker'), {
@@ -86,6 +86,10 @@ export default function PostPage() {
   const [primaryImageIndex, setPrimaryImageIndex] = useState<number>(0);
   const [lat, setLat] = useState<number>(-8.5069);
   const [lng, setLng] = useState<number>(115.2625);
+  const [regionsGrouped, setRegionsGrouped] = useState<RegionResponse[]>([]);
+  const [allRegencies, setAllRegencies] = useState<RegionResponse[]>([]);
+  const [selectedRegionId, setSelectedRegionId] = useState<string>('');
+  const [detectedRegionName, setDetectedRegionName] = useState<string>('');
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
@@ -97,6 +101,22 @@ export default function PostPage() {
   // Audio Story state (Opsional - disimpan di bucket audio-stories)
   const [audioTitle, setAudioTitle] = useState('');
   const [audioFileName, setAudioFileName] = useState('');
+
+  useEffect(() => {
+    regionsApi
+      .getGrouped()
+      .then((data) => {
+        setRegionsGrouped(data);
+        const regList: RegionResponse[] = [];
+        data.forEach((prov) => {
+          if (prov.regencies) {
+            regList.push(...prov.regencies);
+          }
+        });
+        setAllRegencies(regList);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!authLoading && !user && !getAuthToken()) {
@@ -178,7 +198,7 @@ export default function PostPage() {
           description: description.trim(),
           lat: Number(lat),
           lng: Number(lng),
-          regionId: '22222222-2222-2222-2222-222222222222',
+          regionId: selectedRegionId || (allRegencies[0]?.id ?? '11111111-1111-1111-1111-111111111111'),
           categoryId: category,
           media: orderedMedia,
           highlights: highlights.filter((h) => h.title.trim()),
@@ -464,7 +484,55 @@ export default function PostPage() {
                   setLat(newLat);
                   setLng(newLng);
                 }}
+                onAddressChange={(info) => {
+                  if (info.cityOrRegency && allRegencies.length > 0) {
+                    const searchTarget = info.cityOrRegency.toLowerCase().replace(/^(kabupaten|kota)\s+/i, '').trim();
+                    const matched = allRegencies.find((r) => {
+                      const regNameClean = r.name.toLowerCase().replace(/^(kabupaten|kota)\s+/i, '').trim();
+                      return regNameClean === searchTarget || regNameClean.includes(searchTarget) || searchTarget.includes(regNameClean);
+                    });
+                    if (matched) {
+                      setSelectedRegionId(matched.id);
+                      setDetectedRegionName(matched.name);
+                    }
+                  }
+                }}
               />
+
+              {/* Region / Kabupaten / Kota Selection */}
+              <div className="space-y-2 pt-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-semibold text-on-surface">Wilayah (Kabupaten / Kota)</label>
+                  {detectedRegionName && (
+                    <span className="text-[11px] font-medium bg-primary-container/40 text-on-surface border border-primary-container px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                      <Icon name="check_circle" size={14} className="text-primary" /> Terdeteksi: {detectedRegionName}
+                    </span>
+                  )}
+                </div>
+                <select
+                  value={selectedRegionId}
+                  onChange={(e) => {
+                    setSelectedRegionId(e.target.value);
+                    const sel = allRegencies.find((r) => r.id === e.target.value);
+                    if (sel) setDetectedRegionName(sel.name);
+                  }}
+                  className="w-full bg-white border border-outline-variant rounded-xl px-3.5 py-2.5 text-sm text-on-surface focus:outline-none focus:border-2 focus:border-slate-heavy transition-all"
+                >
+                  <option value="">-- Pilih Kabupaten / Kota --</option>
+                  {regionsGrouped.map((prov) => (
+                    <optgroup key={prov.id} label={prov.name}>
+                      {(prov.regencies || []).map((reg) => (
+                        <option key={reg.id} value={reg.id}>
+                          {reg.name}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+                <p className="text-xs text-on-surface-variant">
+                  Wilayah terdeteksi otomatis saat Anda memilih titik di peta. Anda juga dapat memilihnya secara manual jika diperlukan.
+                </p>
+              </div>
             </div>
 
             {submitError && (

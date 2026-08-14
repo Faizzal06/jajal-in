@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import TopAppBar from '@/components/layout/TopAppBar';
 import Icon from '@/components/ui/Icon';
 import Button from '@/components/ui/Button';
@@ -9,11 +10,20 @@ import Chip from '@/components/ui/Chip';
 import Input from '@/components/ui/Input';
 import StepIndicator from '@/components/ui/StepIndicator';
 import Card from '@/components/ui/Card';
-import MapStatic from '@/components/ui/MapStatic';
 import { categories } from '@/lib/mock/regions';
 import { bankAccounts, adPackages } from '@/lib/mock/merchants';
-import { merchantApi, getAuthToken } from '@/lib/api-client';
+import { merchantApi, regionsApi, RegionResponse, getAuthToken } from '@/lib/api-client';
 import { useAuth } from '@/lib/context/AuthContext';
+
+const LocationPicker = dynamic(() => import('@/components/map/LocationPicker'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-64 sm:h-80 bg-surface-dim/40 rounded-2xl border border-outline-variant animate-pulse flex flex-col items-center justify-center gap-2 text-on-surface-variant">
+      <Icon name="map" size={32} className="text-outline-variant animate-bounce" />
+      <span className="text-xs font-medium">Memuat Peta Interaktif...</span>
+    </div>
+  ),
+});
 
 const steps = [
   { label: 'Syarat & Ketentuan' },
@@ -40,11 +50,33 @@ export default function RegisterMerchantPage() {
   const [category, setCategory] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
   const [description, setDescription] = useState('');
+  const [lat, setLat] = useState<number>(-7.8014);
+  const [lng, setLng] = useState<number>(110.3644);
+  const [regionsGrouped, setRegionsGrouped] = useState<RegionResponse[]>([]);
+  const [allRegencies, setAllRegencies] = useState<RegionResponse[]>([]);
+  const [selectedRegionId, setSelectedRegionId] = useState<string>('');
+  const [detectedRegionName, setDetectedRegionName] = useState<string>('');
   const [products, setProducts] = useState<ProductItem[]>([
     { id: '1', name: '', price: '', description: '' },
   ]);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+
+  useEffect(() => {
+    regionsApi
+      .getGrouped()
+      .then((data) => {
+        setRegionsGrouped(data);
+        const regList: RegionResponse[] = [];
+        data.forEach((prov) => {
+          if (prov.regencies) {
+            regList.push(...prov.regencies);
+          }
+        });
+        setAllRegencies(regList);
+      })
+      .catch(() => {});
+  }, []);
 
   const addProduct = () => {
     setProducts([...products, { id: String(Date.now()), name: '', price: '', description: '' }]);
@@ -184,9 +216,70 @@ export default function RegisterMerchantPage() {
               />
             </div>
 
-            <div>
-              <label className="text-sm font-semibold text-on-surface mb-2 block">Lokasi Usaha</label>
-              <MapStatic lat={-7.8014} lng={110.3644} label="Yogyakarta, ID" height="h-40" />
+            {/* Location & Interactive Picker */}
+            <div className="space-y-3 pt-2 border-t border-outline-variant/40">
+              <div>
+                <label className="text-sm font-semibold text-on-surface block">Lokasi Presisi Usaha</label>
+                <p className="text-xs text-on-surface-variant mb-2">
+                  Cari lokasi/alamat, geser pin di peta, atau gunakan GPS untuk menandai lokasi gerai/toko Anda.
+                </p>
+              </div>
+              <LocationPicker
+                lat={lat}
+                lng={lng}
+                onChange={(newLat, newLng) => {
+                  setLat(newLat);
+                  setLng(newLng);
+                }}
+                onAddressChange={(info) => {
+                  if (info.cityOrRegency && allRegencies.length > 0) {
+                    const searchTarget = info.cityOrRegency.toLowerCase().replace(/^(kabupaten|kota)\s+/i, '').trim();
+                    const matched = allRegencies.find((r) => {
+                      const regNameClean = r.name.toLowerCase().replace(/^(kabupaten|kota)\s+/i, '').trim();
+                      return regNameClean === searchTarget || regNameClean.includes(searchTarget) || searchTarget.includes(regNameClean);
+                    });
+                    if (matched) {
+                      setSelectedRegionId(matched.id);
+                      setDetectedRegionName(matched.name);
+                    }
+                  }
+                }}
+              />
+
+              {/* Region / Kabupaten / Kota Selection */}
+              <div className="space-y-2 pt-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-semibold text-on-surface">Wilayah (Kabupaten / Kota)</label>
+                  {detectedRegionName && (
+                    <span className="text-[11px] font-medium bg-primary-container/40 text-on-surface border border-primary-container px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                      <Icon name="check_circle" size={14} className="text-primary" /> Terdeteksi: {detectedRegionName}
+                    </span>
+                  )}
+                </div>
+                <select
+                  value={selectedRegionId}
+                  onChange={(e) => {
+                    setSelectedRegionId(e.target.value);
+                    const sel = allRegencies.find((r) => r.id === e.target.value);
+                    if (sel) setDetectedRegionName(sel.name);
+                  }}
+                  className="w-full bg-white border border-outline-variant rounded-xl px-3.5 py-2.5 text-sm text-on-surface focus:outline-none focus:border-2 focus:border-slate-heavy transition-all"
+                >
+                  <option value="">-- Pilih Kabupaten / Kota --</option>
+                  {regionsGrouped.map((prov) => (
+                    <optgroup key={prov.id} label={prov.name}>
+                      {(prov.regencies || []).map((reg) => (
+                        <option key={reg.id} value={reg.id}>
+                          {reg.name}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+                <p className="text-xs text-on-surface-variant">
+                  Wilayah terdeteksi otomatis saat Anda memilih titik di peta. Anda juga dapat memilihnya secara manual jika diperlukan.
+                </p>
+              </div>
             </div>
           </section>
         )}
@@ -393,9 +486,9 @@ export default function RegisterMerchantPage() {
                   await merchantApi.register({
                     name: businessName.trim(),
                     description: description.trim(),
-                    lat: -7.8014,
-                    lng: 110.3644,
-                    regionId: 'r2',
+                    lat: Number(lat),
+                    lng: Number(lng),
+                    regionId: selectedRegionId || (allRegencies[0]?.id ?? '11111111-1111-1111-1111-111111111111'),
                     categoryId: category,
                     contactWhatsApp: whatsapp.trim(),
                     products: products
