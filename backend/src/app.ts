@@ -6,6 +6,7 @@ import contributionsRouter from './routes/contributions';
 import merchantRouter from './routes/merchant';
 import profileRouter from './routes/profile';
 import awardsRouter from './routes/awards';
+import regionsRouter from './routes/regions';
 import adminRouter from './routes/admin';
 import cronRouter from './routes/cron';
 import { errorHandler } from './middleware/errorHandler';
@@ -38,6 +39,7 @@ app.use('/api/contributions', contributionsRouter);
 app.use('/api/merchant', merchantRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/awards', awardsRouter);
+app.use('/api/regions', regionsRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/cron', cronRouter);
 
