@@ -6,6 +6,7 @@ import Icon from '../ui/Icon';
 
 const navItems = [
   { label: 'Dashboard', icon: 'dashboard', href: '/admin' },
+  { label: 'Hero Banner', icon: 'view_carousel', href: '/admin/hero' },
   { label: 'Tempat', icon: 'place', href: '/admin/places' },
   { label: 'Users', icon: 'group', href: '/admin/users' },
   { label: 'Merchants', icon: 'storefront', href: '/admin/merchants' },

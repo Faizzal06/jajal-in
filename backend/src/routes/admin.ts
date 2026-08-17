@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { requireAdmin } from '../middleware/adminGuard';
 import * as adminController from '../controllers/adminController';
+import * as settingsController from '../controllers/settingsController';
 
 const router = Router();
 
@@ -28,5 +29,8 @@ router.get('/contributions', adminController.getContributions);
 router.delete('/contributions/:id', adminController.deleteContribution);
 
 router.get('/audit-log', adminController.getAuditLogController);
+
+router.get('/settings/hero', settingsController.getHeroSettings);
+router.put('/settings/hero', settingsController.updateHeroSettings);
 
 export default router;

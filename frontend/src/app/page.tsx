@@ -5,8 +5,15 @@ import Button from '@/components/ui/Button';
 import Icon from '@/components/ui/Icon';
 import PlaceImage from '@/components/ui/PlaceImage';
 import PageShell from '@/components/layout/PageShell';
-import { exploreApi, ExploreFeedResponse } from '@/lib/api-client';
+import { exploreApi, ExploreFeedResponse, settingsApi, HeroSettings } from '@/lib/api-client';
 import Link from 'next/link';
+
+const DEFAULT_HERO: HeroSettings = {
+  hero_badge: 'Vivid Explorer Mode',
+  hero_title: 'Radar UMKM',
+  hero_subtitle: 'Temukan permata tersembunyi dan produk lokal terbaik di sekitarmu dengan presisi tinggi.',
+  hero_image_url: '',
+};
 
 interface FeedItem {
   id: string;
@@ -52,10 +59,25 @@ function FeedSkeleton() {
 
 async function ExploreFeedContent() {
   let places: ExploreFeedResponse[] = [];
+  let hero: HeroSettings = DEFAULT_HERO;
   let error: string | null = null;
 
   try {
-    places = await exploreApi.getFeed();
+    const [feedResult, heroResult] = await Promise.allSettled([
+      exploreApi.getFeed(),
+      settingsApi.getHero(),
+    ]);
+
+    if (feedResult.status === 'fulfilled') {
+      places = feedResult.value;
+    } else {
+      throw feedResult.reason;
+    }
+
+    if (heroResult.status === 'fulfilled' && heroResult.value) {
+      hero = heroResult.value;
+    }
+
     await delay(1000);
   } catch {
     error = 'Gagal memuat data. Periksa koneksi internet lalu coba lagi.';
@@ -109,16 +131,30 @@ async function ExploreFeedContent() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative rounded-full overflow-hidden h-60 md:h-80 mt-lg mb-xl bg-gradient-to-br from-primary-container/20 to-primary/10">
-        <div className="absolute inset-0 flex items-center justify-center opacity-40">
-          <Icon name="image" size={96} className="text-primary" />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+      <section className="relative rounded-full overflow-hidden h-60 md:h-80 mt-lg mb-xl bg-gradient-to-br from-primary-container/20 to-primary/10 border border-outline-variant/30">
+        {hero.hero_image_url ? (
+          <img
+            src={hero.hero_image_url}
+            alt={hero.hero_title || 'Hero Banner'}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center opacity-40">
+            <Icon name="image" size={96} className="text-primary" />
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
         <div className="relative z-10 flex flex-col justify-end h-full p-lg md:p-xl">
-          <Chip active className="w-fit mb-3 text-xs">Vivid Explorer Mode</Chip>
-          <h2 className="font-headline-lg text-white text-3xl md:text-4xl font-bold mb-2">Radar UMKM</h2>
-          <p className="text-white/80 text-sm md:text-base max-w-lg">
-            Temukan permata tersembunyi dan produk lokal terbaik di sekitarmu dengan presisi tinggi.
+          {hero.hero_badge && (
+            <Chip active className="w-fit mb-3 text-xs">
+              {hero.hero_badge}
+            </Chip>
+          )}
+          <h2 className="font-headline-lg text-white text-3xl md:text-4xl font-bold mb-2 drop-shadow-sm">
+            {hero.hero_title}
+          </h2>
+          <p className="text-white/90 text-sm md:text-base max-w-lg drop-shadow-sm">
+            {hero.hero_subtitle}
           </p>
         </div>
       </section>

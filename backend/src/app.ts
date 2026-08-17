@@ -9,6 +9,7 @@ import awardsRouter from './routes/awards';
 import regionsRouter from './routes/regions';
 import adminRouter from './routes/admin';
 import cronRouter from './routes/cron';
+import settingsRouter from './routes/settings';
 import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
@@ -42,6 +43,7 @@ app.use('/api/awards', awardsRouter);
 app.use('/api/regions', regionsRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/cron', cronRouter);
+app.use('/api/settings', settingsRouter);
 
 app.use(errorHandler);
 

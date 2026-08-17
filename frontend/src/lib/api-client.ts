@@ -222,6 +222,17 @@ export const merchantApi = {
     api.post<{ id: string }>('/merchant/register', data),
 };
 
+export interface HeroSettings {
+  hero_badge: string;
+  hero_title: string;
+  hero_subtitle: string;
+  hero_image_url: string;
+}
+
+export const settingsApi = {
+  getHero: () => api.get<HeroSettings>('/settings/hero'),
+};
+
 export interface AdminDashboardResponse {
   totalUsers: number;
   places: {
@@ -366,4 +377,8 @@ export const adminApi = {
     const q = sp.toString();
     return api.get<PaginatedResponse<AdminAuditEntry>>(`/admin/audit-log${q ? `?${q}` : ''}`);
   },
+
+  getHeroSettings: () => api.get<HeroSettings>('/admin/settings/hero'),
+  updateHeroSettings: (data: Partial<HeroSettings>) =>
+    api.put<HeroSettings>('/admin/settings/hero', data),
 };
