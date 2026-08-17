@@ -13,57 +13,51 @@ const sections: TermSection[] = [
   {
     title: 'Penggunaan Layanan',
     points: [
-      'Jajal.in adalah platform discovery berbasis komunitas untuk menemukan hidden gems, UMKM, dan pengalaman budaya di Indonesia.',
-      'Layanan ini hanya dapat digunakan untuk tujuan yang sah, bukan untuk menyebarkan konten yang melanggar hukum, menyesatkan, atau merugikan pihak lain.',
-      'Kami berhak menghentikan akses akun yang terbukti menyalahgunakan layanan.',
+      'Pengguna wajib mematuhi hukum yang berlaku.',
+      'Dilarang keras menyalahgunakan platform untuk penipuan, spam, peretasan, atau tindakan yang merugikan Jajal.in maupun pengguna lain.',
     ],
   },
   {
-    title: 'Akun dan Keamanan',
+    title: 'Keamanan Akun',
     points: [
-      'Kamu bertanggung jawab penuh atas kerahasiaan kredensial akun, termasuk kata sandi dan metode masuk lainnya.',
-      'Segera hubungi tim kami melalui email resmi jika menemukan aktivitas mencurigakan pada akunmu.',
-      'Setiap aktivitas yang dilakukan dari akunmu dianggap dilakukan oleh kamu, kecuali dapat dibuktikan sebaliknya.',
+      'Kerahasiaan kredensial akun (kata sandi, OTP) adalah tanggung jawab mutlak pengguna.',
+      'Jajal.in tidak bertanggung jawab atas kerugian akibat kelalaian pengguna dalam menjaga keamanan akunnya.',
+      'Segala aktivitas dari akun pengguna dianggap sebagai tindakan yang sah.',
     ],
   },
   {
-    title: 'Kontribusi dan Konten',
+    title: 'Konten Pengguna',
     points: [
-      'Konten yang kamu unggah (foto, video, ulasan, dan deskripsi) wajib orisinal dan bukan hasil plagiarisme.',
-      'Kamu memberikan izin kepada Jajal.in untuk menampilkan konten yang kamu unggah kepada pengguna lain.',
-      'Konten yang mengandung SARA, kekerasan, atau informasi palsu akan dihapus dan dapat menyebabkan penonaktifan akun.',
+      'Pengguna bertanggung jawab penuh atas ulasan, foto, atau video yang diunggah dan memberi lisensi kepada Jajal.in untuk menampilkannya.',
+      'Jajal.in berhak menghapus konten dan memblokir akun jika terbukti mengandung unsur SARA, hoaks, pornografi, atau pelanggaran hak cipta.',
     ],
   },
   {
-    title: 'UMKM dan Iklan',
+    title: 'Interaksi & Transaksi UMKM',
     points: [
-      'Registrasi merchant dan pemasangan iklan mengikuti ketentuan yang berlaku pada halaman pendaftaran merchant.',
-      'Informasi yang disajikan pada profil UMKM merupakan tanggung jawab pemilik UMKM dan dapat berubah sewaktu-waktu.',
-      'Kami tidak bertanggung jawab atas transaksi yang terjadi di luar platform Jajal.in.',
+      'Jajal.in hanya bertindak sebagai direktori informasi. Segala transaksi, kesepakatan, dan akurasi informasi merchant merupakan tanggung jawab penuh antara pengguna dan pihak UMKM, di luar tanggung jawab Jajal.in.',
     ],
   },
   {
-    title: 'Privasi dan Data',
+    title: 'Privasi & Akses Lokasi',
     points: [
-      'Kami memproses data pribadi kamu sesuai dengan kebijakan privasi yang berlaku.',
-      'Data lokasi hanya digunakan untuk menampilkan rekomendasi hidden gems dan UMKM terdekat, dan dapat kamu kendalikan melalui pengaturan perangkat.',
-      'Kami tidak membagikan data pribadi kamu kepada pihak ketiga tanpa persetujuan, kecuali diwajibkan oleh hukum.',
+      'Pengelolaan data pribadi diatur dalam Kebijakan Privasi.',
+      'Jajal.in memerlukan akses lokasi perangkat murni untuk mengoptimalkan rekomendasi tempat terdekat.',
+      'Izin ini sepenuhnya berada dalam kendali pengguna.',
     ],
   },
   {
     title: 'Batasan Tanggung Jawab',
     points: [
-      'Jajal.in disediakan sebagaimana adanya dan tidak menjamin ketersediaan layanan secara terus-menerus tanpa gangguan.',
-      'Kami tidak bertanggung jawab atas kerugian yang timbul akibat keputusan kamu berdasarkan informasi dari platform.',
-      'Layanan pemeliharaan atau perbaikan teknis dapat menyebabkan layanan sementara tidak dapat diakses.',
+      'Layanan disediakan "sebagaimana adanya" (as is).',
+      'Jajal.in tidak memberikan jaminan aplikasi bebas gangguan dan tidak bertanggung jawab atas segala kerugian yang timbul akibat penggunaan informasi di dalam platform.',
     ],
   },
   {
-    title: 'Perubahan Syarat dan Ketentuan',
+    title: 'Pembaruan Ketentuan',
     points: [
-      'Syarat dan ketentuan ini dapat diperbarui sewaktu-waktu untuk menyesuaikan perkembangan layanan.',
-      'Perubahan akan diumumkan melalui aplikasi, dan penggunaan lanjutan layanan dianggap sebagai persetujuan atas perubahan tersebut.',
-      'Tanggal berlaku terakhir dari ketentuan ini akan selalu ditampilkan di bagian bawah halaman.',
+      'Syarat dan Ketentuan ini dapat diubah sewaktu-waktu tanpa pemberitahuan prioritas.',
+      'Tetap menggunakan layanan ini berarti pengguna menyetujui perubahan tersebut.',
     ],
   },
 ];
@@ -80,7 +74,7 @@ export default function TermsPage() {
             <div>
               <h2 className="font-headline-md text-on-surface font-bold">Syarat & Ketentuan</h2>
               <p className="text-sm text-on-surface-variant mt-0.5">
-                Pedoman penggunaan layanan Jajal.in yang perlu kamu pahami.
+                Dengan menggunakan Jajal.in, kamu dianggap telah membaca dan menyetujui ketentuan berikut:
               </p>
             </div>
           </div>
