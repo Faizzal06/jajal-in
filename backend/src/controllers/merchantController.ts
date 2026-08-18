@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthRequest } from '../middleware/authGuard';
-import { registerMerchant } from '../services/merchantService';
+import { registerMerchant, getMyMerchants } from '../services/merchantService';
 
 export const registerMerchantController = async (
   req: Request,
@@ -23,6 +23,7 @@ export const registerMerchantController = async (
       regionId,
       categoryId,
       contactWhatsApp,
+      media,
       products,
       adPackageId,
       adPaymentProofUrl,
@@ -32,25 +33,19 @@ export const registerMerchantController = async (
       !name ||
       typeof name !== 'string' ||
       name.trim() === '' ||
-      !description ||
-      typeof description !== 'string' ||
-      description.trim() === '' ||
       !regionId ||
       typeof regionId !== 'string' ||
       regionId.trim() === '' ||
       !categoryId ||
       typeof categoryId !== 'string' ||
       categoryId.trim() === '' ||
-      !contactWhatsApp ||
-      typeof contactWhatsApp !== 'string' ||
-      contactWhatsApp.trim() === '' ||
       lat === undefined ||
       lat === null ||
       lng === undefined ||
       lng === null
     ) {
       const error: any = new Error(
-        'Missing required fields: name, description, lat, lng, regionId, categoryId, and contactWhatsApp are required'
+        'Missing required fields: name, lat, lng, regionId, and categoryId are required'
       );
       error.statusCode = 400;
       throw error;
@@ -65,6 +60,12 @@ export const registerMerchantController = async (
       throw error;
     }
 
+    if (media !== undefined && !Array.isArray(media)) {
+      const error: any = new Error('Invalid media format: media must be an array of base64 strings');
+      error.statusCode = 400;
+      throw error;
+    }
+
     if (products !== undefined && !Array.isArray(products)) {
       const error: any = new Error('Invalid products format: products must be an array');
       error.statusCode = 400;
@@ -72,13 +73,14 @@ export const registerMerchantController = async (
     }
 
     const result = await registerMerchant(user.id, {
-      name,
-      description,
+      name: name.trim(),
+      description: typeof description === 'string' ? description.trim() : '',
       lat: latNum,
       lng: lngNum,
       regionId,
       categoryId,
-      contactWhatsApp,
+      contactWhatsApp: typeof contactWhatsApp === 'string' ? contactWhatsApp.trim() : '',
+      media,
       products,
       adPackageId,
       adPaymentProofUrl,
@@ -89,3 +91,24 @@ export const registerMerchantController = async (
     next(error);
   }
 };
+
+export const getMyMerchantsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = (req as AuthRequest).user;
+    if (!user || !user.id) {
+      const error: any = new Error('Unauthorized: User ID missing');
+      error.statusCode = 401;
+      throw error;
+    }
+
+    const result = await getMyMerchants(user.id);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+

@@ -11,12 +11,13 @@ export interface ProductInput {
 
 export interface RegisterMerchantPayload {
   name: string;
-  description: string;
+  description?: string;
   lat: number;
   lng: number;
   regionId: string;
   categoryId: string;
-  contactWhatsApp: string;
+  contactWhatsApp?: string;
+  media?: string[];
   products?: ProductInput[];
   adPackageId?: string;
   adPaymentProofUrl?: string;
@@ -35,6 +36,24 @@ export const registerMerchant = async (
 
   const isValidUuid = (id?: string) =>
     id ? /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id) : false;
+
+  // Ensure user exists in public.users to satisfy owner_id FK constraint
+  const userTable = supabase.from('users');
+  if (userTable && typeof userTable.select === 'function') {
+    const { data: existingUser } = await userTable
+      .select('id')
+      .eq('id', userId)
+      .single();
+
+    if (!existingUser && typeof userTable.upsert === 'function') {
+      await userTable.upsert({
+        id: userId,
+        email: `user_${userId.slice(0, 8)}@jajal.in`,
+        name: 'Pemilik Usaha',
+        role: 'user',
+      });
+    }
+  }
 
   let resolvedCategoryId = payload.categoryId;
   if (!isValidUuid(resolvedCategoryId)) {
@@ -79,14 +98,14 @@ export const registerMerchant = async (
       type: 'merchant',
       name: payload.name,
       slug,
-      description: payload.description,
+      description: payload.description || '',
       address,
       location: `POINT(${payload.lng} ${payload.lat})`,
       region_id: resolvedRegionId,
       category_id: resolvedCategoryId,
-      contact_whatsapp: payload.contactWhatsApp,
+      contact_whatsapp: payload.contactWhatsApp || '',
       owner_id: userId,
-      status: 'pending_payment',
+      status: 'pending',
     })
     .select('id')
     .single();
@@ -98,34 +117,63 @@ export const registerMerchant = async (
   const placeId = placeData.id;
 
   const rollback = async () => {
+    await supabase.from('place_media').delete().eq('place_id', placeId);
     await supabase.from('ad_payments').delete().eq('place_id', placeId);
     await supabase.from('products').delete().eq('place_id', placeId);
     await supabase.from('places').delete().eq('id', placeId);
   };
 
-  if (payload.products && payload.products.length > 0) {
+  if (payload.media && payload.media.length > 0) {
     try {
-      const productRecords = await Promise.all(
-        payload.products.map(async (p) => {
-          const imageUrl = p.imageUrl
-            ? await uploadBase64ToStorage(p.imageUrl, 'place-media', 'products')
-            : undefined;
-          return {
-            place_id: placeId,
-            name: p.name,
-            price: p.price,
-            description: p.description,
-            image_url: imageUrl,
-          };
-        })
+      const uploadedUrls = await Promise.all(
+        payload.media.map((item) => uploadBase64ToStorage(item, 'place-media', 'merchants'))
       );
 
-      const { error: productsError } = await supabase
-        .from('products')
-        .insert(productRecords);
+      const mediaRecords = uploadedUrls.map((url) => ({
+        place_id: placeId,
+        media_type: 'image',
+        url,
+      }));
 
-      if (productsError) {
-        throw new Error(productsError.message);
+      const { error: mediaError } = await supabase
+        .from('place_media')
+        .insert(mediaRecords);
+
+      if (mediaError) {
+        throw new Error(mediaError.message);
+      }
+    } catch (err: any) {
+      await rollback();
+      throw err;
+    }
+  }
+
+  if (payload.products && payload.products.length > 0) {
+    try {
+      const validProducts = payload.products.filter((p) => p && p.name && p.name.trim() !== '');
+      if (validProducts.length > 0) {
+        const productRecords = await Promise.all(
+          validProducts.map(async (p) => {
+            const imageUrl = p.imageUrl
+              ? await uploadBase64ToStorage(p.imageUrl, 'place-media', 'products')
+              : undefined;
+            return {
+              place_id: placeId,
+              name: p.name.trim(),
+              price: p.price || 0,
+              description: p.description ? p.description.trim() : '',
+              image_url: imageUrl,
+            };
+          })
+        );
+
+        const { error: productsError } = await supabase
+          .from('products')
+          .insert(productRecords);
+
+        if (productsError) {
+          throw new Error(productsError.message);
+        }
       }
     } catch (err: any) {
       await rollback();
@@ -171,4 +219,55 @@ export const registerMerchant = async (
   }
 
   return { id: placeId };
+};
+
+export const getMyMerchants = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('places')
+    .select(`
+      id,
+      type,
+      name,
+      slug,
+      description,
+      address,
+      status,
+      is_sponsored,
+      sponsored_until,
+      contact_whatsapp,
+      contact_phone,
+      rating,
+      review_count,
+      created_at,
+      regions (
+        name,
+        slug
+      ),
+      categories (
+        name,
+        icon,
+        applicable_to
+      ),
+      place_media (
+        url,
+        media_type,
+        caption
+      ),
+      products (
+        id,
+        name,
+        price,
+        description,
+        image_url
+      )
+    `)
+    .eq('owner_id', userId)
+    .eq('type', 'merchant')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data || [];
 };

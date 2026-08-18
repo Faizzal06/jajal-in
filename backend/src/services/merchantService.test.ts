@@ -36,7 +36,7 @@ describe('merchantService', () => {
       contactWhatsApp: '081234567890',
     };
 
-    it('should insert place into places table with status pending_payment and type merchant', async () => {
+    it('should insert place into places table with status pending and type merchant', async () => {
       const mockPlaceSingle = jest.fn().mockResolvedValue({
         data: { id: 'place-merchant-1' },
         error: null,
@@ -57,7 +57,7 @@ describe('merchantService', () => {
       expect(mockPlaceInsert).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'merchant',
-          status: 'pending_payment',
+          status: 'pending',
           owner_id: userId,
           name: 'Toko Kopi Sejahtera',
           description: basicPayload.description,
@@ -342,6 +342,73 @@ describe('merchantService', () => {
         proof_url: 'https://supabase.co/storage/v1/object/public/payment-proofs/merchant-proofs/proof.jpg',
         status: 'pending',
       });
+    });
+
+    it('should upload media photos and insert into place_media', async () => {
+      (uploadBase64ToStorage as jest.Mock).mockResolvedValueOnce(
+        'https://supabase.co/storage/v1/object/public/place-media/merchants/photo1.jpg'
+      );
+
+      const payloadWithMedia = {
+        ...basicPayload,
+        media: ['data:image/jpeg;base64,photo1data'],
+      };
+
+      const mockPlaceSingle = jest.fn().mockResolvedValue({
+        data: { id: 'place-merchant-1' },
+        error: null,
+      });
+      const mockPlaceSelect = jest.fn().mockReturnValue({ single: mockPlaceSingle });
+      const mockPlaceInsert = jest.fn().mockReturnValue({ select: mockPlaceSelect });
+      const mockMediaInsert = jest.fn().mockResolvedValue({ error: null });
+
+      (supabase.from as jest.Mock).mockImplementation((table: string) => {
+        if (table === 'places') return { insert: mockPlaceInsert, delete: defaultDeleteMock };
+        if (table === 'place_media') return { insert: mockMediaInsert, delete: defaultDeleteMock };
+        return { delete: defaultDeleteMock };
+      });
+
+      const result = await registerMerchant(userId, payloadWithMedia);
+
+      expect(uploadBase64ToStorage).toHaveBeenCalledWith(
+        'data:image/jpeg;base64,photo1data',
+        'place-media',
+        'merchants'
+      );
+      expect(supabase.from).toHaveBeenCalledWith('place_media');
+      expect(mockMediaInsert).toHaveBeenCalledWith([
+        {
+          place_id: 'place-merchant-1',
+          media_type: 'image',
+          url: 'https://supabase.co/storage/v1/object/public/place-media/merchants/photo1.jpg',
+        },
+      ]);
+      expect(result).toEqual({ id: 'place-merchant-1' });
+    });
+  });
+
+  describe('getMyMerchants', () => {
+    it('should fetch places for current user with type merchant', async () => {
+      const { getMyMerchants } = require('./merchantService');
+      const mockOrder = jest.fn().mockResolvedValue({
+        data: [{ id: 'm-1', name: 'Warung A', type: 'merchant' }],
+        error: null,
+      });
+      const mockEqType = jest.fn().mockReturnValue({ order: mockOrder });
+      const mockEqOwner = jest.fn().mockReturnValue({ eq: mockEqType });
+      const mockSelect = jest.fn().mockReturnValue({ eq: mockEqOwner });
+
+      (supabase.from as jest.Mock).mockImplementation((table: string) => {
+        if (table === 'places') return { select: mockSelect };
+        return { select: jest.fn() };
+      });
+
+      const result = await getMyMerchants('user-123');
+
+      expect(supabase.from).toHaveBeenCalledWith('places');
+      expect(mockEqOwner).toHaveBeenCalledWith('owner_id', 'user-123');
+      expect(mockEqType).toHaveBeenCalledWith('type', 'merchant');
+      expect(result).toEqual([{ id: 'm-1', name: 'Warung A', type: 'merchant' }]);
     });
   });
 });

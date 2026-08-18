@@ -152,15 +152,38 @@ export interface CreateContributionPayload {
 
 export interface RegisterMerchantPayload {
   name: string;
-  description: string;
+  description?: string;
   lat: number;
   lng: number;
   regionId: string;
   categoryId: string;
-  contactWhatsApp: string;
-  products?: { name: string; price: number; description: string; imageUrl?: string }[];
+  contactWhatsApp?: string;
+  media?: string[];
+  products?: { name: string; price: number; description?: string; imageUrl?: string }[];
   adPackageId?: string;
   adPaymentProofUrl?: string;
+}
+
+export interface MyMerchantResponse {
+  id: string;
+  type: string;
+  name: string;
+  slug: string;
+  description: string;
+  address?: string;
+  lat?: number;
+  lng?: number;
+  rating: number;
+  review_count: number;
+  is_sponsored: boolean;
+  status: string;
+  contact_whatsapp?: string;
+  contact_phone?: string;
+  created_at: string;
+  regions?: { name: string; slug?: string };
+  categories?: { name: string; icon: string; applicable_to?: string };
+  place_media?: { url: string; media_type?: string; caption?: string }[];
+  products?: { id: string; name: string; price: number; description: string; image_url?: string }[];
 }
 
 export const exploreApi = {
@@ -220,6 +243,7 @@ export const contributionsApi = {
 export const merchantApi = {
   register: (data: RegisterMerchantPayload) =>
     api.post<{ id: string }>('/merchant/register', data),
+  getMyMerchants: () => api.get<MyMerchantResponse[]>('/merchant/my-merchants'),
 };
 
 export interface HeroSettings {

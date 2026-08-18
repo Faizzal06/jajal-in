@@ -96,7 +96,7 @@ describe('Merchant API (POST /api/merchant/register)', () => {
 
     const invalidPayload = {
       name: 'Warung Bu Siti',
-      // description missing
+      // categoryId missing
       lat: -6.9175,
       lng: 107.6191,
       regionId: 'region-123',
@@ -109,7 +109,7 @@ describe('Merchant API (POST /api/merchant/register)', () => {
 
     expect(response.status).toBe(400);
     expect(response.body).toEqual({
-      error: 'Missing required fields: name, description, lat, lng, regionId, categoryId, and contactWhatsApp are required',
+      error: 'Missing required fields: name, lat, lng, regionId, and categoryId are required',
     });
     consoleSpy.mockRestore();
   });
@@ -180,5 +180,30 @@ describe('Merchant API (POST /api/merchant/register)', () => {
     expect(response.status).toBe(500);
     expect(response.body).toEqual({ error: 'DB failure' });
     consoleSpy.mockRestore();
+  });
+
+  describe('GET /api/merchant/my-merchants', () => {
+    it('should return 401 if unauthenticated', async () => {
+      const response = await request(app).get('/api/merchant/my-merchants');
+      expect(response.status).toBe(401);
+    });
+
+    it('should return 200 and list of user merchants on success', async () => {
+      (supabase.auth.getUser as jest.Mock).mockResolvedValueOnce({
+        data: { user: mockUser },
+        error: null,
+      });
+      (merchantService.getMyMerchants as jest.Mock).mockResolvedValueOnce([
+        { id: 'place-1', name: 'Warung A' },
+      ]);
+
+      const response = await request(app)
+        .get('/api/merchant/my-merchants')
+        .set('Authorization', 'Bearer valid_token');
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([{ id: 'place-1', name: 'Warung A' }]);
+      expect(merchantService.getMyMerchants).toHaveBeenCalledWith('user-merchant-1');
+    });
   });
 });

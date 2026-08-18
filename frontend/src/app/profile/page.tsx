@@ -9,7 +9,7 @@ import Card from '@/components/ui/Card';
 import Desk from '@/components/ui/Desk';
 import ProgressBar from '@/components/ui/ProgressBar';
 import { badges, leaderboardEntries } from '@/lib/mock/badges';
-import { profileApi, ProfileResponse, getAuthToken } from '@/lib/api-client';
+import { profileApi, ProfileResponse, merchantApi, MyMerchantResponse, getAuthToken } from '@/lib/api-client';
 import { useAuth } from '@/lib/context/AuthContext';
 import Loading from '@/app/loading';
 
@@ -17,6 +17,7 @@ export default function ProfilePage() {
   const router = useRouter();
   const { user, logout, loading: authLoading } = useAuth();
   const [apiProfile, setApiProfile] = useState<ProfileResponse | null>(null);
+  const [myMerchants, setMyMerchants] = useState<MyMerchantResponse[]>([]);
   const [profileLoading, setProfileLoading] = useState(true);
   const [shareSuccess, setShareSuccess] = useState(false);
 
@@ -29,10 +30,14 @@ export default function ProfilePage() {
   useEffect(() => {
     const token = getAuthToken();
     if (token) {
-      profileApi
-        .get()
-        .then((data) => setApiProfile(data))
-        .catch(() => {})
+      Promise.all([
+        profileApi.get().catch(() => null),
+        merchantApi.getMyMerchants().catch(() => []),
+      ])
+        .then(([profileData, merchantData]) => {
+          if (profileData) setApiProfile(profileData);
+          if (merchantData) setMyMerchants(merchantData);
+        })
         .finally(() => {
           setProfileLoading(false);
         });
@@ -193,22 +198,34 @@ export default function ProfilePage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="w-full flex gap-sm mt-auto">
-                <Button
-                  variant="secondary"
-                  size="md"
-                  className="flex-1 font-bold text-label-md rounded-full"
-                  onClick={() => router.push('/profile/edit')}
-                >
-                  <Icon name="edit" size={18} /> Edit Profil
-                </Button>
-                <button
-                  onClick={handleShare}
-                  className="p-3 border border-outline-variant rounded-full hover:bg-surface-container transition-all active:scale-95 flex items-center justify-center"
-                  title="Bagikan Profil"
-                >
-                  <Icon name="share" size={20} className="text-on-surface" />
-                </button>
+              <div className="w-full flex flex-col gap-2 mt-auto">
+                <div className="w-full flex gap-sm">
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    className="flex-1 font-bold text-label-md rounded-full"
+                    onClick={() => router.push('/profile/edit')}
+                  >
+                    <Icon name="edit" size={18} /> Edit Profil
+                  </Button>
+                  <button
+                    onClick={handleShare}
+                    className="p-3 border border-outline-variant rounded-full hover:bg-surface-container transition-all active:scale-95 flex items-center justify-center"
+                    title="Bagikan Profil"
+                  >
+                    <Icon name="share" size={20} className="text-on-surface" />
+                  </button>
+                </div>
+                {myMerchants.length > 0 && (
+                  <Button
+                    variant="primary"
+                    size="md"
+                    className="w-full font-bold text-label-md rounded-full flex items-center justify-center gap-1.5"
+                    onClick={() => router.push('/merchant/manage')}
+                  >
+                    <Icon name="storefront" size={18} /> Kelola Merchant ({myMerchants.length})
+                  </Button>
+                )}
               </div>
             </Desk>
           </div>
@@ -350,16 +367,56 @@ export default function ProfilePage() {
         </section>
 
         {/* Merchant Banner */}
-        <Card className="border-primary-container bg-primary-container/10 text-center p-xl">
-          <Icon name="store" size={32} className="text-primary mb-2 mx-auto" />
-          <h3 className="font-headline-md font-bold text-on-surface mb-1">Daftarkan Usaha & Pasang Iklan</h3>
-          <p className="text-sm text-on-surface-variant mb-4 max-w-md mx-auto">
-            Jangkau ribuan traveler yang mencari keunikan lokal dan hidden gems Indonesia.
-          </p>
-          <Button variant="secondary" size="md" onClick={() => router.push('/register-merchant')}>
-            Mulai Sekarang
-          </Button>
-        </Card>
+        {myMerchants.length > 0 ? (
+          <Card className="border-primary-container bg-primary-container/10 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4 text-center sm:text-left">
+              <div className="w-14 h-14 rounded-2xl bg-primary-container flex items-center justify-center text-on-primary-container shrink-0 mx-auto sm:mx-0">
+                <Icon name="storefront" size={32} />
+              </div>
+              <div>
+                <div className="flex items-center justify-center sm:justify-start gap-2">
+                  <h3 className="font-headline-md font-bold text-on-surface text-lg">Merchant & Usaha Anda</h3>
+                  <span className="bg-primary-container text-on-primary-container text-xs font-bold px-2 py-0.5 rounded-full">
+                    {myMerchants.length} Terdaftar
+                  </span>
+                </div>
+                <p className="text-sm text-on-surface-variant">
+                  Kelola profil toko, pantau status verifikasi, dan aktifkan fitur promosi prioritas (Open Promote).
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
+              <Button
+                variant="primary"
+                size="md"
+                className="flex-1 sm:flex-none font-bold"
+                onClick={() => router.push('/merchant/manage')}
+              >
+                <Icon name="settings" size={18} /> Kelola Merchant
+              </Button>
+              <Button
+                variant="ghost"
+                size="md"
+                className="flex-1 sm:flex-none"
+                onClick={() => router.push('/register-merchant')}
+                title="Daftarkan Usaha Baru"
+              >
+                <Icon name="add" size={18} /> Tambah
+              </Button>
+            </div>
+          </Card>
+        ) : (
+          <Card className="border-primary-container bg-primary-container/10 text-center p-xl">
+            <Icon name="storefront" size={36} className="text-primary mb-2 mx-auto" />
+            <h3 className="font-headline-md font-bold text-on-surface mb-1">Punya Usaha Lokal? Daftarkan Gratis!</h3>
+            <p className="text-sm text-on-surface-variant mb-4 max-w-md mx-auto">
+              Jangkau ribuan penjelajah lokal, tampilkan produk unggulan, dan kembangkan bisnis usahamu di Jajal.in.
+            </p>
+            <Button variant="primary" size="md" onClick={() => router.push('/register-merchant')}>
+              <Icon name="add" size={18} /> Daftarkan Usaha (Gratis)
+            </Button>
+          </Card>
+        )}
 
         {/* Logout Button */}
         {user && (
